@@ -15,7 +15,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "visualizer": [
+        "dist/visualizer/visualizer",
+        "dist/visualizer"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
