@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
+import { RippleModule } from 'primeng/ripple';
 import { BarcleVisualizerComponent } from './visualizers/barcle-visualizer/barcle-visualizer.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { BarcleControllerComponent } from './controllers/barcle-controller/barcle-controller.component';
@@ -31,6 +32,7 @@ import { CircleControllerComponent } from './controllers/circle-controller/circl
         DropdownModule,
         SelectButtonModule,
         SliderModule,
+        RippleModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -55,6 +55,30 @@
 
     <div class="controls">
         <div class="control-group">
+            <div class="media-controls">
+                <button class="secondary-media-btn"
+                        pButton pRipple
+                        icon="pi pi-step-backward-alt"
+                        (click)="onPrevSong()">
+                </button>
+                <button class="primary-media-btn"
+                        pButton pRipple
+                        [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
+                        (click)="onPlayPause()">
+                </button>
+                <button class="secondary-media-btn"
+                        pButton pRipple
+                        icon="pi pi-step-forward-alt"
+                        (click)="onNextSong()">
+                </button>
+            </div>
+            <p-dropdown class="song-select" [options]="audioConfigs"
+                        [(ngModel)]="audioConfig"
+                        placeholder="Select a Song"
+                        optionLabel="src">
+            </p-dropdown>
+        </div>
+        <div class="control-group">
             <div class="control-wrapper">
                 <span>Add Visualizer</span>
                 <span>
@@ -62,17 +86,8 @@
                                 [(ngModel)]="selectedAddOption"
                                 placeholder="Select an option">
                     </p-dropdown>
-                    <p-button class="add-btn" label="Add" (onClick)="onAddClicked()"></p-button>
+                    <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
                 </span>
-            </div>
-
-            <div class="control-wrapper">
-                <span>Song</span>
-                <p-dropdown [options]="audioConfigs"
-                            [(ngModel)]="audioConfig"
-                            placeholder="Select a Song"
-                            optionLabel="src">
-                </p-dropdown>
             </div>
 
             <div class="control-wrapper">
@@ -130,6 +145,6 @@
     </div>
 </div>
 
-<button (click)="onPlay()" autofocus>Play</button>
-<button (click)="onPause()">Pause</button>
+<!--<button (click)="onPlay()" autofocus>Play</button>-->
+<!--<button (click)="onPause()">Pause</button>-->
 

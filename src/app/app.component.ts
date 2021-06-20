@@ -112,6 +112,10 @@ export class AppComponent implements AfterViewInit {
 
     visualizerConfigs: IVisualizerConfig[] = [];
 
+    get isPlaying(): boolean {
+        return this.audioElement ? !this.audioElement.nativeElement.paused : false;
+    }
+
     @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
 
     constructor(public visualizerService: VisualizerService) {
@@ -125,20 +129,32 @@ export class AppComponent implements AfterViewInit {
         this.visualizerService.start();
     }
 
-    onPlay(): void {
-        this._play();
+    onPlayPause(): void {
+        if (!this.isPlaying) {
+            this.audioElement.nativeElement.play().catch(error => console.error('Unable to play audio.', error));
+        } else {
+            this.audioElement.nativeElement.pause();
+        }
     }
 
-    onPause(): void {
-        this.audioElement.nativeElement.pause();
+    onNextSong(): void {
+        const currIndex: number = this.audioConfigs.indexOf(this.audioConfig);
+        if (currIndex + 1 < this.audioConfigs.length) {
+            this.audioConfig = this.audioConfigs[currIndex + 1]
+            setTimeout(() => this.onPlayPause())
+        }
+    }
+
+    onPrevSong(): void {
+        const currIndex: number = this.audioConfigs.indexOf(this.audioConfig);
+        if (currIndex - 1 >= 0) {
+            this.audioConfig = this.audioConfigs[currIndex - 1]
+            setTimeout(() => this.onPlayPause())
+        }
     }
 
     onEnded(): void {
-        console.log('song is kill');
-    }
-
-    private _play(): void {
-        this.audioElement.nativeElement.play().catch(error => console.error('Unable to play audio.', error));
+        this.onNextSong();
     }
 
     onDecibelChanged() {
