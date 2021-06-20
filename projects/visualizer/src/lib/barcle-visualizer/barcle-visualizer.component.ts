@@ -12,7 +12,6 @@ import { VisualizerService } from '../visualizer.service';
 export class BarcleVisualizerComponent extends BaseVisualizerComponent {
 
     @Input() baseRadius: number;
-    @Input() capRadius: number;
 
     protected _canvasHeight: number;
     protected _canvasWidth: number;

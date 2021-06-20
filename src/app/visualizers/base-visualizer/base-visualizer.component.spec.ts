@@ -4,7 +4,7 @@ import { BaseVisualizerComponent } from './base-visualizer.component';
 
 describe('BaseVisualizerComponent', () => {
   let component: BaseVisualizerComponent;
-  // let fixture: ComponentFixture<BaseVisualizerComponent>;
+  let fixture: ComponentFixture<BaseVisualizerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -14,9 +14,9 @@ describe('BaseVisualizerComponent', () => {
   });
 
   beforeEach(() => {
-    // fixture = TestBed.createComponent(BaseVisualizerComponent);
-    // component = fixture.componentInstance;
-    // fixture.detectChanges();
+    fixture = TestBed.createComponent(BaseVisualizerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {

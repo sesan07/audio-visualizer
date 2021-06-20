@@ -1,46 +1,135 @@
-<audio #audioElement [src]="activeConfig.src" (ended)="onEnded()"></audio>
+<audio #audioElement [src]="audioConfig.src" (ended)="onEnded()"></audio>
 
 <div>Hello visualizer</div>
 
-<div style="background-color: #003049">
-    <lib-barcle-visualizer
-            [audioConfig]="activeConfig"
-            [scale]="scale"
-            [startColorHex]="startColorHex"
-            [endColorHex]="endColorHex"
-            [oomph]="oomph"
-            [baseRadius]="baseRadius">
-    </lib-barcle-visualizer>
-    <lib-circle-visualizer
-                           [audioConfig]="activeConfig"
-                           [scale]="scale"
-                           [sampleRadius]="sampleRadius"
-                           [startColorHex]="startColorHex"
-                           [endColorHex]="endColorHex"
-                           [oomph]="oomph"
-                           [effect]="circleEffect"
-                           [baseRadius]="baseRadius">
-    </lib-circle-visualizer>
-    <lib-bar-visualizer
-            [audioConfig]="activeConfig"
-            [looseCaps]="looseCaps"
-            [barCapSize]="barCapSize"
-            [scale]="scale"
-            [oomph]="oomph"
-            [barSize]="barSize"
-            [barColor]="barColor"
-            [barCapColor]="barCapColor"
-            [barSpacing]="barSpacing"
-            [barOrientation]="barOrientation"
-            [startColorHex]="startColorHex"
-            [endColorHex]="endColorHex">
-    </lib-bar-visualizer>
+<!--<div style="background-color: #003049">-->
+<!--    <lib-barcle-visualizer-->
+<!--            [audioConfig]="activeConfig"-->
+<!--            [scale]="scale"-->
+<!--            [startColorHex]="startColorHex"-->
+<!--            [endColorHex]="endColorHex"-->
+<!--            [oomph]="oomph"-->
+<!--            [baseRadius]="baseRadius">-->
+<!--    </lib-barcle-visualizer>-->
+<!--    <lib-circle-visualizer-->
+<!--                           [audioConfig]="activeConfig"-->
+<!--                           [scale]="scale"-->
+<!--                           [sampleRadius]="sampleRadius"-->
+<!--                           [startColorHex]="startColorHex"-->
+<!--                           [endColorHex]="endColorHex"-->
+<!--                           [oomph]="oomph"-->
+<!--                           [effect]="circleEffect"-->
+<!--                           [baseRadius]="baseRadius">-->
+<!--    </lib-circle-visualizer>-->
+<!--    <lib-bar-visualizer-->
+<!--            [audioConfig]="activeConfig"-->
+<!--            [looseCaps]="looseCaps"-->
+<!--            [barCapSize]="barCapSize"-->
+<!--            [scale]="scale"-->
+<!--            [oomph]="oomph"-->
+<!--            [barSize]="barSize"-->
+<!--            [barColor]="barColor"-->
+<!--            [barCapColor]="barCapColor"-->
+<!--            [barSpacing]="barSpacing"-->
+<!--            [barOrientation]="barOrientation"-->
+<!--            [startColorHex]="startColorHex"-->
+<!--            [endColorHex]="endColorHex">-->
+<!--    </lib-bar-visualizer>-->
+<!--</div>-->
+
+<div style=" background-color: #003049; display: flex; height: auto">
+    <div #visualizer style="flex: auto">
+        <ng-container *ngFor="let config of visualizerConfigs">
+            <ng-container [ngSwitch]="config.type">
+                <app-barcle-visualizer *ngSwitchCase="'Barcle'"
+                                       [config]="config"
+                                       (click)="onVisualizerClicked(config)">
+                </app-barcle-visualizer>
+                <app-circle-visualizer *ngSwitchCase="'Circle'"
+                                       [config]="config"
+                                       (click)="onVisualizerClicked(config)">
+                </app-circle-visualizer>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <div class="control-wrapper">
+                <span>Add Visualizer</span>
+                <span>
+                    <p-dropdown [options]="addOptions"
+                                [(ngModel)]="selectedAddOption"
+                                placeholder="Select an option">
+                    </p-dropdown>
+                    <p-button class="add-btn" label="Add" (onClick)="onAddClicked()"></p-button>
+                </span>
+            </div>
+
+            <div class="control-wrapper">
+                <span>Song</span>
+                <p-dropdown [options]="audioConfigs"
+                            [(ngModel)]="audioConfig"
+                            placeholder="Select a Song"
+                            optionLabel="src">
+                </p-dropdown>
+            </div>
+
+            <div class="control-wrapper">
+                <span>Mode</span>
+                <p-selectButton [options]="modeOptions"
+                                [(ngModel)]="mode"
+                                (onChange)="onModeChanged()"
+                                optionLabel="name"
+                                optionValue="value">
+                </p-selectButton>
+            </div>
+
+            <div class="control-wrapper">
+                <span>Decibel Range</span>
+                <div class="slider-wrapper">
+                    <span>{{decibelRange[0]}}</span>
+                    <p-slider [(ngModel)]="decibelRange"
+                              (onChange)="onDecibelChanged()"
+                              [min]="-100"
+                              [max]="0"
+                              [range]="true">
+                    </p-slider>
+                    <span>{{decibelRange[1]}}</span>
+                </div>
+            </div>
+
+            <div class="control-wrapper">
+                <span>Samples</span>
+                <p-dropdown [options]="sampleCountOptions"
+                            [(ngModel)]="sampleCount"
+                            (onChange)="onSampleCountChanged()"
+                            placeholder="Select an option">
+                </p-dropdown>
+            </div>
+        </div>
+        <ng-container [ngSwitch]="activeVisualizerConfig?.type">
+            <ng-container *ngSwitchCase="'Barcle'">
+                <app-barcle-controller class="control-group"
+                                       [(baseRadius)]="activeVisualizerConfig.baseRadius"
+                                       [(scale)]="activeVisualizerConfig.scale"
+                                       [(oomph)]="activeVisualizerConfig.oomph"
+                                       (remove)="onRemoveVisualizer()">
+                </app-barcle-controller>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Circle'">
+                <app-circle-controller class="control-group"
+                                       [(baseRadius)]="activeVisualizerConfig.baseRadius"
+                                       [(sampleRadius)]="activeVisualizerConfig.sampleRadius"
+                                       [(scale)]="activeVisualizerConfig.scale"
+                                       [(oomph)]="activeVisualizerConfig.oomph"
+                                       (remove)="onRemoveVisualizer()">
+                </app-circle-controller>
+            </ng-container>
+        </ng-container>
+    </div>
 </div>
 
 <button (click)="onPlay()" autofocus>Play</button>
 <button (click)="onPause()">Pause</button>
-<label for="songs">Songs</label>
-<select #songs name="songs" id="songs" (change)="onChange($event)">
-    <option *ngFor="let config of audioConfigs" [value]="config">{{config.src}}</option>
-</select>
 

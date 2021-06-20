@@ -31,7 +31,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.scale && !changes.scale.firstChange) {
+        if ((changes.scale && !changes.scale.firstChange) || (changes.oomph && !changes.oomph.firstChange)) {
             this._setCanvasDimensions();
             this._onScaleChanged();
             this._setUpCanvas();
@@ -46,7 +46,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         this._visualizerService.amplitudesChange.pipe(takeUntil(this._destroy$)).subscribe(amplitudes => {
             this._animate(amplitudes);
         });
-        this._visualizerService.sampleCountChange.pipe(takeUntil(this._destroy$)).subscribe(sampleCount => {
+        this._visualizerService.sampleCountChange.pipe(takeUntil(this._destroy$)).subscribe(() => {
             this._onSampleCountChanged();
             this._setUpCanvas();
         });

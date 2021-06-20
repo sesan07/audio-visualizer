@@ -14,7 +14,6 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
     @Input() barCapSize: number;
     @Input() barSpacing: number;
     @Input() barSize: number;
-    @Input() barColor: string;
     @Input() barCapColor: string;
     @Input() barOrientation: VisualizerBarOrientation;
     @Input() looseCaps: boolean;
