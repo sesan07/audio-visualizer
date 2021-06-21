@@ -1,18 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IBarcleVisualizerConfig } from './barcle-visualizer.types';
+import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 
 @Component({
   selector: 'app-barcle-visualizer',
   templateUrl: './barcle-visualizer.component.html',
-  styleUrls: ['./barcle-visualizer.component.css']
+  styleUrls: ['../base-visualizer/base-visualizer.component.css']
 })
-export class BarcleVisualizerComponent implements OnInit {
+export class BarcleVisualizerComponent extends BaseVisualizerComponent{
   @Input() config: IBarcleVisualizerConfig;
-
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
 }

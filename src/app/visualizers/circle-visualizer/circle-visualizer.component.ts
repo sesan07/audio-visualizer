@@ -1,17 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ICircleVisualizerConfig } from './circle-visualizer.types';
+import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 
 @Component({
   selector: 'app-circle-visualizer',
   templateUrl: './circle-visualizer.component.html',
-  styleUrls: ['./circle-visualizer.component.css']
+  styleUrls: ['../base-visualizer/base-visualizer.component.css']
 })
-export class CircleVisualizerComponent implements OnInit {
+export class CircleVisualizerComponent extends BaseVisualizerComponent{
   @Input() config: ICircleVisualizerConfig;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }
