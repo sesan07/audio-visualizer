@@ -1,11 +1,11 @@
-<audio #audioElement [src]="audioConfig.src" (ended)="onEnded()"></audio>
+<audio #audioElement [src]="selectedAudioConfig.src" (ended)="onEnded()"></audio>
 
 <div class="visualizer-view"
      (click)="onVisualizerChange($event, null)">
-    <ng-container *ngFor="let config of visualizerConfigs">
-        <app-visualizer [config]="config"
-                        [showOutline]="config === activeVisualizerConfig"
-                        (click)="onVisualizerChange($event, config)">
+    <ng-container *ngFor="let visualizer of visualizers">
+        <app-visualizer [config]="visualizer"
+                        [showOutline]="visualizer === activeVisualizer"
+                        (click)="onVisualizerChange($event, visualizer)">
         </app-visualizer>
     </ng-container>
 </div>
@@ -29,8 +29,8 @@
                     (click)="onNextSong()">
             </button>
         </div>
-        <p-dropdown class="song-select" [options]="audioConfigs"
-                    [(ngModel)]="audioConfig"
+        <p-dropdown class="song-select" [options]="audioConfigOptions"
+                    [(ngModel)]="selectedAudioConfig"
                     placeholder="Select a Song"
                     optionLabel="src">
         </p-dropdown>
@@ -39,8 +39,8 @@
         <div class="control-wrapper">
             <span>Add Visualizer</span>
             <span>
-                    <p-dropdown [options]="addOptions"
-                                [(ngModel)]="selectedAddOption"
+                    <p-dropdown [options]="addVisualizerOptions"
+                                [(ngModel)]="selectedAddVisualizer"
                                 placeholder="Select an option">
                     </p-dropdown>
                     <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
@@ -50,7 +50,7 @@
         <div class="control-wrapper">
             <span>Mode</span>
             <p-selectButton [options]="modeOptions"
-                            [(ngModel)]="mode"
+                            [(ngModel)]="selectedMode"
                             (onChange)="onModeChanged()"
                             optionLabel="name"
                             optionValue="value">
@@ -60,29 +60,29 @@
         <div class="control-wrapper">
             <span>Decibel Range</span>
             <div class="slider-wrapper">
-                <span>{{decibelRange[0]}}</span>
-                <p-slider [(ngModel)]="decibelRange"
+                <span>{{selectedDecibelRange[0]}}</span>
+                <p-slider [(ngModel)]="selectedDecibelRange"
                           (onChange)="onDecibelChanged()"
                           [min]="-100"
                           [max]="0"
                           [range]="true">
                 </p-slider>
-                <span>{{decibelRange[1]}}</span>
+                <span>{{selectedDecibelRange[1]}}</span>
             </div>
         </div>
 
         <div class="control-wrapper">
             <span>Samples</span>
             <p-dropdown [options]="sampleCountOptions"
-                        [(ngModel)]="sampleCount"
+                        [(ngModel)]="selectedSampleCount"
                         (onChange)="onSampleCountChanged()"
                         placeholder="Select an option">
             </p-dropdown>
         </div>
     </div>
     <app-visualizer-controller class="control-group"
-                               *ngIf="activeVisualizerConfig"
-                               [config]="activeVisualizerConfig"
+                               *ngIf="activeVisualizer"
+                               [config]="activeVisualizer"
                                (remove)="onRemoveVisualizer()">
     </app-visualizer-controller>
 </div>

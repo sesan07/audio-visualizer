@@ -8,7 +8,10 @@ import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
-    audioConfigs: IAudioConfig[] = [
+    @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
+
+    // UI Options
+    audioConfigOptions: IAudioConfig[] = [
         {
             src: 'assets/audio/dont_stop_me_now.mp3',
             bpm: 156
@@ -70,35 +73,8 @@ export class AppComponent implements AfterViewInit {
             bpm: 136
         }
     ];
-
-    audioConfig: IAudioConfig = this.audioConfigs[0];
-    mode: VisualizerMode = 'frequency';
-    scale: number = 0.1;
-    minDecibels: number = -100;
-    maxDecibels: number = -30;
-    looseCaps: boolean = false;
-    showLowerData: boolean = false;
-    oomph: number = 1.3;
-    barCapSize: number = 5;
-    sampleCount: number = 64;
-    sampleRadius: number = 25;
-    barSpacing: number = 2;
-    barSize: number = 20;
-    barColor: string = '#d62828';
-    barCapColor: string = '#ffb703';
-    barOrientation: VisualizerBarOrientation = 'horizontal';
-    startColorHex: string = '#00b4d8';
-    endColorHex: string = '#ffb703';
-    baseRadius: number = 80;
-    circleEffect: CircleEffect = CircleEffect.DEFAULT;
-
-    selectedAddOption: string = 'Barcle';
-
-    activeVisualizerConfig: IVisualizerConfig = null;
-
-    decibelRange: [number, number] = [-80, -20]
-    sampleCountOptions: number[] = [8, 16, 32, 64, 128, 256, 512]
-    modeOptions: object[] = [
+    addVisualizerOptions: string[] = Object.values(VisualizerType);
+    modeOptions: any[] = [
         {
             name: 'Frequency',
             value: 'frequency'
@@ -107,28 +83,47 @@ export class AppComponent implements AfterViewInit {
             name: 'Time Domain',
             value: 'timeDomain'
         },
-    ]
-    addOptions: string[] = ['Bar', 'Barcle', 'Circle']
+    ];
+    sampleCountOptions: number[] = [8, 16, 32, 64, 128, 256, 512];
 
-    visualizerConfigs: IVisualizerConfig[] = [];
+    // UI Selections
+    selectedAddVisualizer: string = this.addVisualizerOptions[0];
+    selectedAudioConfig: IAudioConfig = this.audioConfigOptions[0];
+    selectedDecibelRange: [number, number] = [-80, -20];
+    selectedMode: VisualizerMode = this.modeOptions[0].value;
+    selectedSampleCount: number = this.sampleCountOptions[2];
 
-    // This allows VisualizerType to be used in the HTML file
-    VisualizerType = VisualizerType;
+    // Visualizers
+    activeVisualizer: IVisualizerConfig;
+    visualizers: IVisualizerConfig[] = [];
+
+    // Add Visualizer Defaults
+    barCapColor: string = '#ffb703';
+    barCapSize: number = 5;
+    barSize: number = 20;
+    barSpacing: number = 2;
+    barOrientation: VisualizerBarOrientation = 'horizontal';
+    baseRadius: number = 80;
+    circleEffect: CircleEffect = CircleEffect.DEFAULT;
+    endColorHex: string = '#ffb703';
+    looseCaps: boolean = false;
+    oomph: number = 1.3;
+    sampleRadius: number = 25;
+    scale: number = 0.1;
+    startColorHex: string = '#00b4d8';
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
-
-    @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
 
     constructor(public visualizerService: VisualizerService) {
     }
 
     ngAfterViewInit(): void {
         this.visualizerService.audioElement = this.audioElement.nativeElement;
-        this.visualizerService.sampleCount = this.sampleCount;
-        this.visualizerService.setMinMax(this.decibelRange[0], this.decibelRange[1]);
-        this.visualizerService.mode = this.mode;
+        this.visualizerService.sampleCount = this.selectedSampleCount;
+        this.visualizerService.setMinMax(this.selectedDecibelRange[0], this.selectedDecibelRange[1]);
+        this.visualizerService.mode = this.selectedMode;
         this.visualizerService.start();
     }
 
@@ -141,18 +136,18 @@ export class AppComponent implements AfterViewInit {
     }
 
     onNextSong(): void {
-        const currIndex: number = this.audioConfigs.indexOf(this.audioConfig);
-        if (currIndex + 1 < this.audioConfigs.length) {
-            this.audioConfig = this.audioConfigs[currIndex + 1]
-            setTimeout(() => this.onPlayPause())
+        const currIndex: number = this.audioConfigOptions.indexOf(this.selectedAudioConfig);
+        if (currIndex + 1 < this.audioConfigOptions.length) {
+            this.selectedAudioConfig = this.audioConfigOptions[currIndex + 1];
+            setTimeout(() => this.onPlayPause());
         }
     }
 
     onPrevSong(): void {
-        const currIndex: number = this.audioConfigs.indexOf(this.audioConfig);
+        const currIndex: number = this.audioConfigOptions.indexOf(this.selectedAudioConfig);
         if (currIndex - 1 >= 0) {
-            this.audioConfig = this.audioConfigs[currIndex - 1]
-            setTimeout(() => this.onPlayPause())
+            this.selectedAudioConfig = this.audioConfigOptions[currIndex - 1];
+            setTimeout(() => this.onPlayPause());
         }
     }
 
@@ -160,28 +155,28 @@ export class AppComponent implements AfterViewInit {
         this.onNextSong();
     }
 
-    onDecibelChanged() {
-        this.visualizerService.setMinMax(this.decibelRange[0], this.decibelRange[1]);
+    onDecibelChanged(): void {
+        this.visualizerService.setMinMax(this.selectedDecibelRange[0], this.selectedDecibelRange[1]);
     }
 
-    onSampleCountChanged() {
-        this.visualizerService.sampleCount = this.sampleCount;
+    onSampleCountChanged(): void {
+        this.visualizerService.sampleCount = this.selectedSampleCount;
     }
 
-    onModeChanged() {
-        this.visualizerService.mode = this.mode;
+    onModeChanged(): void {
+        this.visualizerService.mode = this.selectedMode;
     }
 
-    onAddClicked() {
-        if (!this.selectedAddOption) {
+    onAddClicked(): void {
+        if (!this.selectedAddVisualizer) {
             return;
         }
 
-        switch (this.selectedAddOption) {
+        switch (this.selectedAddVisualizer) {
             case 'Bar':
-                this.visualizerConfigs.push({
+                this.visualizers.push({
                     type: VisualizerType.BAR,
-                    audioConfig: this.audioConfig,
+                    audioConfig: this.selectedAudioConfig,
                     startColorHex: this.startColorHex,
                     endColorHex: this.endColorHex,
                     oomph: this.oomph,
@@ -192,23 +187,23 @@ export class AppComponent implements AfterViewInit {
                     barSize: this.barSize,
                     barSpacing: this.barSpacing,
                     looseCaps: this.looseCaps
-                })
+                });
                 break;
             case 'Barcle':
-                this.visualizerConfigs.push({
+                this.visualizers.push({
                     type: VisualizerType.BARCLE,
-                    audioConfig: this.audioConfig,
+                    audioConfig: this.selectedAudioConfig,
                     baseRadius: this.baseRadius,
                     startColorHex: this.startColorHex,
                     endColorHex: this.endColorHex,
                     oomph: this.oomph,
                     scale: this.scale,
-                })
+                });
                 break;
             case 'Circle':
-                this.visualizerConfigs.push({
+                this.visualizers.push({
                     type: VisualizerType.CIRCLE,
-                    audioConfig: this.audioConfig,
+                    audioConfig: this.selectedAudioConfig,
                     startColorHex: this.startColorHex,
                     endColorHex: this.endColorHex,
                     oomph: this.oomph,
@@ -216,23 +211,23 @@ export class AppComponent implements AfterViewInit {
                     baseRadius: this.baseRadius,
                     sampleRadius: this.sampleRadius,
                     effect: this.circleEffect
-                })
+                });
                 break;
             default:
-                console.error('Unknown visualizer option selected')
+                console.error('Unknown visualizer option selected');
         }
     }
 
-    onVisualizerChange(event: MouseEvent, config: IVisualizerConfig | null) {
-        this.activeVisualizerConfig = config;
+    onVisualizerChange(event: MouseEvent, config: IVisualizerConfig | null): void {
+        this.activeVisualizer = config;
         event.stopPropagation();
     }
 
-    onRemoveVisualizer() {
-        const index: number = this.visualizerConfigs.indexOf(this.activeVisualizerConfig)
+    onRemoveVisualizer(): void {
+        const index: number = this.visualizers.indexOf(this.activeVisualizer);
         if (index !== -1) {
-            this.visualizerConfigs.splice(index, 1)
-            this.activeVisualizerConfig = null;
+            this.visualizers.splice(index, 1);
+            this.activeVisualizer = null;
         }
     }
 }

@@ -1,9 +1,9 @@
 import { CircleEffect, IAudioConfig, VisualizerBarOrientation } from 'visualizer';
 
 export enum VisualizerType {
-    BAR,
-    BARCLE,
-    CIRCLE
+    BAR = 'Bar',
+    BARCLE = 'Barcle',
+    CIRCLE = 'Circle'
 }
 
 export interface IBaseVisualizerConfig {
