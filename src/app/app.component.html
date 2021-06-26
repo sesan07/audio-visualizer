@@ -1,118 +1,89 @@
 <audio #audioElement [src]="audioConfig.src" (ended)="onEnded()"></audio>
 
-<div>Hello visualizer</div>
+<div class="visualizer-view"
+     (click)="onVisualizerChange($event, null)">
+    <ng-container *ngFor="let config of visualizerConfigs">
+        <app-visualizer [config]="config"
+                        [showOutline]="config === activeVisualizerConfig"
+                        (click)="onVisualizerChange($event, config)">
+        </app-visualizer>
+    </ng-container>
+</div>
 
-<div style=" background-color: black; display: flex; height: auto">
-    <div class="visualizers-view"
-         (click)="onVisualizerChange($event, null)">
-        <ng-container *ngFor="let config of visualizerConfigs">
-            <app-visualizer [config]="config"
-                            [showOutline]="config === activeVisualizerConfig"
-                            (click)="onVisualizerChange($event, config)">
-            </app-visualizer>
-        </ng-container>
-    </div>
-
-    <div class="controls-view">
-        <div class="control-group">
-            <div class="media-controls">
-                <button class="secondary-media-btn"
-                        pButton pRipple
-                        icon="pi pi-step-backward-alt"
-                        (click)="onPrevSong()">
-                </button>
-                <button class="primary-media-btn"
-                        pButton pRipple
-                        [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
-                        (click)="onPlayPause()">
-                </button>
-                <button class="secondary-media-btn"
-                        pButton pRipple
-                        icon="pi pi-step-forward-alt"
-                        (click)="onNextSong()">
-                </button>
-            </div>
-            <p-dropdown class="song-select" [options]="audioConfigs"
-                        [(ngModel)]="audioConfig"
-                        placeholder="Select a Song"
-                        optionLabel="src">
-            </p-dropdown>
+<div class="control-view">
+    <div class="control-group">
+        <div class="media-controls">
+            <button class="secondary-media-btn"
+                    pButton pRipple
+                    icon="pi pi-step-backward-alt"
+                    (click)="onPrevSong()">
+            </button>
+            <button class="primary-media-btn"
+                    pButton pRipple
+                    [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
+                    (click)="onPlayPause()">
+            </button>
+            <button class="secondary-media-btn"
+                    pButton pRipple
+                    icon="pi pi-step-forward-alt"
+                    (click)="onNextSong()">
+            </button>
         </div>
-        <div class="control-group">
-            <div class="control-wrapper">
-                <span>Add Visualizer</span>
-                <span>
+        <p-dropdown class="song-select" [options]="audioConfigs"
+                    [(ngModel)]="audioConfig"
+                    placeholder="Select a Song"
+                    optionLabel="src">
+        </p-dropdown>
+    </div>
+    <div class="control-group">
+        <div class="control-wrapper">
+            <span>Add Visualizer</span>
+            <span>
                     <p-dropdown [options]="addOptions"
                                 [(ngModel)]="selectedAddOption"
                                 placeholder="Select an option">
                     </p-dropdown>
                     <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
                 </span>
-            </div>
+        </div>
 
-            <div class="control-wrapper">
-                <span>Mode</span>
-                <p-selectButton [options]="modeOptions"
-                                [(ngModel)]="mode"
-                                (onChange)="onModeChanged()"
-                                optionLabel="name"
-                                optionValue="value">
-                </p-selectButton>
-            </div>
+        <div class="control-wrapper">
+            <span>Mode</span>
+            <p-selectButton [options]="modeOptions"
+                            [(ngModel)]="mode"
+                            (onChange)="onModeChanged()"
+                            optionLabel="name"
+                            optionValue="value">
+            </p-selectButton>
+        </div>
 
-            <div class="control-wrapper">
-                <span>Decibel Range</span>
-                <div class="slider-wrapper">
-                    <span>{{decibelRange[0]}}</span>
-                    <p-slider [(ngModel)]="decibelRange"
-                              (onChange)="onDecibelChanged()"
-                              [min]="-100"
-                              [max]="0"
-                              [range]="true">
-                    </p-slider>
-                    <span>{{decibelRange[1]}}</span>
-                </div>
-            </div>
-
-            <div class="control-wrapper">
-                <span>Samples</span>
-                <p-dropdown [options]="sampleCountOptions"
-                            [(ngModel)]="sampleCount"
-                            (onChange)="onSampleCountChanged()"
-                            placeholder="Select an option">
-                </p-dropdown>
+        <div class="control-wrapper">
+            <span>Decibel Range</span>
+            <div class="slider-wrapper">
+                <span>{{decibelRange[0]}}</span>
+                <p-slider [(ngModel)]="decibelRange"
+                          (onChange)="onDecibelChanged()"
+                          [min]="-100"
+                          [max]="0"
+                          [range]="true">
+                </p-slider>
+                <span>{{decibelRange[1]}}</span>
             </div>
         </div>
-        <ng-container [ngSwitch]="activeVisualizerConfig?.type">
-            <ng-container *ngSwitchCase="VisualizerType.BARCLE">
-                <app-barcle-controller class="control-group"
-                                       [(baseRadius)]="activeVisualizerConfig.baseRadius"
-                                       [(scale)]="activeVisualizerConfig.scale"
-                                       [(oomph)]="activeVisualizerConfig.oomph"
-                                       (remove)="onRemoveVisualizer()">
-                </app-barcle-controller>
-            </ng-container>
-            <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
-                <app-circle-controller class="control-group"
-                                       [(baseRadius)]="activeVisualizerConfig.baseRadius"
-                                       [(sampleRadius)]="activeVisualizerConfig.sampleRadius"
-                                       [(scale)]="activeVisualizerConfig.scale"
-                                       [(oomph)]="activeVisualizerConfig.oomph"
-                                       (remove)="onRemoveVisualizer()">
-                </app-circle-controller>
-            </ng-container>
-            <ng-container *ngSwitchCase="VisualizerType.BAR">
-                <app-bar-controller class="control-group"
-                                    [(barCapSize)]="activeVisualizerConfig.barCapSize"
-                                    [(barSize)]="activeVisualizerConfig.barSize"
-                                    [(barSpacing)]="activeVisualizerConfig.barSpacing"
-                                    [(scale)]="activeVisualizerConfig.scale"
-                                    [(oomph)]="activeVisualizerConfig.oomph"
-                                    (remove)="onRemoveVisualizer()">
 
-                </app-bar-controller>
-            </ng-container>
-        </ng-container>
+        <div class="control-wrapper">
+            <span>Samples</span>
+            <p-dropdown [options]="sampleCountOptions"
+                        [(ngModel)]="sampleCount"
+                        (onChange)="onSampleCountChanged()"
+                        placeholder="Select an option">
+            </p-dropdown>
+        </div>
     </div>
+    <app-visualizer-controller class="control-group"
+                               *ngIf="activeVisualizerConfig"
+                               [config]="activeVisualizerConfig"
+                               (remove)="onRemoveVisualizer()">
+    </app-visualizer-controller>
 </div>
 

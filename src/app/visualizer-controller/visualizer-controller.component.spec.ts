@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BaseControllerComponent } from './base-controller.component';
+import { VisualizerControllerComponent } from './visualizer-controller.component';
 
 describe('BaseControllerComponent', () => {
-  let component: BaseControllerComponent;
-  let fixture: ComponentFixture<BaseControllerComponent>;
+  let component: VisualizerControllerComponent;
+  let fixture: ComponentFixture<VisualizerControllerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BaseControllerComponent ]
+      declarations: [ VisualizerControllerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BaseControllerComponent);
+    fixture = TestBed.createComponent(VisualizerControllerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

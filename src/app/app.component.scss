@@ -1,8 +1,14 @@
-.visualizers-view {
+:host {
+  background-color: black;
+  display: flex;
+  height: auto
+}
+
+.visualizer-view {
   flex: auto;
 }
 
-.controls-view {
+.control-view {
   flex: none;
   display: flex;
   flex-direction: column;

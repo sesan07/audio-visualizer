@@ -1,0 +1,106 @@
+<!-- Shared Controls -->
+<div class="control-wrapper">
+    <span>Scale</span>
+    <div class="slider-wrapper">
+        <span>{{config.scale}}</span>
+        <p-slider [(ngModel)]="config.scale"
+                  [step]="0.1"
+                  [min]="0"
+                  [max]="3">
+        </p-slider>
+    </div>
+</div>
+<div class="control-wrapper">
+    <span>Oomph</span>
+    <div class="slider-wrapper">
+        <span>{{config.oomph}}</span>
+        <p-slider [(ngModel)]="config.oomph"
+                  [step]="0.1"
+                  [min]="0"
+                  [max]="3">
+        </p-slider>
+    </div>
+</div>
+
+<!-- Specific Controls -->
+<ng-container [ngSwitch]="config.type">
+    <!--  Bar Controls  -->
+    <ng-container *ngSwitchCase="VisualizerType.BAR">
+        <div class="control-wrapper">
+            <span>Bar Cap Size</span>
+            <div class="slider-wrapper">
+                <span>{{config.barCapSize}}</span>
+                <p-slider [(ngModel)]="config.barCapSize"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+        <div class="control-wrapper">
+            <span>Bar Size</span>
+            <div class="slider-wrapper">
+                <span>{{config.barSize}}</span>
+                <p-slider [(ngModel)]="config.barSize"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+        <div class="control-wrapper">
+            <span>Bar Spacing</span>
+            <div class="slider-wrapper">
+                <span>{{config.barSpacing}}</span>
+                <p-slider [(ngModel)]="config.barSpacing"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+    </ng-container>
+
+    <!--  Barcle Controls  -->
+    <ng-container *ngSwitchCase="VisualizerType.BARCLE">
+        <div class="control-wrapper">
+            <span>Base Radius</span>
+            <div class="slider-wrapper">
+                <span>{{config.baseRadius}}</span>
+                <p-slider [(ngModel)]="config.baseRadius"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+    </ng-container>
+
+    <!--  Circle Controls  -->
+    <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
+        <div class="control-wrapper">
+            <span>Base Radius</span>
+            <div class="slider-wrapper">
+                <span>{{config.baseRadius}}</span>
+                <p-slider [(ngModel)]="config.baseRadius"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+        <div class="control-wrapper">
+            <span>Sample Radius</span>
+            <div class="slider-wrapper">
+                <span>{{config.sampleRadius}}</span>
+                <p-slider [(ngModel)]="config.sampleRadius"
+                          [step]="5"
+                          [min]="0"
+                          [max]="100">
+                </p-slider>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<p-button pRipple class="control-remove-btn" label="Remove" (onClick)="onRemove()"></p-button>
