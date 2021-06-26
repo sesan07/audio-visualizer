@@ -7,7 +7,6 @@ import { BaseControllerComponent } from '../base-controller/base-controller.comp
     styleUrls: ['./circle-controller.component.css']
 })
 export class CircleControllerComponent extends BaseControllerComponent {
-
     @Input() baseRadius: number;
     @Input() sampleRadius: number;
     @Output() baseRadiusChange: EventEmitter<number> = new EventEmitter();

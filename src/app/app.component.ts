@@ -179,6 +179,20 @@ export class AppComponent implements AfterViewInit {
 
         switch (this.selectedAddOption) {
             case 'Bar':
+                this.visualizerConfigs.push({
+                    type: VisualizerType.BAR,
+                    audioConfig: this.audioConfig,
+                    startColorHex: this.startColorHex,
+                    endColorHex: this.endColorHex,
+                    oomph: this.oomph,
+                    scale: this.scale,
+                    barCapSize: this.barCapSize,
+                    barCapColor: this.barCapColor,
+                    barOrientation: this.barOrientation,
+                    barSize: this.barSize,
+                    barSpacing: this.barSpacing,
+                    looseCaps: this.looseCaps
+                })
                 break;
             case 'Barcle':
                 this.visualizerConfigs.push({

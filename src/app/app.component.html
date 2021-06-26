@@ -2,23 +2,6 @@
 
 <div>Hello visualizer</div>
 
-<!--<div style="background-color: #003049">-->
-<!--    <lib-bar-visualizer-->
-<!--            [audioConfig]="activeConfig"-->
-<!--            [looseCaps]="looseCaps"-->
-<!--            [barCapSize]="barCapSize"-->
-<!--            [scale]="scale"-->
-<!--            [oomph]="oomph"-->
-<!--            [barSize]="barSize"-->
-<!--            [barColor]="barColor"-->
-<!--            [barCapColor]="barCapColor"-->
-<!--            [barSpacing]="barSpacing"-->
-<!--            [barOrientation]="barOrientation"-->
-<!--            [startColorHex]="startColorHex"-->
-<!--            [endColorHex]="endColorHex">-->
-<!--    </lib-bar-visualizer>-->
-<!--</div>-->
-
 <div style=" background-color: black; display: flex; height: auto">
     <div class="visualizers-view"
          (click)="onVisualizerChange($event, null)">
@@ -117,6 +100,17 @@
                                        [(oomph)]="activeVisualizerConfig.oomph"
                                        (remove)="onRemoveVisualizer()">
                 </app-circle-controller>
+            </ng-container>
+            <ng-container *ngSwitchCase="VisualizerType.BAR">
+                <app-bar-controller class="control-group"
+                                    [(barCapSize)]="activeVisualizerConfig.barCapSize"
+                                    [(barSize)]="activeVisualizerConfig.barSize"
+                                    [(barSpacing)]="activeVisualizerConfig.barSpacing"
+                                    [(scale)]="activeVisualizerConfig.scale"
+                                    [(oomph)]="activeVisualizerConfig.oomph"
+                                    (remove)="onRemoveVisualizer()">
+
+                </app-bar-controller>
             </ng-container>
         </ng-container>
     </div>

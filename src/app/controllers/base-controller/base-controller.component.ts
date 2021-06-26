@@ -10,9 +10,6 @@ export abstract class BaseControllerComponent {
     @Output() oomphChange: EventEmitter<number> = new EventEmitter();
     @Output() remove: EventEmitter<void> = new EventEmitter();
 
-    protected constructor() {
-    }
-
     onScaleChanged() {
         this.scaleChange.emit(this.scale);
     }

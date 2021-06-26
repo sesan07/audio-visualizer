@@ -12,10 +12,10 @@ import { convertColorToHex, getGradientColor } from '../visualizer.utils';
 export class BarVisualizerComponent extends BaseVisualizerComponent {
 
     @Input() barCapSize: number;
-    @Input() barSpacing: number;
-    @Input() barSize: number;
     @Input() barCapColor: string;
     @Input() barOrientation: VisualizerBarOrientation;
+    @Input() barSize: number;
+    @Input() barSpacing: number;
     @Input() looseCaps: boolean;
 
     protected _canvasHeight: number;
