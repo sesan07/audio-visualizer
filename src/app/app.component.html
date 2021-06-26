@@ -3,24 +3,6 @@
 <div>Hello visualizer</div>
 
 <!--<div style="background-color: #003049">-->
-<!--    <lib-barcle-visualizer-->
-<!--            [audioConfig]="activeConfig"-->
-<!--            [scale]="scale"-->
-<!--            [startColorHex]="startColorHex"-->
-<!--            [endColorHex]="endColorHex"-->
-<!--            [oomph]="oomph"-->
-<!--            [baseRadius]="baseRadius">-->
-<!--    </lib-barcle-visualizer>-->
-<!--    <lib-circle-visualizer-->
-<!--                           [audioConfig]="activeConfig"-->
-<!--                           [scale]="scale"-->
-<!--                           [sampleRadius]="sampleRadius"-->
-<!--                           [startColorHex]="startColorHex"-->
-<!--                           [endColorHex]="endColorHex"-->
-<!--                           [oomph]="oomph"-->
-<!--                           [effect]="circleEffect"-->
-<!--                           [baseRadius]="baseRadius">-->
-<!--    </lib-circle-visualizer>-->
 <!--    <lib-bar-visualizer-->
 <!--            [audioConfig]="activeConfig"-->
 <!--            [looseCaps]="looseCaps"-->
@@ -37,23 +19,18 @@
 <!--    </lib-bar-visualizer>-->
 <!--</div>-->
 
-<div style=" background-color: #003049; display: flex; height: auto">
-    <div #visualizer style="flex: auto">
+<div style=" background-color: black; display: flex; height: auto">
+    <div class="visualizers-view"
+         (click)="onVisualizerChange($event, null)">
         <ng-container *ngFor="let config of visualizerConfigs">
-            <ng-container [ngSwitch]="config.type">
-                <app-barcle-visualizer *ngSwitchCase="'Barcle'"
-                                       [config]="config"
-                                       (click)="onVisualizerClicked(config)">
-                </app-barcle-visualizer>
-                <app-circle-visualizer *ngSwitchCase="'Circle'"
-                                       [config]="config"
-                                       (click)="onVisualizerClicked(config)">
-                </app-circle-visualizer>
-            </ng-container>
+            <app-visualizer [config]="config"
+                            [showOutline]="config === activeVisualizerConfig"
+                            (click)="onVisualizerChange($event, config)">
+            </app-visualizer>
         </ng-container>
     </div>
 
-    <div class="controls">
+    <div class="controls-view">
         <div class="control-group">
             <div class="media-controls">
                 <button class="secondary-media-btn"
@@ -124,7 +101,7 @@
             </div>
         </div>
         <ng-container [ngSwitch]="activeVisualizerConfig?.type">
-            <ng-container *ngSwitchCase="'Barcle'">
+            <ng-container *ngSwitchCase="VisualizerType.BARCLE">
                 <app-barcle-controller class="control-group"
                                        [(baseRadius)]="activeVisualizerConfig.baseRadius"
                                        [(scale)]="activeVisualizerConfig.scale"
@@ -132,7 +109,7 @@
                                        (remove)="onRemoveVisualizer()">
                 </app-barcle-controller>
             </ng-container>
-            <ng-container *ngSwitchCase="'Circle'">
+            <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
                 <app-circle-controller class="control-group"
                                        [(baseRadius)]="activeVisualizerConfig.baseRadius"
                                        [(sampleRadius)]="activeVisualizerConfig.sampleRadius"
@@ -144,7 +121,4 @@
         </ng-container>
     </div>
 </div>
-
-<!--<button (click)="onPlay()" autofocus>Play</button>-->
-<!--<button (click)="onPause()">Pause</button>-->
 

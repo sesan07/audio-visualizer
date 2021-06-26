@@ -1,0 +1,21 @@
+<div [ngSwitch]="config.type"
+     [class.outline]="showOutline">
+    <lib-barcle-visualizer *ngSwitchCase="VisualizerType.BARCLE"
+                           [audioConfig]="config.audioConfig"
+                           [scale]="config.scale"
+                           [startColorHex]="config.startColorHex"
+                           [endColorHex]="config.endColorHex"
+                           [oomph]="config.oomph"
+                           [baseRadius]="config.baseRadius">
+    </lib-barcle-visualizer>
+    <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
+                           [audioConfig]="config.audioConfig"
+                           [scale]="config.scale"
+                           [startColorHex]="config.startColorHex"
+                           [endColorHex]="config.endColorHex"
+                           [oomph]="config.oomph"
+                           [baseRadius]="config.baseRadius"
+                           [sampleRadius]="config.sampleRadius"
+                           [effect]="config.effect">
+    </lib-circle-visualizer>
+</div>

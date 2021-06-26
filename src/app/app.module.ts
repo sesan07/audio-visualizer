@@ -9,18 +9,16 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { RippleModule } from 'primeng/ripple';
-import { BarcleVisualizerComponent } from './visualizers/barcle-visualizer/barcle-visualizer.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { BarcleControllerComponent } from './controllers/barcle-controller/barcle-controller.component';
-import { CircleVisualizerComponent } from './visualizers/circle-visualizer/circle-visualizer.component';
 import { CircleControllerComponent } from './controllers/circle-controller/circle-controller.component';
+import { VisualizerComponent } from './visualizer/visualizer.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        BarcleVisualizerComponent,
+        VisualizerComponent,
         BarcleControllerComponent,
-        CircleVisualizerComponent,
         CircleControllerComponent,
     ],
     imports: [

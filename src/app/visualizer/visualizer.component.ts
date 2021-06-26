@@ -1,9 +1,18 @@
-import { Component, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { IVisualizerConfig, VisualizerType } from './visualizer.types';
 
 @Component({
-    template: '',
+    selector: 'app-visualizer',
+    templateUrl: './visualizer.component.html',
+    styleUrls: ['./visualizer.component.css']
 })
-export abstract class BaseVisualizerComponent {
+export class VisualizerComponent {
+    @Input() config: IVisualizerConfig;
+    @Input() showOutline: boolean;
+
+    // This allows VisualizerType to be used in the HTML file
+    VisualizerType = VisualizerType;
+
     private _isDragging: boolean;
     private _offsetLeft: number;
     private _offsetTop: number;
@@ -17,10 +26,9 @@ export abstract class BaseVisualizerComponent {
         this._offsetTop = rect.top - event.clientY
     }
 
-    @HostListener('mousemove', ['$event'])
+    @HostListener('window:mousemove', ['$event'])
     onMouseMove(event: MouseEvent) {
         if (this._isDragging) {
-            event.preventDefault();
             this._move(event)
         }
     }
@@ -40,10 +48,9 @@ export abstract class BaseVisualizerComponent {
         this._offsetTop = rect.top - firstTouch.clientY
     }
 
-    @HostListener('touchmove', ['$event'])
+    @HostListener('window:touchmove', ['$event'])
     onTouchMove(event: TouchEvent) {
         if (this._isDragging) {
-            event.preventDefault();
             this._move(event.touches.item(0))
         }
     }

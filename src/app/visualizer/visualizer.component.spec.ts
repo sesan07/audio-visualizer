@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BarcleVisualizerComponent } from './barcle-visualizer.component';
+import { VisualizerComponent } from './visualizer.component';
 
-describe('BarcleVisualizerComponent', () => {
-  let component: BarcleVisualizerComponent;
-  let fixture: ComponentFixture<BarcleVisualizerComponent>;
+describe('BaseVisualizerComponent', () => {
+  let component: VisualizerComponent;
+  let fixture: ComponentFixture<VisualizerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BarcleVisualizerComponent ]
+      declarations: [ VisualizerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BarcleVisualizerComponent);
+    fixture = TestBed.createComponent(VisualizerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

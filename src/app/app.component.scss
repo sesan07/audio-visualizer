@@ -1,3 +1,16 @@
+.visualizers-view {
+  flex: auto;
+}
+
+.controls-view {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  gap: 8px;
+  background-color: green;
+}
+
 .add-btn {
   margin-left: 8px;
 }

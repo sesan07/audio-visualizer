@@ -1,0 +1,10 @@
+:host {
+    position: absolute;
+    touch-action: none;
+}
+
+.outline {
+    border-width: 1px;
+    border-color: green;
+    border-style: solid;
+}

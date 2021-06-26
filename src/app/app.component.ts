@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleEffect, IAudioConfig, VisualizerBarOrientation, VisualizerMode, VisualizerService } from 'visualizer';
-import { IVisualizerConfig } from './app.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 
 @Component({
     selector: 'app-root',
@@ -73,7 +73,7 @@ export class AppComponent implements AfterViewInit {
 
     audioConfig: IAudioConfig = this.audioConfigs[0];
     mode: VisualizerMode = 'frequency';
-    scale: number = 0.2;
+    scale: number = 0.1;
     minDecibels: number = -100;
     maxDecibels: number = -30;
     looseCaps: boolean = false;
@@ -111,6 +111,9 @@ export class AppComponent implements AfterViewInit {
     addOptions: string[] = ['Bar', 'Barcle', 'Circle']
 
     visualizerConfigs: IVisualizerConfig[] = [];
+
+    // This allows VisualizerType to be used in the HTML file
+    VisualizerType = VisualizerType;
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
@@ -179,7 +182,7 @@ export class AppComponent implements AfterViewInit {
                 break;
             case 'Barcle':
                 this.visualizerConfigs.push({
-                    type: 'Barcle',
+                    type: VisualizerType.BARCLE,
                     audioConfig: this.audioConfig,
                     baseRadius: this.baseRadius,
                     startColorHex: this.startColorHex,
@@ -190,7 +193,7 @@ export class AppComponent implements AfterViewInit {
                 break;
             case 'Circle':
                 this.visualizerConfigs.push({
-                    type: 'Circle',
+                    type: VisualizerType.CIRCLE,
                     audioConfig: this.audioConfig,
                     startColorHex: this.startColorHex,
                     endColorHex: this.endColorHex,
@@ -206,8 +209,9 @@ export class AppComponent implements AfterViewInit {
         }
     }
 
-    onVisualizerClicked(config: IVisualizerConfig) {
+    onVisualizerChange(event: MouseEvent, config: IVisualizerConfig | null) {
         this.activeVisualizerConfig = config;
+        event.stopPropagation();
     }
 
     onRemoveVisualizer() {
