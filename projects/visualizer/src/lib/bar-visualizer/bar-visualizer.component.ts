@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, NgZone } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
-import { Color, IAudioConfig, VisualizerBarOrientation, VisualizerMode } from '../visualizer.types';
-import { VisualizerService } from '../visualizer.service';
+import { Color, VisualizerBarOrientation } from '../visualizer.types';
 import { convertColorToHex, getGradientColor } from '../visualizer.utils';
 
 @Component({
@@ -33,16 +32,16 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         return this.barSpacing * this.scale;
     }
 
-    constructor(protected ngZone: NgZone, protected _visualizerService: VisualizerService) {
+    constructor(protected ngZone: NgZone) {
         super();
     }
 
-    protected _animate(amplitudes: Uint8Array): void {
+    protected _animate(): void {
         this.ngZone.runOutsideAngular(() => {
             this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
             let currPos = 0;
-            amplitudes.forEach((amplitude, i) => {
+            this._amplitudes.forEach((amplitude, i) => {
                 // if (currPos > 150) return
                 amplitude *= this.oomph * this.scale;
                 let cap: number = this._amplitudeCaps[i];
@@ -96,7 +95,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
     }
 
     protected _getCanvasHeight(): number {
-        const sampleCount: number = this._visualizerService.sampleCount;
+        const sampleCount: number = this.sampleCount;
         const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
         if (this.barOrientation === 'vertical') {
             return this._scaledBarSize * sampleCount + totalBarSpacing;
@@ -106,7 +105,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
     }
 
     protected _getCanvasWidth(): number {
-        const sampleCount: number = this._visualizerService.sampleCount;
+        const sampleCount: number = this.sampleCount;
         const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
         if (this.barOrientation === 'vertical') {
             return 255 * this.oomph * this.scale + this._scaledBarCapSize;
@@ -116,7 +115,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
     }
 
     protected _onSampleCountChanged(): void {
-        this._amplitudeCaps = new Uint8Array(this._visualizerService.sampleCount);
+        this._amplitudeCaps = new Uint8Array(this.sampleCount);
         this._setCanvasDimensions();
     }
 

@@ -12,6 +12,28 @@ export class VisualizerControllerComponent {
 
     VisualizerType = VisualizerType;
 
+    modeOptions: any[] = [
+        {
+            name: 'Frequency',
+            value: 'frequency'
+        },
+        {
+            name: 'Time Domain',
+            value: 'timeDomain'
+        },
+    ];
+    sampleCountOptions: number[] = [8, 16, 32, 64, 128, 256, 512];
+    decibelRange: [number, number];
+
+    ngOnInit(): void {
+        this.decibelRange = [this.config.minDecibels, this.config.maxDecibels]
+    }
+
+    onDecibelChanged(): void {
+        this.config.minDecibels = this.decibelRange[0]
+        this.config.maxDecibels = this.decibelRange[1]
+    }
+
     onRemove(): void {
         this.remove.emit();
     }

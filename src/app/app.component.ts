@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { CircleEffect, IAudioConfig, VisualizerBarOrientation, VisualizerMode, VisualizerService } from 'visualizer';
-import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { CircleEffect, IAudioConfig, VisualizerBarOrientation } from 'visualizer';
+import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 
 @Component({
     selector: 'app-root',
@@ -74,24 +74,10 @@ export class AppComponent implements AfterViewInit {
         }
     ];
     addVisualizerOptions: string[] = Object.values(VisualizerType);
-    modeOptions: any[] = [
-        {
-            name: 'Frequency',
-            value: 'frequency'
-        },
-        {
-            name: 'Time Domain',
-            value: 'timeDomain'
-        },
-    ];
-    sampleCountOptions: number[] = [8, 16, 32, 64, 128, 256, 512];
 
     // UI Selections
     selectedAddVisualizer: string = this.addVisualizerOptions[0];
-    selectedAudioConfig: IAudioConfig = this.audioConfigOptions[0];
-    selectedDecibelRange: [number, number] = [-80, -20];
-    selectedMode: VisualizerMode = this.modeOptions[0].value;
-    selectedSampleCount: number = this.sampleCountOptions[2];
+    selectedAudioConfig: IAudioConfig = this.audioConfigOptions[5];
 
     // Visualizers
     activeVisualizer: IVisualizerConfig;
@@ -109,22 +95,19 @@ export class AppComponent implements AfterViewInit {
     looseCaps: boolean = false;
     oomph: number = 1.3;
     sampleRadius: number = 25;
-    scale: number = 0.1;
+    scale: number = 0.2;
     startColorHex: string = '#00b4d8';
+
+    private _audioContext: AudioContext = new AudioContext();
+    private _sourceNode: MediaElementAudioSourceNode;
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
-    constructor(public visualizerService: VisualizerService) {
-    }
-
     ngAfterViewInit(): void {
-        this.visualizerService.audioElement = this.audioElement.nativeElement;
-        this.visualizerService.sampleCount = this.selectedSampleCount;
-        this.visualizerService.setMinMax(this.selectedDecibelRange[0], this.selectedDecibelRange[1]);
-        this.visualizerService.mode = this.selectedMode;
-        this.visualizerService.start();
+        this._sourceNode = this._audioContext.createMediaElementSource(this.audioElement.nativeElement);
+        this._sourceNode.connect(this._audioContext.destination);
     }
 
     onPlayPause(): void {
@@ -155,32 +138,29 @@ export class AppComponent implements AfterViewInit {
         this.onNextSong();
     }
 
-    onDecibelChanged(): void {
-        this.visualizerService.setMinMax(this.selectedDecibelRange[0], this.selectedDecibelRange[1]);
-    }
-
-    onSampleCountChanged(): void {
-        this.visualizerService.sampleCount = this.selectedSampleCount;
-    }
-
-    onModeChanged(): void {
-        this.visualizerService.mode = this.selectedMode;
-    }
-
     onAddClicked(): void {
         if (!this.selectedAddVisualizer) {
             return;
         }
 
+        const analyserNode = this._audioContext.createAnalyser();
+        this._sourceNode.connect(analyserNode);
+
+        const baseConfig: IBaseVisualizerConfig = {
+            type: undefined,
+            analyserNode: analyserNode,
+            audioConfig: this.selectedAudioConfig,
+            startColorHex: this.startColorHex,
+            endColorHex: this.endColorHex,
+            oomph: this.oomph,
+            scale: this.scale,
+        };
+
         switch (this.selectedAddVisualizer) {
             case 'Bar':
                 this.visualizers.push({
+                    ...baseConfig,
                     type: VisualizerType.BAR,
-                    audioConfig: this.selectedAudioConfig,
-                    startColorHex: this.startColorHex,
-                    endColorHex: this.endColorHex,
-                    oomph: this.oomph,
-                    scale: this.scale,
                     barCapSize: this.barCapSize,
                     barCapColor: this.barCapColor,
                     barOrientation: this.barOrientation,
@@ -191,23 +171,15 @@ export class AppComponent implements AfterViewInit {
                 break;
             case 'Barcle':
                 this.visualizers.push({
+                    ...baseConfig,
                     type: VisualizerType.BARCLE,
-                    audioConfig: this.selectedAudioConfig,
                     baseRadius: this.baseRadius,
-                    startColorHex: this.startColorHex,
-                    endColorHex: this.endColorHex,
-                    oomph: this.oomph,
-                    scale: this.scale,
                 });
                 break;
             case 'Circle':
                 this.visualizers.push({
+                    ...baseConfig,
                     type: VisualizerType.CIRCLE,
-                    audioConfig: this.selectedAudioConfig,
-                    startColorHex: this.startColorHex,
-                    endColorHex: this.endColorHex,
-                    oomph: this.oomph,
-                    scale: this.scale,
                     baseRadius: this.baseRadius,
                     sampleRadius: this.sampleRadius,
                     effect: this.circleEffect

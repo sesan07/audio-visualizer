@@ -2,7 +2,6 @@ import { Component, Input, NgZone } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 import { Color } from '../visualizer.types';
 import { convertColorToHex, getGradientColor } from '../visualizer.utils';
-import { VisualizerService } from '../visualizer.service';
 
 @Component({
     selector: 'lib-barcle-visualizer',
@@ -25,18 +24,18 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
         return (this.baseRadius + 255) * this.oomph * this.scale;
     }
 
-    constructor(protected _ngZone: NgZone, protected _visualizerService: VisualizerService) {
+    constructor(protected _ngZone: NgZone) {
         super();
     }
 
-    protected _animate(amplitudes: Uint8Array) {
+    protected _animate() {
         this._ngZone.runOutsideAngular(() => {
             this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
             let currAngle: number = this._startAngle;
             // Reverse to turn visualization upside down
-            for (let i = 0; i < amplitudes.length; i++) {
-                const amplitude: number = amplitudes[i];
+            for (let i = 0; i < this._amplitudes.length; i++) {
+                const amplitude: number = this._amplitudes[i];
                 if (amplitude === 0) {
                     currAngle += this._sampleAngle;
                     continue;
@@ -69,7 +68,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
     }
 
     protected _onSampleCountChanged(): void {
-        this._sampleAngle = ((2 * Math.PI) / this._visualizerService.sampleCount) / 2;
+        this._sampleAngle = ((2 * Math.PI) / this.sampleCount) / 2;
         this._startAngle = (Math.PI / 2) + (this._sampleAngle / 2);
     }
 

@@ -2,7 +2,6 @@
  * Public API Surface of visualizer
  */
 
-export * from './lib/visualizer.service';
 export * from './lib/visualizer.types';
 export * from './lib/visualizer.module';
 

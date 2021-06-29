@@ -1,5 +1,33 @@
 <!-- Shared Controls -->
 <div class="control-wrapper">
+    <span>Mode</span>
+    <p-selectButton [options]="modeOptions"
+                    [(ngModel)]="config.mode"
+                    optionLabel="name"
+                    optionValue="value">
+    </p-selectButton>
+</div>
+<div class="control-wrapper">
+    <span>Decibel Range</span>
+    <div class="slider-wrapper">
+        <span>{{decibelRange[0]}}</span>
+        <p-slider [(ngModel)]="decibelRange"
+                  (onChange)="onDecibelChanged()"
+                  [min]="-100"
+                  [max]="0"
+                  [range]="true">
+        </p-slider>
+        <span>{{decibelRange[1]}}</span>
+    </div>
+</div>
+<div class="control-wrapper">
+    <span>Samples</span>
+    <p-dropdown [options]="sampleCountOptions"
+                [(ngModel)]="config.sampleCount"
+                placeholder="Select an option">
+    </p-dropdown>
+</div>
+<div class="control-wrapper">
     <span>Scale</span>
     <div class="slider-wrapper">
         <span>{{config.scale}}</span>

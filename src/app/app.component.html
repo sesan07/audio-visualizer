@@ -46,39 +46,6 @@
                     <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
                 </span>
         </div>
-
-        <div class="control-wrapper">
-            <span>Mode</span>
-            <p-selectButton [options]="modeOptions"
-                            [(ngModel)]="selectedMode"
-                            (onChange)="onModeChanged()"
-                            optionLabel="name"
-                            optionValue="value">
-            </p-selectButton>
-        </div>
-
-        <div class="control-wrapper">
-            <span>Decibel Range</span>
-            <div class="slider-wrapper">
-                <span>{{selectedDecibelRange[0]}}</span>
-                <p-slider [(ngModel)]="selectedDecibelRange"
-                          (onChange)="onDecibelChanged()"
-                          [min]="-100"
-                          [max]="0"
-                          [range]="true">
-                </p-slider>
-                <span>{{selectedDecibelRange[1]}}</span>
-            </div>
-        </div>
-
-        <div class="control-wrapper">
-            <span>Samples</span>
-            <p-dropdown [options]="sampleCountOptions"
-                        [(ngModel)]="selectedSampleCount"
-                        (onChange)="onSampleCountChanged()"
-                        placeholder="Select an option">
-            </p-dropdown>
-        </div>
     </div>
     <app-visualizer-controller class="control-group"
                                *ngIf="activeVisualizer"

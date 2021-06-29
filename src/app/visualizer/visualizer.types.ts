@@ -1,4 +1,4 @@
-import { CircleEffect, IAudioConfig, VisualizerBarOrientation } from 'visualizer';
+import { CircleEffect, IAudioConfig, VisualizerBarOrientation, VisualizerMode } from 'visualizer';
 
 export enum VisualizerType {
     BAR = 'Bar',
@@ -8,11 +8,17 @@ export enum VisualizerType {
 
 export interface IBaseVisualizerConfig {
     type: VisualizerType;
+    analyserNode: AnalyserNode;
     audioConfig: IAudioConfig;
     startColorHex: string;
     endColorHex: string;
     oomph: number;
     scale: number;
+    maxDecibels?: number;
+    minDecibels?: number;
+    mode?: VisualizerMode;
+    sampleCount?: number;
+    showLowerData?: boolean;
 }
 
 export interface IBarVisualizerConfig extends IBaseVisualizerConfig{
