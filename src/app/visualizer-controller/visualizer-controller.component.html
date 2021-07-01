@@ -1,47 +1,37 @@
 <!-- Shared Controls -->
 <app-control name="Mode">
-    <p-selectButton [options]="modeOptions"
-                    [(ngModel)]="config.mode"
-                    optionLabel="name"
-                    optionValue="value">
-    </p-selectButton>
+    <nz-radio-group [(ngModel)]="config.mode" nzButtonStyle="solid">
+        <label *ngFor="let option of modeOptions" nz-radio-button [nzValue]="option.value">{{option.name}}</label>
+    </nz-radio-group>
 </app-control>
 <app-control name="Decibel Range">
     <div class="slider-wrapper">
         <span>{{decibelRange[0]}}</span>
-        <p-slider [(ngModel)]="decibelRange"
-                  (onChange)="onDecibelChanged()"
-                  [min]="-100"
-                  [max]="0"
-                  [range]="true">
-        </p-slider>
+        <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0" (ngModelChange)="onDecibelChanged()"></nz-slider>
         <span>{{decibelRange[1]}}</span>
     </div>
 </app-control>
 <app-control name="Samples">
-    <p-dropdown [options]="sampleCountOptions"
-                [(ngModel)]="config.sampleCount"
-                placeholder="Select an option">
-    </p-dropdown>
+    <button nz-button nz-dropdown [nzDropdownMenu]="samplesMenu">
+        {{config.sampleCount}}
+        <i nz-icon nzType="down"></i>
+    </button>
+    <nz-dropdown-menu #samplesMenu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+            <li *ngFor="let option of sampleCountOptions" nz-menu-item (click)="config.sampleCount = option">{{option}}</li>
+        </ul>
+    </nz-dropdown-menu>
 </app-control>
 <app-control name="Scale">
     <div class="slider-wrapper">
         <span>{{config.scale}}</span>
-        <p-slider [(ngModel)]="config.scale"
-                  [step]="0.1"
-                  [min]="0"
-                  [max]="3">
-        </p-slider>
+        <nz-slider [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="1"></nz-slider>
     </div>
 </app-control>
 <app-control name="Oomph">
     <div class="slider-wrapper">
         <span>{{config.oomph}}</span>
-        <p-slider [(ngModel)]="config.oomph"
-                  [step]="0.1"
-                  [min]="0"
-                  [max]="3">
-        </p-slider>
+        <nz-slider [(ngModel)]="config.oomph" [nzStep]="0.05" [nzMin]="0" [nzMax]="3"></nz-slider>
     </div>
 </app-control>
 
@@ -52,31 +42,19 @@
         <app-control name="Bar Cap Size">
             <div class="slider-wrapper">
                 <span>{{config.barCapSize}}</span>
-                <p-slider [(ngModel)]="config.barCapSize"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Bar Size">
             <div class="slider-wrapper">
                 <span>{{config.barSize}}</span>
-                <p-slider [(ngModel)]="config.barSize"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Bar Spacing">
             <div class="slider-wrapper">
                 <span>{{config.barSpacing}}</span>
-                <p-slider [(ngModel)]="config.barSpacing"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
     </ng-container>
@@ -86,11 +64,7 @@
         <app-control name="Base Radius">
             <div class="slider-wrapper">
                 <span>{{config.baseRadius}}</span>
-                <p-slider [(ngModel)]="config.baseRadius"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
     </ng-container>
@@ -100,24 +74,16 @@
         <app-control name="Base Radius">
             <div class="slider-wrapper">
                 <span>{{config.baseRadius}}</span>
-                <p-slider [(ngModel)]="config.baseRadius"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Sample Radius">
             <div class="slider-wrapper">
                 <span>{{config.sampleRadius}}</span>
-                <p-slider [(ngModel)]="config.sampleRadius"
-                          [step]="5"
-                          [min]="0"
-                          [max]="100">
-                </p-slider>
+                <nz-slider [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
     </ng-container>
 </ng-container>
 
-<p-button pRipple class="control-remove-btn" label="Remove" (onClick)="onRemove()"></p-button>
+<button class="remove-btn" nz-button nzType="primary" (click)="onRemove()"><i nz-icon nzType="delete"></i>Remove</button>

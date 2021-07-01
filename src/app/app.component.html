@@ -11,40 +11,42 @@
 </div>
 
 <div class="control-view">
-    <div class="control-group card">
+    <div class="card control-group main-controls">
         <div class="media-controls">
-            <button class="secondary-media-btn"
-                    pButton pRipple
-                    icon="pi pi-step-backward-alt"
-                    (click)="onPrevSong()">
+            <button class="secondary-media-btn" nz-button nzShape="circle" (click)="onPrevSong()">
+                <i nz-icon nzType="step-backward"></i>
             </button>
-            <button class="primary-media-btn"
-                    pButton pRipple
-                    [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
-                    (click)="onPlayPause()">
+            <button class="primary-media-btn" nz-button nzType="primary" nzShape="circle" (click)="onPlayPause()">
+                <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
             </button>
-            <button class="secondary-media-btn"
-                    pButton pRipple
-                    icon="pi pi-step-forward-alt"
-                    (click)="onNextSong()">
+            <button class="secondary-media-btn" nz-button nzShape="circle" (click)="onNextSong()">
+                <i nz-icon nzType="step-forward"></i>
             </button>
         </div>
-        <p-dropdown class="song-select" [options]="audioConfigOptions"
-                    [(ngModel)]="selectedAudioConfig"
-                    placeholder="Select a Song"
-                    optionLabel="src">
-        </p-dropdown>
+
+        <button nz-button nz-dropdown [nzDropdownMenu]="audioMenu">
+            Current Song: {{getAudioName(selectedAudioConfig.src)}}
+            <i nz-icon nzType="down"></i>
+        </button>
+        <nz-dropdown-menu #audioMenu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+                <li *ngFor="let option of audioConfigOptions" nz-menu-item (click)="selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
+            </ul>
+        </nz-dropdown-menu>
+
+        <nz-button-group>
+            <button nz-button (click)="onAddClicked()">Add {{selectedAddVisualizer}} Visualizer</button>
+            <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu" nzPlacement="bottomRight" >
+                <i nz-icon nzType="ellipsis"></i>
+            </button>
+            <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                    <li *ngFor="let option of addVisualizerOptions" nz-menu-item (click)="selectedAddVisualizer = option">{{option}}</li>
+                </ul>
+            </nz-dropdown-menu>
+        </nz-button-group>
     </div>
-    <div class="control-group card">
-        <app-control name="Add Visualizer">
-            <p-dropdown [options]="addVisualizerOptions"
-                        [(ngModel)]="selectedAddVisualizer"
-                        placeholder="Select an option">
-            </p-dropdown>
-            <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
-        </app-control>
-    </div>
-    <app-visualizer-controller class="control-group card"
+    <app-visualizer-controller class="card control-group"
                                *ngIf="activeVisualizer"
                                [config]="activeVisualizer"
                                (remove)="onRemoveVisualizer()">
