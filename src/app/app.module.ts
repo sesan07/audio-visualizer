@@ -14,6 +14,14 @@ import { VisualizerComponent } from './visualizer/visualizer.component';
 import { VisualizerControllerComponent } from './visualizer-controller/visualizer-controller.component';
 import { ControlComponent } from './shared/control/control.component';
 import { CardModule } from 'primeng/card';
+// NG-Zorro
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { HttpClientModule } from '@angular/common/http';
+
+registerLocaleData(en);
 
 @NgModule({
     declarations: [
@@ -33,8 +41,9 @@ import { CardModule } from 'primeng/card';
         SelectButtonModule,
         SliderModule,
         RippleModule,
+        HttpClientModule,
     ],
-    providers: [],
+    providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent]
 })
 export class AppModule {
