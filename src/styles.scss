@@ -1,11 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: #121212;
+}
+
+.card {
+    color: #F2F2F2;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+}
+
 .control-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 12px;
-    border-radius: 8px;
-    border: 2px solid lightskyblue;
+    background: #333333;
 }
 .control-wrapper {
     display: flex;

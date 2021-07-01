@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { CircleEffect, IAudioConfig, VisualizerBarOrientation } from 'visualizer';
+import { CircleEffect, IAudioConfig } from 'visualizer';
 import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 
 @Component({
@@ -83,21 +83,6 @@ export class AppComponent implements AfterViewInit {
     activeVisualizer: IVisualizerConfig;
     visualizers: IVisualizerConfig[] = [];
 
-    // Add Visualizer Defaults
-    barCapColor: string = '#ffb703';
-    barCapSize: number = 5;
-    barSize: number = 20;
-    barSpacing: number = 2;
-    barOrientation: VisualizerBarOrientation = 'horizontal';
-    baseRadius: number = 80;
-    circleEffect: CircleEffect = CircleEffect.DEFAULT;
-    endColorHex: string = '#ffb703';
-    looseCaps: boolean = false;
-    oomph: number = 1.3;
-    sampleRadius: number = 25;
-    scale: number = 0.2;
-    startColorHex: string = '#00b4d8';
-
     private _audioContext: AudioContext = new AudioContext();
     private _sourceNode: MediaElementAudioSourceNode;
 
@@ -150,10 +135,15 @@ export class AppComponent implements AfterViewInit {
             type: undefined,
             analyserNode: analyserNode,
             audioConfig: this.selectedAudioConfig,
-            startColorHex: this.startColorHex,
-            endColorHex: this.endColorHex,
-            oomph: this.oomph,
-            scale: this.scale,
+            startColorHex: '#00b4d8',
+            endColorHex: '#ffb703',
+            oomph: 1.3,
+            scale: 0.2,
+            maxDecibels: -20,
+            minDecibels: -80,
+            mode: 'frequency',
+            sampleCount: 16,
+            showLowerData: false
         };
 
         switch (this.selectedAddVisualizer) {
@@ -161,28 +151,28 @@ export class AppComponent implements AfterViewInit {
                 this.visualizers.push({
                     ...baseConfig,
                     type: VisualizerType.BAR,
-                    barCapSize: this.barCapSize,
-                    barCapColor: this.barCapColor,
-                    barOrientation: this.barOrientation,
-                    barSize: this.barSize,
-                    barSpacing: this.barSpacing,
-                    looseCaps: this.looseCaps
+                    barCapSize: 5,
+                    barCapColor: '#ffb703',
+                    barOrientation: 'horizontal',
+                    barSize: 20,
+                    barSpacing: 2,
+                    looseCaps: false
                 });
                 break;
             case 'Barcle':
                 this.visualizers.push({
                     ...baseConfig,
                     type: VisualizerType.BARCLE,
-                    baseRadius: this.baseRadius,
+                    baseRadius: 80,
                 });
                 break;
             case 'Circle':
                 this.visualizers.push({
                     ...baseConfig,
                     type: VisualizerType.CIRCLE,
-                    baseRadius: this.baseRadius,
-                    sampleRadius: this.sampleRadius,
-                    effect: this.circleEffect
+                    baseRadius: 80,
+                    sampleRadius: 25,
+                    effect: CircleEffect.DEFAULT
                 });
                 break;
             default:

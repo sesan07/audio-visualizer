@@ -11,7 +11,7 @@
 </div>
 
 <div class="control-view">
-    <div class="control-group">
+    <div class="control-group card">
         <div class="media-controls">
             <button class="secondary-media-btn"
                     pButton pRipple
@@ -35,19 +35,16 @@
                     optionLabel="src">
         </p-dropdown>
     </div>
-    <div class="control-group">
-        <div class="control-wrapper">
-            <span>Add Visualizer</span>
-            <span>
-                    <p-dropdown [options]="addVisualizerOptions"
-                                [(ngModel)]="selectedAddVisualizer"
-                                placeholder="Select an option">
-                    </p-dropdown>
-                    <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
-                </span>
-        </div>
+    <div class="control-group card">
+        <app-control name="Add Visualizer">
+            <p-dropdown [options]="addVisualizerOptions"
+                        [(ngModel)]="selectedAddVisualizer"
+                        placeholder="Select an option">
+            </p-dropdown>
+            <button class="add-btn" pButton pRipple label="Add" (click)="onAddClicked()"></button>
+        </app-control>
     </div>
-    <app-visualizer-controller class="control-group"
+    <app-visualizer-controller class="control-group card"
                                *ngIf="activeVisualizer"
                                [config]="activeVisualizer"
                                (remove)="onRemoveVisualizer()">

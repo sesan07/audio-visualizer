@@ -1,14 +1,12 @@
 <!-- Shared Controls -->
-<div class="control-wrapper">
-    <span>Mode</span>
+<app-control name="Mode">
     <p-selectButton [options]="modeOptions"
                     [(ngModel)]="config.mode"
                     optionLabel="name"
                     optionValue="value">
     </p-selectButton>
-</div>
-<div class="control-wrapper">
-    <span>Decibel Range</span>
+</app-control>
+<app-control name="Decibel Range">
     <div class="slider-wrapper">
         <span>{{decibelRange[0]}}</span>
         <p-slider [(ngModel)]="decibelRange"
@@ -19,16 +17,14 @@
         </p-slider>
         <span>{{decibelRange[1]}}</span>
     </div>
-</div>
-<div class="control-wrapper">
-    <span>Samples</span>
+</app-control>
+<app-control name="Samples">
     <p-dropdown [options]="sampleCountOptions"
                 [(ngModel)]="config.sampleCount"
                 placeholder="Select an option">
     </p-dropdown>
-</div>
-<div class="control-wrapper">
-    <span>Scale</span>
+</app-control>
+<app-control name="Scale">
     <div class="slider-wrapper">
         <span>{{config.scale}}</span>
         <p-slider [(ngModel)]="config.scale"
@@ -37,9 +33,8 @@
                   [max]="3">
         </p-slider>
     </div>
-</div>
-<div class="control-wrapper">
-    <span>Oomph</span>
+</app-control>
+<app-control name="Oomph">
     <div class="slider-wrapper">
         <span>{{config.oomph}}</span>
         <p-slider [(ngModel)]="config.oomph"
@@ -48,14 +43,13 @@
                   [max]="3">
         </p-slider>
     </div>
-</div>
+</app-control>
 
 <!-- Specific Controls -->
 <ng-container [ngSwitch]="config.type">
     <!--  Bar Controls  -->
     <ng-container *ngSwitchCase="VisualizerType.BAR">
-        <div class="control-wrapper">
-            <span>Bar Cap Size</span>
+        <app-control name="Bar Cap Size">
             <div class="slider-wrapper">
                 <span>{{config.barCapSize}}</span>
                 <p-slider [(ngModel)]="config.barCapSize"
@@ -64,9 +58,8 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
-        <div class="control-wrapper">
-            <span>Bar Size</span>
+        </app-control>
+        <app-control name="Bar Size">
             <div class="slider-wrapper">
                 <span>{{config.barSize}}</span>
                 <p-slider [(ngModel)]="config.barSize"
@@ -75,9 +68,8 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
-        <div class="control-wrapper">
-            <span>Bar Spacing</span>
+        </app-control>
+        <app-control name="Bar Spacing">
             <div class="slider-wrapper">
                 <span>{{config.barSpacing}}</span>
                 <p-slider [(ngModel)]="config.barSpacing"
@@ -86,13 +78,12 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
+        </app-control>
     </ng-container>
 
     <!--  Barcle Controls  -->
     <ng-container *ngSwitchCase="VisualizerType.BARCLE">
-        <div class="control-wrapper">
-            <span>Base Radius</span>
+        <app-control name="Base Radius">
             <div class="slider-wrapper">
                 <span>{{config.baseRadius}}</span>
                 <p-slider [(ngModel)]="config.baseRadius"
@@ -101,13 +92,12 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
+        </app-control>
     </ng-container>
 
     <!--  Circle Controls  -->
     <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
-        <div class="control-wrapper">
-            <span>Base Radius</span>
+        <app-control name="Base Radius">
             <div class="slider-wrapper">
                 <span>{{config.baseRadius}}</span>
                 <p-slider [(ngModel)]="config.baseRadius"
@@ -116,9 +106,8 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
-        <div class="control-wrapper">
-            <span>Sample Radius</span>
+        </app-control>
+        <app-control name="Sample Radius">
             <div class="slider-wrapper">
                 <span>{{config.sampleRadius}}</span>
                 <p-slider [(ngModel)]="config.sampleRadius"
@@ -127,7 +116,7 @@
                           [max]="100">
                 </p-slider>
             </div>
-        </div>
+        </app-control>
     </ng-container>
 </ng-container>
 

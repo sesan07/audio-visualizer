@@ -1,0 +1,16 @@
+
+.control {
+    color: #EBEBEB;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.control-name {
+    /*font-size: 1rem;*/
+    width: 8rem;
+    font-weight: 700;
+    margin-right: 0.75rem;
+}
+
+

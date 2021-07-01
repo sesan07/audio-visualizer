@@ -12,12 +12,15 @@ import { RippleModule } from 'primeng/ripple';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { VisualizerComponent } from './visualizer/visualizer.component';
 import { VisualizerControllerComponent } from './visualizer-controller/visualizer-controller.component';
+import { ControlComponent } from './shared/control/control.component';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
     declarations: [
         AppComponent,
         VisualizerComponent,
         VisualizerControllerComponent,
+        ControlComponent,
     ],
     imports: [
         BrowserModule,
@@ -25,6 +28,7 @@ import { VisualizerControllerComponent } from './visualizer-controller/visualize
         VisualizerModule,
         FormsModule,
         ButtonModule,
+        CardModule,
         DropdownModule,
         SelectButtonModule,
         SliderModule,

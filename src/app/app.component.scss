@@ -1,7 +1,7 @@
 :host {
-  background-color: black;
   display: flex;
-  height: auto
+  height: 100%;
+  //overflow-y: hidden;
 }
 
 .visualizer-view {
@@ -12,9 +12,11 @@
   flex: none;
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 600px;
+  padding: 8px;
   gap: 8px;
-  background-color: green;
+  background-color: #1F1F1F;
+  overflow-y: auto;
 }
 
 .add-btn {
@@ -25,7 +27,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
   gap: 16px
 }
 
