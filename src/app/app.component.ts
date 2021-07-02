@@ -90,6 +90,10 @@ export class AppComponent implements AfterViewInit {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
+    getAudioName(src: string): string {
+        return src.split('/').pop();
+    }
+
     ngAfterViewInit(): void {
         this._sourceNode = this._audioContext.createMediaElementSource(this.audioElement.nativeElement);
         this._sourceNode.connect(this._audioContext.destination);
