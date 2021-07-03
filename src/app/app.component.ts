@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CircleEffect, IAudioConfig } from 'visualizer';
 import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { animations } from './shared/animations';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    animations: animations
 })
 export class AppComponent implements AfterViewInit {
     @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
@@ -76,7 +78,7 @@ export class AppComponent implements AfterViewInit {
     addVisualizerOptions: string[] = Object.values(VisualizerType);
 
     // UI Selections
-    selectedAddVisualizer: string = this.addVisualizerOptions[0];
+    selectedAddVisualizer: string = this.addVisualizerOptions[1];
     selectedAudioConfig: IAudioConfig = this.audioConfigOptions[5];
 
     // Visualizers
@@ -90,13 +92,13 @@ export class AppComponent implements AfterViewInit {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
-    getAudioName(src: string): string {
-        return src.split('/').pop();
-    }
-
     ngAfterViewInit(): void {
         this._sourceNode = this._audioContext.createMediaElementSource(this.audioElement.nativeElement);
         this._sourceNode.connect(this._audioContext.destination);
+    }
+
+    getAudioName(src: string): string {
+        return src.split('/').pop();
     }
 
     onPlayPause(): void {
@@ -145,7 +147,7 @@ export class AppComponent implements AfterViewInit {
             scale: 0.2,
             maxDecibels: -20,
             minDecibels: -80,
-            mode: 'frequency',
+            mode: 'timeDomain',
             sampleCount: 16,
             showLowerData: false
         };
@@ -160,7 +162,8 @@ export class AppComponent implements AfterViewInit {
                     barOrientation: 'horizontal',
                     barSize: 20,
                     barSpacing: 2,
-                    looseCaps: false
+                    looseCaps: false,
+                    scale: 0.5
                 });
                 break;
             case 'Barcle':

@@ -1,7 +1,5 @@
-
-.control {
-    color: #EBEBEB;
-    height: 3rem;
+:host {
+    height: 2.5rem;
     display: flex;
     align-items: center;
 }
