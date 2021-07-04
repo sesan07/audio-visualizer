@@ -6,6 +6,8 @@
 
 .visualizer-view {
   flex: auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .control-view {

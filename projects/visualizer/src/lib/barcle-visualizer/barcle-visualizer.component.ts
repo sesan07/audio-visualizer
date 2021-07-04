@@ -24,39 +24,37 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
         return (this.baseRadius + 255) * this.oomph * this.scale;
     }
 
-    constructor(protected _ngZone: NgZone) {
-        super();
+    constructor(ngZone: NgZone) {
+        super(ngZone);
     }
 
     protected _animate() {
-        this._ngZone.runOutsideAngular(() => {
-            this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+        this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
-            let currAngle: number = this._startAngle;
-            // Reverse to turn visualization upside down
-            for (let i = 0; i < this._amplitudes.length; i++) {
-                const amplitude: number = this._amplitudes[i];
-                if (amplitude === 0) {
-                    currAngle += this._sampleAngle;
-                    continue;
-                }
-
-                const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
-                const startAngle = currAngle - this._sampleAngle / 2;
-                const endAngle = currAngle + this._sampleAngle / 2;
-                const startAngle2 = Math.PI - currAngle - this._sampleAngle / 2;
-                const endAngle2 = Math.PI - currAngle + this._sampleAngle / 2;
+        let currAngle: number = this._startAngle;
+        // Reverse to turn visualization upside down
+        for (let i = 0; i < this._amplitudes.length; i++) {
+            const amplitude: number = this._amplitudes[i];
+            if (amplitude === 0) {
                 currAngle += this._sampleAngle;
-
-                // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-                const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
-                const color = convertColorToHex(gradientColor);
-
-                this._drawBar(startAngle, endAngle, radius, color);
-                this._drawBar(startAngle2, endAngle2, radius, color);
+                continue;
             }
-            this._drawCap();
-        });
+
+            const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
+            const startAngle = currAngle - this._sampleAngle / 2;
+            const endAngle = currAngle + this._sampleAngle / 2;
+            const startAngle2 = Math.PI - currAngle - this._sampleAngle / 2;
+            const endAngle2 = Math.PI - currAngle + this._sampleAngle / 2;
+            currAngle += this._sampleAngle;
+
+            // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
+            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
+            const color = convertColorToHex(gradientColor);
+
+            this._drawBar(startAngle, endAngle, radius, color);
+            this._drawBar(startAngle2, endAngle2, radius, color);
+        }
+        this._drawCap();
     }
 
     protected _getCanvasHeight(): number {

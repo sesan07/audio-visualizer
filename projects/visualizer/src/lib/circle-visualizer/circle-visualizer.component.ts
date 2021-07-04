@@ -27,35 +27,33 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
         return (this.baseRadius + this.sampleRadius + 255) * this.oomph * this.scale;
     }
 
-    constructor(protected ngZone: NgZone) {
-        super();
+    constructor(ngZone: NgZone) {
+        super(ngZone);
     }
 
     protected _animate(): void {
-        this.ngZone.runOutsideAngular(() => {
-            this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+        this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
-            let currAngle: number = this._startAngle;
-            // Reverse to turn visualization upside down
-            for (let i = 0; i < this._amplitudes.length; i++) {
-                const amplitude: number = this._amplitudes[i];
+        let currAngle: number = this._startAngle;
+        // Reverse to turn visualization upside down
+        for (let i = 0; i < this._amplitudes.length; i++) {
+            const amplitude: number = this._amplitudes[i];
 
-                const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
-                const xLeft = this._centerX + radius * Math.cos(currAngle);
-                const xRight = this._centerX - radius * Math.cos(currAngle);
-                const y = this._centerY + radius * Math.sin(currAngle);
-                currAngle += this._sampleAngle;
+            const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
+            const xLeft = this._centerX + radius * Math.cos(currAngle);
+            const xRight = this._centerX - radius * Math.cos(currAngle);
+            const y = this._centerY + radius * Math.sin(currAngle);
+            currAngle += this._sampleAngle;
 
-                // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-                const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
-                const color = convertColorToHex(gradientColor);
+            // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
+            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
+            const color = convertColorToHex(gradientColor);
 
-                this._drawPoint(xLeft, y, color);
-                if (this.effect === CircleEffect.DEFAULT) {
-                    this._drawPoint(xRight, y, color);
-                }
+            this._drawPoint(xLeft, y, color);
+            if (this.effect === CircleEffect.DEFAULT) {
+                this._drawPoint(xRight, y, color);
             }
-        });
+        }
     }
 
     protected _getCanvasHeight(): number {

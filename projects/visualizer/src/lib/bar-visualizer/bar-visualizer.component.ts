@@ -32,65 +32,63 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         return this.barSpacing * this.scale;
     }
 
-    constructor(protected ngZone: NgZone) {
-        super();
+    constructor(ngZone: NgZone) {
+        super(ngZone);
     }
 
     protected _animate(): void {
-        this.ngZone.runOutsideAngular(() => {
-            this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+        this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
-            let currPos = 0;
-            this._amplitudes.forEach((amplitude, i) => {
-                // if (currPos > 150) return
-                amplitude *= this.oomph * this.scale;
-                let cap: number = this._amplitudeCaps[i];
-                if (this.looseCaps) {
-                    cap = amplitude > cap ? amplitude : Math.max(amplitude, cap - this.audioConfig.bpm / 60);
-                    this._amplitudeCaps[i] = cap;
-                } else {
-                    cap = amplitude;
-                }
+        let currPos = 0;
+        this._amplitudes.forEach((amplitude, i) => {
+            // if (currPos > 150) return
+            amplitude *= this.oomph * this.scale;
+            let cap: number = this._amplitudeCaps[i];
+            if (this.looseCaps) {
+                cap = amplitude > cap ? amplitude : cap;
+                this._amplitudeCaps[i] = cap;
+            } else {
+                cap = amplitude;
+            }
 
-                // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-                const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
-                const color = convertColorToHex(gradientColor);
+            // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
+            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
+            const color = convertColorToHex(gradientColor);
 
-                if (this.barOrientation === 'vertical') {
-                    this._drawBar(
-                        0,
-                        currPos,
-                        amplitude,
-                        this._scaledBarSize,
-                        color
-                    );
+            if (this.barOrientation === 'vertical') {
+                this._drawBar(
+                    0,
+                    currPos,
+                    amplitude,
+                    this._scaledBarSize,
+                    color
+                );
 
-                    this._drawBar(
-                        cap,
-                        currPos,
-                        10,
-                        this._scaledBarSize,
-                        this.barCapColor
-                    );
-                } else {
-                    this._drawBar(
-                        currPos,
-                        this._canvasHeight - amplitude,
-                        Math.ceil(this._scaledBarSize),
-                        amplitude,
-                        color
-                    );
+                this._drawBar(
+                    cap,
+                    currPos,
+                    10,
+                    this._scaledBarSize,
+                    this.barCapColor
+                );
+            } else {
+                this._drawBar(
+                    currPos,
+                    this._canvasHeight - amplitude,
+                    Math.ceil(this._scaledBarSize),
+                    amplitude,
+                    color
+                );
 
-                    this._drawBar(
-                        currPos,
-                        this._canvasHeight - cap - this._scaledBarCapSize,
-                        Math.ceil(this._scaledBarSize),
-                        this._scaledBarCapSize,
-                        this.barCapColor
-                    );
-                }
-                currPos += this._scaledBarSize + this._scaledBarSpacing;
-            });
+                this._drawBar(
+                    currPos,
+                    this._canvasHeight - cap - this._scaledBarCapSize,
+                    Math.ceil(this._scaledBarSize),
+                    this._scaledBarCapSize,
+                    this.barCapColor
+                );
+            }
+            currPos += this._scaledBarSize + this._scaledBarSpacing;
         });
     }
 

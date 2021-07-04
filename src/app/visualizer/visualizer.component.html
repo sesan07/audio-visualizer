@@ -2,6 +2,7 @@
      [class.outline]="showOutline">
     <lib-bar-visualizer *ngSwitchCase="VisualizerType.BAR"
                         [analyserNode]="config.analyserNode"
+                        [animationStopTime]="config.animationStopTime"
                         [audioConfig]="config.audioConfig"
                         [scale]="config.scale"
                         [startColorHex]="config.startColorHex"
@@ -21,6 +22,7 @@
     </lib-bar-visualizer>
     <lib-barcle-visualizer *ngSwitchCase="VisualizerType.BARCLE"
                            [analyserNode]="config.analyserNode"
+                           [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
                            [startColorHex]="config.startColorHex"
@@ -35,6 +37,7 @@
     </lib-barcle-visualizer>
     <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
                            [analyserNode]="config.analyserNode"
+                           [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
                            [startColorHex]="config.startColorHex"

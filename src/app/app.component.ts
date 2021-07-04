@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { CircleEffect, IAudioConfig } from 'visualizer';
-import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 import { animations } from './shared/animations';
+import { AudioService } from './services/audio.service';
+import { VisualizerService } from './services/visualizer.service';
 
 @Component({
     selector: 'app-root',
@@ -12,191 +13,53 @@ import { animations } from './shared/animations';
 export class AppComponent implements AfterViewInit {
     @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
 
-    // UI Options
-    audioConfigOptions: IAudioConfig[] = [
-        {
-            src: 'assets/audio/dont_stop_me_now.mp3',
-            bpm: 156
-        },
-        {
-            src: 'assets/audio/dance_till_dead.mp3',
-            bpm: 155
-        },
-        {
-            src: 'assets/audio/takin_it_back.mp3',
-            bpm: 128,
-        },
-        {
-            src: 'assets/audio/happy_troll.mp3',
-            bpm: 150
-        },
-        {
-            src: 'assets/audio/epic_sax_guy.mp3',
-            bpm: 130
-        },
-        {
-            src: 'assets/audio/shooting_stars.mp3',
-            bpm: 123
-        },
-        {
-            src: 'assets/audio/what_is_love.mp3',
-            bpm: 123
-        },
-        {
-            src: 'assets/audio/bohemian_rhapsody.mp3',
-            bpm: 72
-        },
-        {
-            src: 'assets/audio/fireflies.mp3',
-            bpm: 90
-        },
-        {
-            src: 'assets/audio/never_gonna.mp3',
-            bpm: 113
-        },
-        {
-            src: 'assets/audio/astronomia.mp3',
-            bpm: 126
-        },
-        {
-            src: 'assets/audio/seventh_element.mp3',
-            bpm: 128
-        },
-        {
-            src: 'assets/audio/eye_of_the_tiger.mp3',
-            bpm: 108
-        },
-        {
-            src: 'assets/audio/mas_queso.mp3',
-            bpm: 105
-        },
-        {
-            src: 'assets/audio/darude_sandstorm.mp3',
-            bpm: 136
-        }
-    ];
-    addVisualizerOptions: string[] = Object.values(VisualizerType);
-
-    // UI Selections
-    selectedAddVisualizer: string = this.addVisualizerOptions[1];
-    selectedAudioConfig: IAudioConfig = this.audioConfigOptions[5];
-
-    // Visualizers
-    activeVisualizer: IVisualizerConfig;
-    visualizers: IVisualizerConfig[] = [];
-
-    private _audioContext: AudioContext = new AudioContext();
-    private _sourceNode: MediaElementAudioSourceNode;
+    addVisualizerOptions: VisualizerType[] = Object.values(VisualizerType);
+    selectedAddVisualizer: VisualizerType = this.addVisualizerOptions[1];
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
+    constructor(public audioService: AudioService, public visualizerService: VisualizerService) {
+    }
+
     ngAfterViewInit(): void {
-        this._sourceNode = this._audioContext.createMediaElementSource(this.audioElement.nativeElement);
-        this._sourceNode.connect(this._audioContext.destination);
+        this.audioService.setUp(this.audioElement.nativeElement)
     }
 
     getAudioName(src: string): string {
-        return src.split('/').pop();
+        return src.split('/').pop().split('.').shift();
     }
 
     onPlayPause(): void {
-        if (!this.isPlaying) {
-            this.audioElement.nativeElement.play().catch(error => console.error('Unable to play audio.', error));
-        } else {
-            this.audioElement.nativeElement.pause();
-        }
+        this.isPlaying ? this.audioService.pause() : this.audioService.play()
     }
 
     onNextSong(): void {
-        const currIndex: number = this.audioConfigOptions.indexOf(this.selectedAudioConfig);
-        if (currIndex + 1 < this.audioConfigOptions.length) {
-            this.selectedAudioConfig = this.audioConfigOptions[currIndex + 1];
-            setTimeout(() => this.onPlayPause());
-        }
+        this.audioService.playNextSong()
     }
 
     onPrevSong(): void {
-        const currIndex: number = this.audioConfigOptions.indexOf(this.selectedAudioConfig);
-        if (currIndex - 1 >= 0) {
-            this.selectedAudioConfig = this.audioConfigOptions[currIndex - 1];
-            setTimeout(() => this.onPlayPause());
-        }
+        this.audioService.playPreviousSong()
     }
 
     onEnded(): void {
-        this.onNextSong();
+        this.audioService.playNextSong();
     }
 
     onAddClicked(): void {
-        if (!this.selectedAddVisualizer) {
-            return;
-        }
-
-        const analyserNode = this._audioContext.createAnalyser();
-        this._sourceNode.connect(analyserNode);
-
-        const baseConfig: IBaseVisualizerConfig = {
-            type: undefined,
-            analyserNode: analyserNode,
-            audioConfig: this.selectedAudioConfig,
-            startColorHex: '#00b4d8',
-            endColorHex: '#ffb703',
-            oomph: 1.3,
-            scale: 0.2,
-            maxDecibels: -20,
-            minDecibels: -80,
-            mode: 'timeDomain',
-            sampleCount: 16,
-            showLowerData: false
-        };
-
-        switch (this.selectedAddVisualizer) {
-            case 'Bar':
-                this.visualizers.push({
-                    ...baseConfig,
-                    type: VisualizerType.BAR,
-                    barCapSize: 5,
-                    barCapColor: '#ffb703',
-                    barOrientation: 'horizontal',
-                    barSize: 20,
-                    barSpacing: 2,
-                    looseCaps: false,
-                    scale: 0.5
-                });
-                break;
-            case 'Barcle':
-                this.visualizers.push({
-                    ...baseConfig,
-                    type: VisualizerType.BARCLE,
-                    baseRadius: 80,
-                });
-                break;
-            case 'Circle':
-                this.visualizers.push({
-                    ...baseConfig,
-                    type: VisualizerType.CIRCLE,
-                    baseRadius: 80,
-                    sampleRadius: 25,
-                    effect: CircleEffect.DEFAULT
-                });
-                break;
-            default:
-                console.error('Unknown visualizer option selected');
+        if (this.selectedAddVisualizer) {
+            this.visualizerService.addVisualizer(this.selectedAddVisualizer)
         }
     }
 
     onVisualizerChange(event: MouseEvent, config: IVisualizerConfig | null): void {
-        this.activeVisualizer = config;
+        this.visualizerService.activeVisualizer = config;
         event.stopPropagation();
     }
 
     onRemoveVisualizer(): void {
-        const index: number = this.visualizers.indexOf(this.activeVisualizer);
-        if (index !== -1) {
-            this.visualizers.splice(index, 1);
-            this.activeVisualizer = null;
-        }
+        this.visualizerService.removeVisualizer()
+        // this.visualizerService.activeVisualizer = null;
     }
 }

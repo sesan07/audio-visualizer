@@ -9,6 +9,7 @@ export enum VisualizerType {
 export interface IBaseVisualizerConfig {
     type: VisualizerType;
     analyserNode: AnalyserNode;
+    animationStopTime?: number;
     audioConfig: IAudioConfig;
     startColorHex: string;
     endColorHex: string;

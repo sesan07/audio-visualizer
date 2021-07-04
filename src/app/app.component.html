@@ -1,10 +1,12 @@
-<audio #audioElement [src]="selectedAudioConfig.src" (ended)="onEnded()"></audio>
+<audio #audioElement [src]="audioService.selectedAudioConfig.src" (ended)="onEnded()"></audio>
 
-<div class="visualizer-view"
+<div #visualizerView class="visualizer-view"
      (click)="onVisualizerChange($event, null)">
-    <ng-container *ngFor="let visualizer of visualizers">
-        <app-visualizer [config]="visualizer"
-                        [showOutline]="visualizer === activeVisualizer"
+    <ng-container *ngFor="let visualizer of visualizerService.visualizers">
+        <app-visualizer @visualizerEnterLeaveTrigger
+                        [boundaryElement]="visualizerView"
+                        [config]="visualizer"
+                        [showOutline]="visualizer === visualizerService.activeVisualizer"
                         (click)="onVisualizerChange($event, visualizer)">
         </app-visualizer>
     </ng-container>
@@ -24,19 +26,19 @@
             </button>
         </div>
 
-        <button nz-button nz-dropdown [nzDropdownMenu]="audioMenu">
-            Current Song: {{getAudioName(selectedAudioConfig.src)}}
+        <button nz-button nz-dropdown [nzDropdownMenu]="audioMenu" nzTrigger="click" nzPlacement="bottomRight">
+            Current Song: {{getAudioName(audioService.selectedAudioConfig.src)}}
             <i nz-icon nzType="down"></i>
         </button>
         <nz-dropdown-menu #audioMenu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
-                <li *ngFor="let option of audioConfigOptions" nz-menu-item (click)="selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
+                <li *ngFor="let option of audioService.audioConfigs" nz-menu-item (click)="audioService.selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
             </ul>
         </nz-dropdown-menu>
 
         <nz-button-group>
             <button nz-button (click)="onAddClicked()">Add {{selectedAddVisualizer}} Visualizer</button>
-            <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu" nzPlacement="bottomRight" title="Select Visualizer">
+            <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu"  nzTrigger="click" nzPlacement="bottomRight" title="Select Visualizer">
                 <i nz-icon nzType="ellipsis"></i>
             </button>
             <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
@@ -48,8 +50,8 @@
     </div>
     <app-visualizer-controller class="card control-group"
                                @controllerEnterLeaveTrigger
-                               *ngIf="activeVisualizer"
-                               [config]="activeVisualizer"
+                               *ngIf="visualizerService.activeVisualizer"
+                               [config]="visualizerService.activeVisualizer"
                                (remove)="onRemoveVisualizer()">
     </app-visualizer-controller>
 </div>

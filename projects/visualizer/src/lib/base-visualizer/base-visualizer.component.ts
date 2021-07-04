@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Color, IAudioConfig, VisualizerMode } from '../visualizer.types';
 import { _convertHexToColor } from '../visualizer.utils';
-import { Subject } from 'rxjs';
 
 @Component({
     template: ''
@@ -9,6 +8,7 @@ import { Subject } from 'rxjs';
 export abstract class BaseVisualizerComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
     @Input() analyserNode: AnalyserNode;
+    @Input() animationStopTime: number = 0;
     @Input() audioConfig: IAudioConfig;
     @Input() endColorHex: string;
     @Input() oomph: number;
@@ -64,7 +64,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     private _mode: VisualizerMode;
     private _sampleCount: number;
     private _showLowerData: boolean;
-    private _destroy$: Subject<void> = new Subject();
+
+    private _animationFrameId: number;
+
+    protected constructor(private _ngZone: NgZone) {
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if ((changes.scale && !changes.scale?.firstChange) || (changes.oomph && !changes.oomph.firstChange)) {
@@ -96,8 +100,21 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     ngOnDestroy(): void {
-        this._destroy$.next();
-        this._destroy$.complete();
+        // Stop animation
+        if (this._animationFrameId) {
+            if (this.animationStopTime > 0) {
+                // Stop after some time
+                // Useful if the component is still visible for some time after destruction
+                setTimeout(() => {
+                    cancelAnimationFrame(this._animationFrameId)
+                }, this.animationStopTime)
+            } else {
+                // Stop immediately
+                cancelAnimationFrame(this._animationFrameId)
+            }
+        }
+
+        // Disconnect node (Probably not needed, but doesn't hurt)
         this.analyserNode.disconnect();
     }
 
@@ -121,13 +138,15 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     private _baseAnimate(): void {
-        if (this.mode === 'frequency') {
-            this.analyserNode.getByteFrequencyData(this._amplitudes);
-        } else {
-            this.analyserNode.getByteTimeDomainData(this._amplitudes);
-        }
-        this._animate()
-        requestAnimationFrame(() => this._baseAnimate());
+        this._ngZone.runOutsideAngular(() => {
+            if (this.mode === 'frequency') {
+                this.analyserNode.getByteFrequencyData(this._amplitudes);
+            } else {
+                this.analyserNode.getByteTimeDomainData(this._amplitudes);
+            }
+            this._animate()
+            this._animationFrameId = requestAnimationFrame(() => this._baseAnimate());
+        });
     }
 
     protected abstract _animate(): void;
