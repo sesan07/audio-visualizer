@@ -18,7 +18,7 @@
     </button>
     <nz-dropdown-menu #samplesMenu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-            <li *ngFor="let option of sampleCountOptions" nz-menu-item (click)="config.sampleCount = option">{{option}}</li>
+            <li *ngFor="let option of sampleCountOptions" nz-menu-item (click)="onSampleCountChanged(option)">{{option}}</li>
         </ul>
     </nz-dropdown-menu>
 </app-control>
@@ -86,4 +86,4 @@
     </ng-container>
 </ng-container>
 
-<button class="remove-btn" nz-button nzType="primary" (click)="onRemove()"><i nz-icon nzType="delete"></i>Remove</button>
+<button class="remove-btn" nz-button nzType="primary" (click)="this.remove.emit()"><i nz-icon nzType="delete"></i>Remove</button>

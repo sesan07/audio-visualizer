@@ -34,3 +34,16 @@ export function convertColorToHex(color: Color) {
         return hex.length === 1 ? '0' + hex : hex
     }).join('')
 }
+
+export function getRandomColor(): Color {
+    return {
+        red: Math.round(getRandomNumber(0, 255)),
+        green: Math.round(getRandomNumber(0, 255)),
+        blue: Math.round(getRandomNumber(0, 255))
+    };
+}
+
+export function getRandomNumber(min: number, max: number) : number {
+    const diff: number = max - min;
+    return Math.random() * diff + min;
+}

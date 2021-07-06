@@ -1,19 +1,19 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Color, IAudioConfig, VisualizerMode } from '../visualizer.types';
-import { _convertHexToColor } from '../visualizer.utils';
+import { _convertHexToColor, getRandomColor } from '../visualizer.utils';
 
 @Component({
     template: ''
 })
 export abstract class BaseVisualizerComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-    @Input() analyserNode: AnalyserNode;
+    @Input() amplitudes: Uint8Array;
     @Input() animationStopTime: number = 0;
     @Input() audioConfig: IAudioConfig;
-    @Input() endColorHex: string;
+    @Input() endColorHex?: string;
     @Input() oomph: number;
     @Input() scale: number;
-    @Input() startColorHex: string;
+    @Input() startColorHex?: string;
 
     @Input() set maxDecibels(v: number) {
         this._maxDecibels = v;
@@ -57,7 +57,6 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     protected _canvasWidth: number;
     protected _startColor: Color;
     protected _endColor: Color;
-    protected _amplitudes: Uint8Array;
 
     private _maxDecibels: number;
     private _minDecibels: number;
@@ -78,17 +77,15 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         }
         if (changes.sampleCount && !changes.sampleCount.firstChange) {
             this._setCanvasDimensions();
-            this._setUpAnalyser();
             this._onSampleCountChanged()
             this._setUpCanvas();
         }
     }
 
     ngOnInit(): void {
-        this._startColor = _convertHexToColor(this.startColorHex);
-        this._endColor = _convertHexToColor(this.endColorHex);
+        this._startColor = this.startColorHex ? _convertHexToColor(this.startColorHex) : getRandomColor();
+        this._endColor = this.endColorHex ? _convertHexToColor(this.endColorHex) : getRandomColor();
 
-        this._setUpAnalyser();
         this._setCanvasDimensions();
         this._onScaleChanged();
         this._onSampleCountChanged();
@@ -113,22 +110,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
                 cancelAnimationFrame(this._animationFrameId)
             }
         }
-
-        // Disconnect node (Probably not needed, but doesn't hurt)
-        this.analyserNode.disconnect();
     }
 
     protected _setCanvasDimensions(): void {
         this._canvasHeight = this._getCanvasHeight();
         this._canvasWidth = this._getCanvasWidth();
-    }
-
-    protected _setUpAnalyser(): void {
-        this.analyserNode.fftSize = this.sampleCount * (this.showLowerData ? 2 : 4);
-        this.analyserNode.smoothingTimeConstant = 0.7;
-        this.analyserNode.maxDecibels = this.maxDecibels;
-        this.analyserNode.minDecibels = this.minDecibels;
-        this._amplitudes = new Uint8Array(this.sampleCount);
     }
 
     private _setUpCanvas(): void {
@@ -139,11 +125,6 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
 
     private _baseAnimate(): void {
         this._ngZone.runOutsideAngular(() => {
-            if (this.mode === 'frequency') {
-                this.analyserNode.getByteFrequencyData(this._amplitudes);
-            } else {
-                this.analyserNode.getByteTimeDomainData(this._amplitudes);
-            }
             this._animate()
             this._animationFrameId = requestAnimationFrame(() => this._baseAnimate());
         });

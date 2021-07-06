@@ -10,6 +10,12 @@
                         (click)="onVisualizerChange($event, visualizer)">
         </app-visualizer>
     </ng-container>
+    <ng-container *ngFor="let emitter of visualizerService.emitters">
+        <app-visualizer-emitter @visualizerEnterLeaveTrigger
+                        [config]="emitter"
+                        (click)="onEmitterChange($event, emitter)">
+        </app-visualizer-emitter>
+    </ng-container>
 </div>
 
 <div class="control-view">
@@ -35,9 +41,10 @@
                 <li *ngFor="let option of audioService.audioConfigs" nz-menu-item (click)="audioService.selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
             </ul>
         </nz-dropdown-menu>
-
+    </div>
+    <div class="card control-group">
         <nz-button-group>
-            <button nz-button (click)="onAddClicked()">Add {{selectedAddVisualizer}} Visualizer</button>
+            <button nz-button (click)="onAddVisualizerClicked()">Add {{selectedAddVisualizer}} Visualizer</button>
             <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu"  nzTrigger="click" nzPlacement="bottomRight" title="Select Visualizer">
                 <i nz-icon nzType="ellipsis"></i>
             </button>
@@ -47,7 +54,41 @@
                 </ul>
             </nz-dropdown-menu>
         </nz-button-group>
+
+        <nz-button-group>
+            <button nz-button (click)="onAddEmitterClicked()">Add {{selectedAddEmitter}} Emitter</button>
+            <button nz-button nz-dropdown [nzDropdownMenu]="emitterMenu"  nzTrigger="click" nzPlacement="bottomRight" title="Select Emitter">
+                <i nz-icon nzType="ellipsis"></i>
+            </button>
+            <nz-dropdown-menu #emitterMenu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                    <li *ngFor="let option of addEmitterOptions" nz-menu-item (click)="selectedAddEmitter = option">{{option}}</li>
+                </ul>
+            </nz-dropdown-menu>
+        </nz-button-group>
+
+        <ng-container *ngIf="visualizerService.emitters.length > 0">
+            <!-- Divider doesn't look right without span -->
+            <span>
+                <nz-divider nzText="Active Emitters"></nz-divider>
+            </span>
+            <div class="list">
+                <button class="list-item"
+                        *ngFor="let emitter of visualizerService.emitters"
+                        nz-button
+                        [nzType]="visualizerService.activeEmitter === emitter ? 'primary' : 'default'"
+                        (click)="onEmitterChange($event, emitter)">
+                    {{emitter.name}}
+                </button>
+            </div>
+        </ng-container>
     </div>
+    <app-emitter-controller class="card control-group"
+                               @controllerEnterLeaveTrigger
+                               *ngIf="visualizerService.activeEmitter"
+                               [config]="visualizerService.activeEmitter"
+                               (remove)="onRemoveEmitter()">
+    </app-emitter-controller>
     <app-visualizer-controller class="card control-group"
                                @controllerEnterLeaveTrigger
                                *ngIf="visualizerService.activeVisualizer"

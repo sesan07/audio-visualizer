@@ -33,8 +33,8 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
 
         let currAngle: number = this._startAngle;
         // Reverse to turn visualization upside down
-        for (let i = 0; i < this._amplitudes.length; i++) {
-            const amplitude: number = this._amplitudes[i];
+        for (let i = 0; i < this.amplitudes.length; i++) {
+            const amplitude: number = this.amplitudes[i];
             if (amplitude === 0) {
                 currAngle += this._sampleAngle;
                 continue;

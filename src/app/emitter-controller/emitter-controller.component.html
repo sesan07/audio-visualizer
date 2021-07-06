@@ -1,0 +1,21 @@
+<app-control name="Emitter Type">
+    <nz-radio-group [(ngModel)]="config.emitterType" nzButtonStyle="solid">
+        <label *ngFor="let option of emitterTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
+    </nz-radio-group>
+</app-control>
+
+<app-control name="Visualizer Type">
+    <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu">
+        {{config.visualizerType}}
+        <i nz-icon nzType="down"></i>
+    </button>
+    <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="config.visualizerType = option">{{option}}</li>
+        </ul>
+    </nz-dropdown-menu>
+</app-control>
+
+<!--todo add visualizer controller-->
+
+<button class="remove-btn" nz-button nzType="primary" (click)="this.remove.emit()"><i nz-icon nzType="delete"></i>Remove</button>

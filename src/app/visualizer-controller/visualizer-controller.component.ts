@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
+import { AudioService } from '../services/audio.service';
 
 @Component({
     selector: 'app-visualizer-controller',
@@ -22,8 +23,12 @@ export class VisualizerControllerComponent {
             value: 'timeDomain'
         },
     ];
-    sampleCountOptions: number[] = [8, 16, 32, 64, 128, 256, 512];
+    sampleCountOptions: number[];
     decibelRange: [number, number];
+
+    constructor(private _audioService: AudioService) {
+        this.sampleCountOptions = this._audioService.sampleCounts;
+    }
 
     ngOnInit(): void {
         this.decibelRange = [this.config.minDecibels, this.config.maxDecibels]
@@ -34,7 +39,8 @@ export class VisualizerControllerComponent {
         this.config.maxDecibels = this.decibelRange[1]
     }
 
-    onRemove(): void {
-        this.remove.emit();
+    onSampleCountChanged(sampleCount: number): void {
+        this.config.sampleCount = sampleCount;
+        this.config.amplitudes = this._audioService.getAmplitudes(sampleCount);
     }
 }

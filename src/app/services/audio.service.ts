@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { IAudioConfig } from 'visualizer';
 
 @Injectable({
@@ -73,12 +73,20 @@ export class AudioService {
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
+    private _analyserNodeMap: Map<number, AnalyserNode> = new Map(); // todo compare performance with Object maybe?
+    private _amplitudesMap: Map<number, Uint8Array> = new Map();
+    private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
+    private readonly _showLowerData: boolean = false;
+    private readonly _smoothingTimeConstant: number = 0.7;
+    private readonly _maxDecibels: number = -20; // todo add ui control
+    private readonly _minDecibels: number = -80; // todo add ui control
+    private readonly _mode: 'frequency' | 'timeDomain' = 'frequency';
 
-    getAnalyser(): AnalyserNode {
-        const analyserNode = this._audioContext.createAnalyser();
-        this._sourceNode.connect(analyserNode);
+    constructor(private _ngZone: NgZone) {
+    }
 
-        return analyserNode;
+    get sampleCounts(): number[] {
+        return this._sampleCounts.slice();
     }
 
     play(): void {
@@ -116,5 +124,39 @@ export class AudioService {
         this._audioElement = audioElement;
         this._sourceNode = this._audioContext.createMediaElementSource(audioElement);
         this._sourceNode.connect(this._audioContext.destination);
+
+        this._sampleCounts.forEach(sampleCount => {
+            const node: AnalyserNode = this._audioContext.createAnalyser();
+            this._sourceNode.connect(node);
+
+            node.fftSize = sampleCount * (this._showLowerData ? 2 : 4);
+            node.smoothingTimeConstant = this._smoothingTimeConstant;
+            node.maxDecibels = this._maxDecibels;
+            node.minDecibels = this._minDecibels;
+
+            this._analyserNodeMap.set(sampleCount, node)
+            this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount))
+        })
+
+        this._updateAmplitudes();
+    }
+
+    getAmplitudes(sampleCount: number): Uint8Array {
+        return this._amplitudesMap.get(sampleCount);
+    }
+
+    private _updateAmplitudes(): void {
+        this._ngZone.runOutsideAngular(() => {
+            this._amplitudesMap.forEach((amplitudes, sampleCount) => {
+                const node: AnalyserNode = this._analyserNodeMap.get(sampleCount)
+                if (this._mode === 'frequency') {
+                    node.getByteFrequencyData(amplitudes);
+                } else {
+                    node.getByteTimeDomainData(amplitudes);
+                }
+            })
+
+            requestAnimationFrame(() => this._updateAmplitudes())
+        })
     }
 }

@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 import { animations } from './shared/animations';
 import { AudioService } from './services/audio.service';
 import { VisualizerService } from './services/visualizer.service';
+import { EmitterType, IEmitterConfig } from './visualizer-emitter/visualizer-emitter.types';
 
 @Component({
     selector: 'app-root',
@@ -15,6 +16,9 @@ export class AppComponent implements AfterViewInit {
 
     addVisualizerOptions: VisualizerType[] = Object.values(VisualizerType);
     selectedAddVisualizer: VisualizerType = this.addVisualizerOptions[1];
+
+    addEmitterOptions: EmitterType[] = Object.values(EmitterType);
+    selectedAddEmitter: EmitterType = this.addEmitterOptions[0];
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
@@ -47,9 +51,18 @@ export class AppComponent implements AfterViewInit {
         this.audioService.playNextSong();
     }
 
-    onAddClicked(): void {
+    onAddVisualizerClicked(): void {
         if (this.selectedAddVisualizer) {
-            this.visualizerService.addVisualizer(this.selectedAddVisualizer)
+            const config: IBaseVisualizerConfig = {
+                type: this.selectedAddVisualizer
+            }
+            this.visualizerService.addVisualizer(config, true)
+        }
+    }
+
+    onAddEmitterClicked(): void {
+        if (this.selectedAddEmitter) {
+            this.visualizerService.addEmitter(this.selectedAddEmitter)
         }
     }
 
@@ -58,8 +71,16 @@ export class AppComponent implements AfterViewInit {
         event.stopPropagation();
     }
 
+    onEmitterChange(event: MouseEvent, config: IEmitterConfig): void {
+        this.visualizerService.activeEmitter = this.visualizerService.activeEmitter === config ? null : config;
+        event.stopPropagation();
+    }
+
     onRemoveVisualizer(): void {
         this.visualizerService.removeVisualizer()
-        // this.visualizerService.activeVisualizer = null;
+    }
+
+    onRemoveEmitter(): void {
+        this.visualizerService.removeEmitter()
     }
 }

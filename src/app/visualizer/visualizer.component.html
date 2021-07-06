@@ -1,7 +1,7 @@
 <div [ngSwitch]="config.type"
      [class.outline]="showOutline">
     <lib-bar-visualizer *ngSwitchCase="VisualizerType.BAR"
-                        [analyserNode]="config.analyserNode"
+                        [amplitudes]="config.amplitudes"
                         [animationStopTime]="config.animationStopTime"
                         [audioConfig]="config.audioConfig"
                         [scale]="config.scale"
@@ -21,7 +21,7 @@
                         [barOrientation]="config.barOrientation">
     </lib-bar-visualizer>
     <lib-barcle-visualizer *ngSwitchCase="VisualizerType.BARCLE"
-                           [analyserNode]="config.analyserNode"
+                           [amplitudes]="config.amplitudes"
                            [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
@@ -36,7 +36,7 @@
                            [baseRadius]="config.baseRadius">
     </lib-barcle-visualizer>
     <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
-                           [analyserNode]="config.analyserNode"
+                           [amplitudes]="config.amplitudes"
                            [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"

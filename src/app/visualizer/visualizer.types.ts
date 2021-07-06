@@ -8,11 +8,16 @@ export enum VisualizerType {
 
 export interface IBaseVisualizerConfig {
     type: VisualizerType;
-    analyserNode: AnalyserNode;
     animationStopTime?: number;
+    startLeft?: number;
+    startTop?: number;
+}
+
+export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
+    amplitudes: Uint8Array;
     audioConfig: IAudioConfig;
-    startColorHex: string;
-    endColorHex: string;
+    startColorHex?: string;
+    endColorHex?: string;
     oomph: number;
     scale: number;
     maxDecibels?: number;
@@ -22,7 +27,7 @@ export interface IBaseVisualizerConfig {
     showLowerData?: boolean;
 }
 
-export interface IBarVisualizerConfig extends IBaseVisualizerConfig{
+export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig{
     barCapSize: number;
     barCapColor: string;
     barOrientation: VisualizerBarOrientation;
@@ -31,11 +36,11 @@ export interface IBarVisualizerConfig extends IBaseVisualizerConfig{
     looseCaps: boolean;
 }
 
-export interface IBarcleVisualizerConfig extends IBaseVisualizerConfig{
+export interface IBarcleVisualizerConfig extends ILibBaseVisualizerConfig{
     baseRadius: number;
 }
 
-export interface ICircleVisualizerConfig extends IBaseVisualizerConfig{
+export interface ICircleVisualizerConfig extends ILibBaseVisualizerConfig{
     baseRadius: number;
     sampleRadius: number;
     effect: CircleEffect;

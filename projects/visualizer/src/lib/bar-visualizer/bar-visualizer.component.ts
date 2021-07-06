@@ -40,7 +40,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
         let currPos = 0;
-        this._amplitudes.forEach((amplitude, i) => {
+        this.amplitudes.forEach((amplitude, i) => {
             // if (currPos > 150) return
             amplitude *= this.oomph * this.scale;
             let cap: number = this._amplitudeCaps[i];

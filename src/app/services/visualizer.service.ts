@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
+import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
 import { CircleEffect } from 'visualizer';
 import { getRandomNumber } from '../shared/utils';
 import { AudioService } from './audio.service';
+import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
 
 @Injectable({
     providedIn: 'root'
@@ -11,32 +12,35 @@ export class VisualizerService {
     activeVisualizer: IVisualizerConfig;
     visualizers: IVisualizerConfig[] = [];
 
+    emitterCount: number = 0;
+    activeEmitter: IEmitterConfig;
+    emitters: IEmitterConfig[] = [];
+
     constructor(private _audioService: AudioService) {
     }
 
-    addVisualizer(type: VisualizerType): void {
-        const analyserNode = this._audioService.getAnalyser();
-
-        const baseConfig: IBaseVisualizerConfig = {
-            type: type,
-            analyserNode: analyserNode,
+    addVisualizer(config: IBaseVisualizerConfig, setActive?: boolean): void {
+        const sampleCount: number = 16;
+        const baseConfig: ILibBaseVisualizerConfig = {
+            ...config,
+            amplitudes: this._audioService.getAmplitudes(sampleCount),
             animationStopTime: 1000,
             audioConfig: this._audioService.selectedAudioConfig,
-            startColorHex: '#00b4d8',
-            endColorHex: '#ffb703',
+            // startColorHex: '#00b4d8',
+            // endColorHex: '#ffb703',
             oomph: 1.3,
             scale: 0.2,
             maxDecibels: -20,
             minDecibels: -80,
             mode: 'frequency',
-            sampleCount: 16,
+            sampleCount: sampleCount,
             showLowerData: false
         };
 
-        let config: IVisualizerConfig;
-        switch (type) {
+        let visualizer: IVisualizerConfig;
+        switch (config.type) {
             case 'Bar':
-                config = {
+                visualizer = {
                     ...baseConfig,
                     barCapSize: 5,
                     barCapColor: '#ffb703',
@@ -48,13 +52,13 @@ export class VisualizerService {
                 };
                 break;
             case 'Barcle':
-                config = {
+                visualizer = {
                     ...baseConfig,
                     baseRadius: 80,
                 };
                 break;
             case 'Circle':
-                config = {
+                visualizer = {
                     ...baseConfig,
                     baseRadius: 80,
                     sampleRadius: 25,
@@ -65,10 +69,35 @@ export class VisualizerService {
                 throw new Error('Unknown visualizer option selected');
         }
 
-        this.visualizers.push(config)
+        this.visualizers.push(visualizer)
+        if (setActive) {
+            this.activeVisualizer = visualizer;
+        }
 
         // Remove visualizer after some time
-        setTimeout(() => this.removeVisualizer(config), getRandomNumber(20000, 50000))
+        setTimeout(() => this.removeVisualizer(visualizer), getRandomNumber(5000, 10000))
+    }
+
+    addEmitter(type: EmitterType): void {
+        const config: IEmitterConfig = {
+            emitterType: type,
+            name: `Emitter (${this.emitterCount++})`,
+            interval: 1000,
+            visualizerType: VisualizerType.BARCLE
+        }
+        this.emitters.push(config);
+        this.activeEmitter = config;
+    }
+
+    removeEmitter(emitter?: IEmitterConfig): void {
+        emitter = emitter ?? this.activeEmitter;
+        const index: number = this.emitters.indexOf(emitter);
+        if (index !== -1) {
+            this.emitters.splice(index, 1);
+            if (emitter === this.activeEmitter) {
+                this.activeEmitter = null;
+            }
+        }
     }
 
     removeVisualizer(visualizer?: IVisualizerConfig): void {

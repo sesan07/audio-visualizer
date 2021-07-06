@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizerComponent } from './visualizer/visualizer.component';
 import { VisualizerControllerComponent } from './visualizer-controller/visualizer-controller.component';
 import { ControlComponent } from './shared/control/control.component';
+import { VisualizerEmitterComponent } from './visualizer-emitter/visualizer-emitter.component';
+import { EmitterControllerComponent } from './emitter-controller/emitter-controller.component';
+
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
@@ -21,6 +24,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -30,6 +34,8 @@ registerLocaleData(en);  // NG-Zorro
         VisualizerComponent,
         VisualizerControllerComponent,
         ControlComponent,
+        VisualizerEmitterComponent,
+        EmitterControllerComponent,
     ],
     imports: [
         BrowserModule,
@@ -42,6 +48,7 @@ registerLocaleData(en);  // NG-Zorro
         NzIconModule,
         NzRadioModule,
         NzSliderModule,
+        NzDividerModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent]

@@ -36,8 +36,8 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
 
         let currAngle: number = this._startAngle;
         // Reverse to turn visualization upside down
-        for (let i = 0; i < this._amplitudes.length; i++) {
-            const amplitude: number = this._amplitudes[i];
+        for (let i = 0; i < this.amplitudes.length; i++) {
+            const amplitude: number = this.amplitudes[i];
 
             const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
             const xLeft = this._centerX + radius * Math.cos(currAngle);
