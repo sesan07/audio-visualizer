@@ -26,7 +26,7 @@ export class VisualizerService {
         }
 
         // Remove visualizer after some time
-        setTimeout(() => this.removeVisualizer(visualizer), getRandomNumber(5000, 10000))
+        setTimeout(() => this.removeVisualizer(visualizer), getRandomNumber(50000, 100000))
     }
 
     addEmitter(type: EmitterType): void {
@@ -42,7 +42,7 @@ export class VisualizerService {
 
     getDefaultVisualizer(type: VisualizerType): IVisualizerConfig {
         const sampleCount: number = 16;
-        const baseConfig: IBaseVisualizerConfig = { type: VisualizerType.BARCLE };
+        const baseConfig: IBaseVisualizerConfig = { type };
         const libBaseConfig: ILibBaseVisualizerConfig = {
             ...baseConfig,
             amplitudes: this._audioService.getAmplitudes(sampleCount),
@@ -54,9 +54,7 @@ export class VisualizerService {
             scale: 0.2,
             maxDecibels: -20,
             minDecibels: -80,
-            mode: 'frequency',
-            sampleCount: sampleCount,
-            showLowerData: false
+            sampleCount: sampleCount
         }
 
         let visualizer: IVisualizerConfig;

@@ -20,6 +20,18 @@ export class AppComponent implements AfterViewInit {
     addEmitterOptions: EmitterType[] = Object.values(EmitterType);
     selectedAddEmitter: EmitterType = this.addEmitterOptions[0];
 
+    modeOptions: any[] = [
+        {
+            name: 'Frequency',
+            value: 'frequency'
+        },
+        {
+            name: 'Time Domain',
+            value: 'timeDomain'
+        },
+    ];
+    decibelRange: [number, number] = [-80, -20];
+
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
@@ -29,6 +41,7 @@ export class AppComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.audioService.setUp(this.audioElement.nativeElement)
+        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
     }
 
     getAudioName(src: string): string {
@@ -53,6 +66,7 @@ export class AppComponent implements AfterViewInit {
 
     onAddVisualizerClicked(): void {
         if (this.selectedAddVisualizer) {
+            console.log(this.selectedAddVisualizer)
             const visualizer: IVisualizerConfig = this.visualizerService.getDefaultVisualizer(this.selectedAddVisualizer)
             this.visualizerService.addVisualizer(visualizer, true)
         }
@@ -80,5 +94,9 @@ export class AppComponent implements AfterViewInit {
 
     onRemoveEmitter(): void {
         this.visualizerService.removeEmitter()
+    }
+
+    onDecibelChanged(): void {
+        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
     }
 }

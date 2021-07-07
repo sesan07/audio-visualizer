@@ -22,9 +22,7 @@ export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     scale: number;
     maxDecibels?: number;
     minDecibels?: number;
-    mode?: VisualizerMode;
     sampleCount?: number;
-    showLowerData?: boolean;
 }
 
 export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig{

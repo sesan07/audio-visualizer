@@ -24,19 +24,9 @@ export class VisualizerControllerComponent {
         },
     ];
     sampleCountOptions: number[];
-    decibelRange: [number, number];
 
     constructor(private _audioService: AudioService) {
         this.sampleCountOptions = this._audioService.sampleCounts;
-    }
-
-    ngOnInit(): void {
-        this.decibelRange = [this.config.minDecibels, this.config.maxDecibels]
-    }
-
-    onDecibelChanged(): void {
-        this.config.minDecibels = this.decibelRange[0]
-        this.config.maxDecibels = this.decibelRange[1]
     }
 
     onSampleCountChanged(sampleCount: number): void {

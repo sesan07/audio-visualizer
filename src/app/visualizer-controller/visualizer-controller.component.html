@@ -1,16 +1,4 @@
 <!-- Shared Controls -->
-<app-control name="Mode">
-    <nz-radio-group [(ngModel)]="config.mode" nzButtonStyle="solid">
-        <label *ngFor="let option of modeOptions" nz-radio-button [nzValue]="option.value">{{option.name}}</label>
-    </nz-radio-group>
-</app-control>
-<app-control name="Decibel Range">
-    <div class="slider-wrapper">
-        <span>{{decibelRange[0]}}</span>
-        <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0" (ngModelChange)="onDecibelChanged()"></nz-slider>
-        <span>{{decibelRange[1]}}</span>
-    </div>
-</app-control>
 <app-control name="Samples">
     <button nz-button nz-dropdown [nzDropdownMenu]="samplesMenu">
         {{config.sampleCount}}
@@ -56,6 +44,9 @@
                 <span>{{config.barSpacing}}</span>
                 <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
+        </app-control>
+        <app-control name="Loose Caps">
+            <nz-switch [(ngModel)]="config.looseCaps"></nz-switch>
         </app-control>
     </ng-container>
 

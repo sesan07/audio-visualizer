@@ -32,16 +32,35 @@
             </button>
         </div>
 
-        <button nz-button nz-dropdown [nzDropdownMenu]="audioMenu" nzTrigger="click" nzPlacement="bottomRight">
-            Current Song: {{getAudioName(audioService.selectedAudioConfig.src)}}
-            <i nz-icon nzType="down"></i>
-        </button>
-        <nz-dropdown-menu #audioMenu="nzDropdownMenu">
-            <ul nz-menu nzSelectable>
-                <li *ngFor="let option of audioService.audioConfigs" nz-menu-item (click)="audioService.selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
-            </ul>
-        </nz-dropdown-menu>
+        <span>
+            <nz-divider nzText="Options"></nz-divider>
+        </span>
+        <app-control name="Song">
+            <button class="control-content" nz-button nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzDropdownMenu]="audioMenu">
+                {{getAudioName(audioService.selectedAudioConfig.src)}}
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #audioMenu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                    <li *ngFor="let option of audioService.audioConfigs" nz-menu-item (click)="audioService.selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
+                </ul>
+            </nz-dropdown-menu>
+        </app-control>
+        <app-control name="Mode">
+            <nz-radio-group class="control-content" [(ngModel)]="audioService.mode" nzButtonStyle="solid">
+                <label *ngFor="let option of modeOptions" nz-radio-button [nzValue]="option.value">{{option.name}}</label>
+            </nz-radio-group>
+        </app-control>
+        <app-control name="Decibel Range">
+            <!-- TODO: replace spans with number inputs -->
+            <div class="slider-wrapper">
+                <span>{{decibelRange[0]}}</span>
+                <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0" (ngModelChange)="onDecibelChanged()"></nz-slider>
+                <span>{{decibelRange[1]}}</span>
+            </div>
+        </app-control>
     </div>
+
     <div class="card control-group">
         <nz-button-group>
             <button nz-button (click)="onAddVisualizerClicked()">Add {{selectedAddVisualizer}} Visualizer</button>

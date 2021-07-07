@@ -1,11 +1,10 @@
 import { Injectable, NgZone } from '@angular/core';
-import { IAudioConfig } from 'visualizer';
+import { IAudioConfig, VisualizerMode } from 'visualizer';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AudioService {
-
     audioConfigs: IAudioConfig[] = [
         {
             src: 'assets/audio/dont_stop_me_now.mp3',
@@ -70,6 +69,8 @@ export class AudioService {
     ];
     selectedAudioConfig: IAudioConfig = this.audioConfigs[5];
 
+    mode: VisualizerMode = 'frequency';
+
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
@@ -78,15 +79,16 @@ export class AudioService {
     private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
     private readonly _showLowerData: boolean = false;
     private readonly _smoothingTimeConstant: number = 0.7;
-    private readonly _maxDecibels: number = -20; // todo add ui control
-    private readonly _minDecibels: number = -80; // todo add ui control
-    private readonly _mode: 'frequency' | 'timeDomain' = 'frequency';
 
     constructor(private _ngZone: NgZone) {
     }
 
     get sampleCounts(): number[] {
         return this._sampleCounts.slice();
+    }
+
+    getAmplitudes(sampleCount: number): Uint8Array {
+        return this._amplitudesMap.get(sampleCount);
     }
 
     play(): void {
@@ -104,6 +106,14 @@ export class AudioService {
         this._audioElement.pause();
     }
 
+    playPreviousSong(): void {
+        const currIndex: number = this.audioConfigs.indexOf(this.selectedAudioConfig);
+        if (currIndex - 1 >= 0) {
+            this.selectedAudioConfig = this.audioConfigs[currIndex - 1];
+            setTimeout(() => this.play());
+        }
+    }
+
     playNextSong(): void {
         const currIndex: number = this.audioConfigs.indexOf(this.selectedAudioConfig);
         if (currIndex + 1 < this.audioConfigs.length) {
@@ -112,12 +122,11 @@ export class AudioService {
         }
     }
 
-    playPreviousSong(): void {
-        const currIndex: number = this.audioConfigs.indexOf(this.selectedAudioConfig);
-        if (currIndex - 1 >= 0) {
-            this.selectedAudioConfig = this.audioConfigs[currIndex - 1];
-            setTimeout(() => this.play());
-        }
+    setDecibelRange(min: number, max: number): void {
+        this._analyserNodeMap.forEach(node => {
+            node.minDecibels = min;
+            node.maxDecibels = max;
+        })
     }
 
     setUp(audioElement: HTMLAudioElement): void {
@@ -131,8 +140,6 @@ export class AudioService {
 
             node.fftSize = sampleCount * (this._showLowerData ? 2 : 4);
             node.smoothingTimeConstant = this._smoothingTimeConstant;
-            node.maxDecibels = this._maxDecibels;
-            node.minDecibels = this._minDecibels;
 
             this._analyserNodeMap.set(sampleCount, node)
             this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount))
@@ -141,15 +148,11 @@ export class AudioService {
         this._updateAmplitudes();
     }
 
-    getAmplitudes(sampleCount: number): Uint8Array {
-        return this._amplitudesMap.get(sampleCount);
-    }
-
     private _updateAmplitudes(): void {
         this._ngZone.runOutsideAngular(() => {
             this._amplitudesMap.forEach((amplitudes, sampleCount) => {
                 const node: AnalyserNode = this._analyserNodeMap.get(sampleCount)
-                if (this._mode === 'frequency') {
+                if (this.mode === 'frequency') {
                     node.getByteFrequencyData(amplitudes);
                 } else {
                     node.getByteTimeDomainData(amplitudes);

@@ -29,25 +29,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         return this._minDecibels ?? -80;
     }
 
-    @Input() set mode(v: VisualizerMode) {
-        this._mode = v;
-    }
-    get mode(): VisualizerMode {
-        return this._mode ?? 'frequency';
-    }
-
     @Input() set sampleCount(v: number) {
         this._sampleCount = v;
     }
     get sampleCount(): number {
         return this._sampleCount ?? 128;
-    }
-
-    @Input() set showLowerData(v: boolean) {
-        this._showLowerData = v;
-    }
-    get showLowerData(): boolean {
-        return !!this._showLowerData;
     }
 
     @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement>;
