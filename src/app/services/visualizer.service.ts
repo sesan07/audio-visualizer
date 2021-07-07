@@ -19,56 +19,7 @@ export class VisualizerService {
     constructor(private _audioService: AudioService) {
     }
 
-    addVisualizer(config: IBaseVisualizerConfig, setActive?: boolean): void {
-        const sampleCount: number = 16;
-        const baseConfig: ILibBaseVisualizerConfig = {
-            ...config,
-            amplitudes: this._audioService.getAmplitudes(sampleCount),
-            animationStopTime: 1000,
-            audioConfig: this._audioService.selectedAudioConfig,
-            // startColorHex: '#00b4d8',
-            // endColorHex: '#ffb703',
-            oomph: 1.3,
-            scale: 0.2,
-            maxDecibels: -20,
-            minDecibels: -80,
-            mode: 'frequency',
-            sampleCount: sampleCount,
-            showLowerData: false
-        };
-
-        let visualizer: IVisualizerConfig;
-        switch (config.type) {
-            case 'Bar':
-                visualizer = {
-                    ...baseConfig,
-                    barCapSize: 5,
-                    barCapColor: '#ffb703',
-                    barOrientation: 'horizontal',
-                    barSize: 20,
-                    barSpacing: 2,
-                    looseCaps: false,
-                    scale: 0.5
-                };
-                break;
-            case 'Barcle':
-                visualizer = {
-                    ...baseConfig,
-                    baseRadius: 80,
-                };
-                break;
-            case 'Circle':
-                visualizer = {
-                    ...baseConfig,
-                    baseRadius: 80,
-                    sampleRadius: 25,
-                    effect: CircleEffect.DEFAULT
-                };
-                break;
-            default:
-                throw new Error('Unknown visualizer option selected');
-        }
-
+    addVisualizer(visualizer: IVisualizerConfig, setActive?: boolean) {
         this.visualizers.push(visualizer)
         if (setActive) {
             this.activeVisualizer = visualizer;
@@ -83,10 +34,64 @@ export class VisualizerService {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
             interval: 1000,
-            visualizerType: VisualizerType.BARCLE
+            visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE)
         }
         this.emitters.push(config);
         this.activeEmitter = config;
+    }
+
+    getDefaultVisualizer(type: VisualizerType): IVisualizerConfig {
+        const sampleCount: number = 16;
+        const baseConfig: IBaseVisualizerConfig = { type: VisualizerType.BARCLE };
+        const libBaseConfig: ILibBaseVisualizerConfig = {
+            ...baseConfig,
+            amplitudes: this._audioService.getAmplitudes(sampleCount),
+            animationStopTime: 1000,
+            audioConfig: this._audioService.selectedAudioConfig,
+            // startColorHex: '#00b4d8',
+            // endColorHex: '#ffb703',
+            oomph: 1.3,
+            scale: 0.2,
+            maxDecibels: -20,
+            minDecibels: -80,
+            mode: 'frequency',
+            sampleCount: sampleCount,
+            showLowerData: false
+        }
+
+        let visualizer: IVisualizerConfig;
+        switch (type) {
+            case 'Bar':
+                visualizer = {
+                    ...libBaseConfig,
+                    barCapSize: 5,
+                    barCapColor: '#ffb703',
+                    barOrientation: 'horizontal',
+                    barSize: 20,
+                    barSpacing: 2,
+                    looseCaps: false,
+                    scale: 0.5
+                };
+                break;
+            case 'Barcle':
+                visualizer = {
+                    ...libBaseConfig,
+                    baseRadius: 80,
+                };
+                break;
+            case 'Circle':
+                visualizer = {
+                    ...libBaseConfig,
+                    baseRadius: 80,
+                    sampleRadius: 25,
+                    effect: CircleEffect.DEFAULT
+                };
+                break;
+            default:
+                throw new Error('Unknown visualizer option selected');
+        }
+
+        return visualizer;
     }
 
     removeEmitter(emitter?: IEmitterConfig): void {

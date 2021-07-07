@@ -6,12 +6,12 @@
 
 <app-control name="Visualizer Type">
     <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu">
-        {{config.visualizerType}}
+        {{config.visualizer.type}}
         <i nz-icon nzType="down"></i>
     </button>
     <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="config.visualizerType = option">{{option}}</li>
+            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="config.visualizer.type = option">{{option}}</li>
         </ul>
     </nz-dropdown-menu>
 </app-control>

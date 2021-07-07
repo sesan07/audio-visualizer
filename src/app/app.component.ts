@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
 import { animations } from './shared/animations';
 import { AudioService } from './services/audio.service';
 import { VisualizerService } from './services/visualizer.service';
@@ -53,10 +53,8 @@ export class AppComponent implements AfterViewInit {
 
     onAddVisualizerClicked(): void {
         if (this.selectedAddVisualizer) {
-            const config: IBaseVisualizerConfig = {
-                type: this.selectedAddVisualizer
-            }
-            this.visualizerService.addVisualizer(config, true)
+            const visualizer: IVisualizerConfig = this.visualizerService.getDefaultVisualizer(this.selectedAddVisualizer)
+            this.visualizerService.addVisualizer(visualizer, true)
         }
     }
 

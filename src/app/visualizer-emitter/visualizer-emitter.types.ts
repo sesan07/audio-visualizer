@@ -1,4 +1,4 @@
-import { VisualizerType } from '../visualizer/visualizer.types';
+import { IVisualizerConfig } from '../visualizer/visualizer.types';
 
 export enum EmitterType {
     POINT = 'Point',
@@ -7,7 +7,7 @@ export enum EmitterType {
 
 export interface IEmitterConfig {
     emitterType: EmitterType;
-    visualizerType: VisualizerType;
+    visualizer: IVisualizerConfig;
     name: string;
     interval: number;
 }
