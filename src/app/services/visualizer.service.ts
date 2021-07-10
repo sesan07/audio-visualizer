@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer-view/visualizer/visualizer.types';
 import { AudioService } from './audio.service';
 import { EmitterType, IEmitterConfig } from '../visualizer-view/visualizer-emitter/visualizer-emitter.types';
+import { getRandomColorHex } from 'visualizer';
 
 @Injectable({
     providedIn: 'root'
@@ -31,25 +32,27 @@ export class VisualizerService {
     }
 
     addEmitter(type: EmitterType): void {
+        const randomizeColors = true;
         const config: IEmitterConfig = {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
             interval: 1000,
-            visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE)
+            randomizeColors: randomizeColors,
+            visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE, randomizeColors)
         }
         this.emitters.push(config);
         this.activeEmitter = config;
     }
 
-    getDefaultVisualizer(type: VisualizerType): IVisualizerConfig {
+    getDefaultVisualizer(type: VisualizerType, disableColorEdit?: boolean): IVisualizerConfig {
         const sampleCount: number = 16;
-        const baseConfig: IBaseVisualizerConfig = { type };
+        const baseConfig: IBaseVisualizerConfig = { type, disableColorEdit };
         const libBaseConfig: ILibBaseVisualizerConfig = {
             ...baseConfig,
             amplitudes: this._audioService.getAmplitudes(sampleCount),
             animationStopTime: 1000,
-            // startColorHex: '#00b4d8',
-            // endColorHex: '#ffb703',
+            startColorHex: getRandomColorHex(),
+            endColorHex: getRandomColorHex(),
             multiplier: 1,
             scale: 1,
             shadowBlur: 5,
@@ -62,7 +65,6 @@ export class VisualizerService {
                 visualizer = {
                     ...libBaseConfig,
                     barCapSize: 5,
-                    barCapColor: '#ffb703',
                     barSize: 20,
                     barSpacing: 10,
                     looseCaps: false

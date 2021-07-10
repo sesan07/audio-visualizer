@@ -15,5 +15,10 @@
         </ul>
     </nz-dropdown-menu>
 </app-control>
+<app-control name="Random Colors">
+    <nz-switch [(ngModel)]="config.randomizeColors"
+               (ngModelChange)="config.visualizer.disableColorEdit = config.randomizeColors">
+    </nz-switch>
+</app-control>
 
 <app-visualizer-controller [config]="config.visualizer"></app-visualizer-controller>

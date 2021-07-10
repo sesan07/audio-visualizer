@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
 import { AudioService } from '../../services/audio.service';
 

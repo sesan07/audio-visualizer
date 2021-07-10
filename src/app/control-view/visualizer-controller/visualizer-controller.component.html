@@ -1,4 +1,10 @@
 <!-- Shared Controls -->
+<app-control *ngIf="!config.disableColorEdit" name="Start Color">
+    <app-color-picker [(color)]="config.startColorHex"></app-color-picker>
+</app-control>
+<app-control *ngIf="!config.disableColorEdit" name="End Color">
+    <app-color-picker [(color)]="config.endColorHex"></app-color-picker>
+</app-control>
 <app-control name="Samples">
     <button nz-button nz-dropdown [nzDropdownMenu]="samplesMenu">
         {{config.sampleCount}}

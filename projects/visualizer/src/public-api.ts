@@ -4,6 +4,7 @@
 
 export * from './lib/visualizer.types';
 export * from './lib/visualizer.module';
+export * from './lib/visualizer.utils';
 
 // Bar Visualizer
 export * from './lib/bar-visualizer/bar-visualizer.component';

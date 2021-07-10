@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Color } from '../visualizer.types';
-import { convertHexToColor, convertColorToHex, getRandomColor } from '../visualizer.utils';
+import { convertHexToColor } from '../visualizer.utils';
 
 @Component({
     template: ''
@@ -11,12 +11,12 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
 
     @Input() amplitudes: Uint8Array;
     @Input() animationStopTime: number = 0;
-    @Input() endColorHex?: string;
+    @Input() endColorHex: string;
     @Input() multiplier: number;
     @Input() sampleCount: number;
     @Input() scale: number;
     @Input() shadowBlur: number = 0;
-    @Input() startColorHex?: string;
+    @Input() startColorHex: string;
 
     @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement>;
 
@@ -45,12 +45,18 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         if (changes.shadowBlur && !changes.shadowBlur.firstChange) {
             this._canvasContext.shadowBlur = this.shadowBlur;
         }
+        if (changes.startColorHex) {
+            this._startColor = convertHexToColor(this.startColorHex);
+            if (!changes.startColorHex.firstChange) {
+                this._canvasContext.shadowColor = this.startColorHex;
+            }
+        }
+        if (changes.endColorHex) {
+            this._endColor = convertHexToColor(this.endColorHex);
+        }
     }
 
     ngOnInit(): void {
-        this._startColor = this.startColorHex ? convertHexToColor(this.startColorHex) : getRandomColor();
-        this._endColor = this.endColorHex ? convertHexToColor(this.endColorHex) : getRandomColor();
-
         this._setCanvasDimensions();
         this._onScaleChanged();
         this._onSampleCountChanged();
@@ -86,7 +92,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         this.canvasElement.nativeElement.width = this._canvasWidth;
         this.canvasElement.nativeElement.height = this._canvasHeight;
         this._canvasContext = this.canvasElement.nativeElement.getContext('2d');
-        this._canvasContext.shadowColor = convertColorToHex(this._startColor)
+        this._canvasContext.shadowColor = this.startColorHex;
         this._canvasContext.shadowBlur = this.shadowBlur
     }
 

@@ -9,12 +9,13 @@ export interface IBaseVisualizerConfig {
     animationStopTime?: number;
     startLeft?: number;
     startTop?: number;
+    disableColorEdit?: boolean;
 }
 
 export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     amplitudes: Uint8Array;
-    startColorHex?: string;
-    endColorHex?: string;
+    startColorHex: string;
+    endColorHex: string;
     multiplier: number;
     sampleCount: number;
     scale: number;
@@ -23,7 +24,6 @@ export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
 
 export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig {
     barCapSize: number;
-    barCapColor: string;
     barSize: number;
     barSpacing: number;
     looseCaps: boolean;

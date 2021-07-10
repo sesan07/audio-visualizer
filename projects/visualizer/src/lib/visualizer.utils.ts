@@ -35,12 +35,12 @@ export function convertColorToHex(color: Color) {
     }).join('')
 }
 
-export function getRandomColor(): Color {
-    return {
+export function getRandomColorHex(): string {
+    return convertColorToHex({
         red: Math.round(getRandomNumber(0, 255)),
         green: Math.round(getRandomNumber(0, 255)),
         blue: Math.round(getRandomNumber(0, 255))
-    };
+    });
 }
 
 export function getRandomNumber(min: number, max: number) : number {

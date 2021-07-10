@@ -84,7 +84,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
 
     private _drawCap(): void {
         this._canvasContext.strokeStyle = '#00000055';
-        this._canvasContext.fillStyle = `rgb(${this._startColor.red}, ${this._startColor.green}, ${this._startColor.blue})`;
+        this._canvasContext.fillStyle = this.startColorHex;
         this._canvasContext.beginPath();
         this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this.scale, 0, 2 * Math.PI);
         // this._canvasContext.stroke();
