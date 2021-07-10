@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
+import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer-view/visualizer/visualizer.types';
 import { AudioService } from './audio.service';
-import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
+import { EmitterType, IEmitterConfig } from '../visualizer-view/visualizer-emitter/visualizer-emitter.types';
 
 @Injectable({
     providedIn: 'root'

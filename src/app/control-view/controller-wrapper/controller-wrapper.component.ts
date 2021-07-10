@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
-import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
-import { animations } from '../shared/animations';
+import { IVisualizerConfig, VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
+import { EmitterType, IEmitterConfig } from '../../visualizer-view/visualizer-emitter/visualizer-emitter.types';
+import { animations } from '../../shared/animations';
 
 @Component({
     selector: 'app-controller-wrapper',

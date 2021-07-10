@@ -1,10 +1,10 @@
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { EmitterType, IEmitterConfig } from './visualizer-emitter.types';
-import { DraggableComponent } from '../shared/draggable/draggable.component';
-import { VisualizerService } from '../services/visualizer.service';
-import { AudioService } from '../services/audio.service';
+import { DraggableComponent } from '../draggable/draggable.component';
+import { VisualizerService } from '../../services/visualizer.service';
+import { AudioService } from '../../services/audio.service';
 import { IVisualizerConfig } from '../visualizer/visualizer.types';
-import { getRandomNumber } from '../shared/utils';
+import { getRandomNumber } from '../../shared/utils';
 
 @Component({
     selector: 'app-visualizer-emitter',

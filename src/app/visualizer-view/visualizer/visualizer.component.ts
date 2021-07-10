@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostBinding, Input, NgZone, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from './visualizer.types';
-import { getRadians, getRandomNumber } from '../shared/utils';
-import { DraggableComponent } from '../shared/draggable/draggable.component';
+import { getRadians, getRandomNumber } from '../../shared/utils';
+import { DraggableComponent } from '../draggable/draggable.component';
 
 @Component({
     selector: 'app-visualizer',

@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from './visualizer/visualizer.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer-view/visualizer/visualizer.types';
 import { animations } from './shared/animations';
 import { AudioService } from './services/audio.service';
 import { VisualizerService } from './services/visualizer.service';
-import { EmitterType, IEmitterConfig } from './visualizer-emitter/visualizer-emitter.types';
+import { EmitterType, IEmitterConfig } from './visualizer-view/visualizer-emitter/visualizer-emitter.types';
 
 @Component({
     selector: 'app-root',

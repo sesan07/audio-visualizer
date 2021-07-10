@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
-import { VisualizerType } from '../visualizer/visualizer.types';
-import { VisualizerService } from '../services/visualizer.service';
+import { EmitterType, IEmitterConfig } from '../../visualizer-view/visualizer-emitter/visualizer-emitter.types';
+import { VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
+import { VisualizerService } from '../../services/visualizer.service';
 
 @Component({
     selector: 'app-emitter-controller',

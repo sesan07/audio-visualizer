@@ -5,12 +5,12 @@ import { AppComponent } from './app.component';
 import { VisualizerModule } from 'visualizer';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VisualizerComponent } from './visualizer/visualizer.component';
-import { VisualizerControllerComponent } from './visualizer-controller/visualizer-controller.component';
-import { ControlComponent } from './shared/control/control.component';
-import { VisualizerEmitterComponent } from './visualizer-emitter/visualizer-emitter.component';
-import { EmitterControllerComponent } from './emitter-controller/emitter-controller.component';
-import { ControllerWrapperComponent } from './controller-wrapper/controller-wrapper.component';
+import { VisualizerComponent } from './visualizer-view/visualizer/visualizer.component';
+import { VisualizerControllerComponent } from './control-view/visualizer-controller/visualizer-controller.component';
+import { ControlComponent } from './control-view/control/control.component';
+import { VisualizerEmitterComponent } from './visualizer-view/visualizer-emitter/visualizer-emitter.component';
+import { EmitterControllerComponent } from './control-view/emitter-controller/emitter-controller.component';
+import { ControllerWrapperComponent } from './control-view/controller-wrapper/controller-wrapper.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';

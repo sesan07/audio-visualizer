@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
-import { AudioService } from '../services/audio.service';
+import { IVisualizerConfig, VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
     selector: 'app-visualizer-controller',
