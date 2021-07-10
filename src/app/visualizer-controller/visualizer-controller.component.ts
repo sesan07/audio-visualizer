@@ -9,7 +9,6 @@ import { AudioService } from '../services/audio.service';
 })
 export class VisualizerControllerComponent {
     @Input() config: IVisualizerConfig;
-    @Output() remove: EventEmitter<void> = new EventEmitter();
 
     VisualizerType = VisualizerType;
 

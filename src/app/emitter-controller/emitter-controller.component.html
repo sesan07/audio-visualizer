@@ -11,11 +11,9 @@
     </button>
     <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="config.visualizer.type = option">{{option}}</li>
+            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="onVisualizerTypeChange(option)">{{option}}</li>
         </ul>
     </nz-dropdown-menu>
 </app-control>
 
-<!--todo add visualizer controller-->
-
-<button class="remove-btn" nz-button nzType="primary" (click)="this.remove.emit()"><i nz-icon nzType="delete"></i>Remove</button>
+<app-visualizer-controller [config]="config.visualizer"></app-visualizer-controller>

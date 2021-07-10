@@ -14,11 +14,10 @@ import { EmitterType, IEmitterConfig } from './visualizer-emitter/visualizer-emi
 export class AppComponent implements AfterViewInit {
     @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
 
-    addVisualizerOptions: VisualizerType[] = Object.values(VisualizerType);
-    selectedAddVisualizer: VisualizerType = this.addVisualizerOptions[1];
+    // Todo support adding images
 
+    addVisualizerOptions: VisualizerType[] = Object.values(VisualizerType);
     addEmitterOptions: EmitterType[] = Object.values(EmitterType);
-    selectedAddEmitter: EmitterType = this.addEmitterOptions[0];
 
     modeOptions: any[] = [
         {
@@ -64,36 +63,36 @@ export class AppComponent implements AfterViewInit {
         this.audioService.playNextSong();
     }
 
-    onAddVisualizerClicked(): void {
-        if (this.selectedAddVisualizer) {
-            console.log(this.selectedAddVisualizer)
-            const visualizer: IVisualizerConfig = this.visualizerService.getDefaultVisualizer(this.selectedAddVisualizer)
-            this.visualizerService.addVisualizer(visualizer, true)
-        }
+    onAddVisualizer(type: VisualizerType): void {
+        const visualizer: IVisualizerConfig = this.visualizerService.getDefaultVisualizer(type)
+        this.visualizerService.addVisualizer(visualizer, true)
     }
 
-    onAddEmitterClicked(): void {
-        if (this.selectedAddEmitter) {
-            this.visualizerService.addEmitter(this.selectedAddEmitter)
-        }
+    onAddEmitter(type: EmitterType): void {
+        this.visualizerService.addEmitter(type)
     }
 
-    onVisualizerChange(event: MouseEvent, config: IVisualizerConfig | null): void {
+    onVisualizerSelected(config: IVisualizerConfig, event?: MouseEvent): void {
         this.visualizerService.activeVisualizer = config;
-        event.stopPropagation();
+        event?.stopPropagation();
     }
 
-    onEmitterChange(event: MouseEvent, config: IEmitterConfig): void {
-        this.visualizerService.activeEmitter = this.visualizerService.activeEmitter === config ? null : config;
-        event.stopPropagation();
+    onEmitterSelected(config: IEmitterConfig, event?: MouseEvent): void {
+        this.visualizerService.activeEmitter = config;
+        event?.stopPropagation();
     }
 
-    onRemoveVisualizer(): void {
-        this.visualizerService.removeVisualizer()
+    onRemoveVisualizer(index: number): void {
+        this.visualizerService.removeVisualizer(index)
     }
 
-    onRemoveEmitter(): void {
-        this.visualizerService.removeEmitter()
+    onRemoveEmitter(index: number): void {
+        this.visualizerService.removeEmitter(index)
+    }
+
+    onVisualizerViewClicked(): void {
+        this.visualizerService.activeVisualizer = null;
+        this.visualizerService.activeEmitter = null;
     }
 
     onDecibelChanged(): void {

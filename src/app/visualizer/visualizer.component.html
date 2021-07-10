@@ -1,10 +1,10 @@
-<div [ngSwitch]="config.type"
-     [class.outline]="showOutline">
+<ng-container [ngSwitch]="config.type">
     <lib-bar-visualizer *ngSwitchCase="VisualizerType.BAR"
                         [amplitudes]="config.amplitudes"
                         [animationStopTime]="config.animationStopTime"
                         [audioConfig]="config.audioConfig"
                         [scale]="config.scale"
+                        [shadowBlur]="config.shadowBlur"
                         [startColorHex]="config.startColorHex"
                         [endColorHex]="config.endColorHex"
                         [oomph]="config.oomph"
@@ -23,6 +23,7 @@
                            [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
+                           [shadowBlur]="config.shadowBlur"
                            [startColorHex]="config.startColorHex"
                            [endColorHex]="config.endColorHex"
                            [oomph]="config.oomph"
@@ -36,6 +37,7 @@
                            [animationStopTime]="config.animationStopTime"
                            [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
+                           [shadowBlur]="config.shadowBlur"
                            [startColorHex]="config.startColorHex"
                            [endColorHex]="config.endColorHex"
                            [oomph]="config.oomph"
@@ -46,4 +48,4 @@
                            [sampleRadius]="config.sampleRadius"
                            [effect]="config.effect">
     </lib-circle-visualizer>
-</div>
+</ng-container>

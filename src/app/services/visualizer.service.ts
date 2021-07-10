@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
 import { CircleEffect } from 'visualizer';
-import { getRandomNumber } from '../shared/utils';
 import { AudioService } from './audio.service';
 import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
 
@@ -11,6 +10,7 @@ import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-em
 export class VisualizerService {
     activeVisualizer: IVisualizerConfig;
     visualizers: IVisualizerConfig[] = [];
+    emittedVisualizers: IVisualizerConfig[] = [];
 
     emitterCount: number = 0;
     activeEmitter: IEmitterConfig;
@@ -19,14 +19,16 @@ export class VisualizerService {
     constructor(private _audioService: AudioService) {
     }
 
-    addVisualizer(visualizer: IVisualizerConfig, setActive?: boolean) {
+    addVisualizer(visualizer: IVisualizerConfig, setActive?: boolean): void {
         this.visualizers.push(visualizer)
         if (setActive) {
             this.activeVisualizer = visualizer;
         }
+    }
 
-        // Remove visualizer after some time
-        setTimeout(() => this.removeVisualizer(visualizer), getRandomNumber(50000, 100000))
+    addEmittedVisualizer(visualizer: IVisualizerConfig, autoRemoveTime: number): void {
+        this.emittedVisualizers.push(visualizer)
+        setTimeout(() => this.removeEmittedVisualizer(visualizer), autoRemoveTime)
     }
 
     addEmitter(type: EmitterType): void {
@@ -52,6 +54,7 @@ export class VisualizerService {
             // endColorHex: '#ffb703',
             oomph: 1.3,
             scale: 0.2,
+            shadowBlur: 5,
             maxDecibels: -20,
             minDecibels: -80,
             sampleCount: sampleCount
@@ -92,25 +95,26 @@ export class VisualizerService {
         return visualizer;
     }
 
-    removeEmitter(emitter?: IEmitterConfig): void {
-        emitter = emitter ?? this.activeEmitter;
-        const index: number = this.emitters.indexOf(emitter);
-        if (index !== -1) {
-            this.emitters.splice(index, 1);
-            if (emitter === this.activeEmitter) {
-                this.activeEmitter = null;
-            }
+    removeEmitter(index: number): void {
+        const emitter: IEmitterConfig = this.emitters[index];
+        this.emitters.splice(index, 1);
+        if (emitter === this.activeEmitter) {
+            this.activeEmitter = null;
         }
     }
 
-    removeVisualizer(visualizer?: IVisualizerConfig): void {
-        visualizer = visualizer ?? this.activeVisualizer;
-        const index: number = this.visualizers.indexOf(visualizer);
+    removeVisualizer(index: number): void {
+        const visualizer: IVisualizerConfig = this.visualizers[index];
+        this.visualizers.splice(index, 1);
+        if (visualizer === this.activeVisualizer) {
+            this.activeVisualizer = null;
+        }
+    }
+
+    removeEmittedVisualizer(visualizer?: IVisualizerConfig): void {
+        const index: number = this.emittedVisualizers.indexOf(visualizer);
         if (index !== -1) {
-            this.visualizers.splice(index, 1);
-            if (visualizer === this.activeVisualizer) {
-                this.activeVisualizer = null;
-            }
+            this.emittedVisualizers.splice(index, 1);
         }
     }
 }

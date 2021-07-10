@@ -1,0 +1,54 @@
+<div class="card control-group">
+        <span class="control-group-header">
+            <span class="control-group-title">{{name}}</span>
+            <nz-button-group>
+                <button nz-button nzType="primary" (click)="add.emit(selectedAddOption)">
+                        <i nz-icon nzType="plus"></i>
+                    {{'Add ' + selectedAddOption + ' ' + name}}
+                </button>
+                <button nz-button nz-dropdown nzType="primary" [nzDropdownMenu]="menu"  nzTrigger="click" nzPlacement="bottomRight" [title]="'Select ' + name">
+                    <i nz-icon nzType="ellipsis"></i>
+                </button>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu nzSelectable>
+                        <li *ngFor="let option of addOptions" nz-menu-item (click)="selectedAddOption = option">{{option}}</li>
+                    </ul>
+                </nz-dropdown-menu>
+            </nz-button-group>
+        </span>
+
+    <ng-container *ngIf="configs.length > 0">
+        <div class="list">
+                <span class="list-item"
+                      @controllerEnterLeaveTrigger
+                      *ngFor="let config of configs; let i = index">
+                    <button class="primary-btn" nz-button nzGhost
+                            [nzType]="activeConfig === config ? 'primary' : 'default'"
+                            (click)="onConfigSelected($event, config)">
+                        {{name + ' ' + i}}
+                    </button>
+                    <button nz-button
+                            nzDanger
+                            (click)="remove.emit(i)">
+                        <i nz-icon nzType="delete"></i>
+                        Remove
+                    </button>
+                </span>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="activeConfig">
+        <!-- Divider doesn't look right without span -->
+        <span>
+            <nz-divider [nzText]="'Modify ' + name"></nz-divider>
+        </span>
+        <app-visualizer-controller *ngIf="type === 'visualizer'"
+                                   @controllerEnterLeaveTrigger
+                                   [config]="activeConfig">
+        </app-visualizer-controller>
+        <app-emitter-controller *ngIf="type === 'emitter'"
+                                @controllerEnterLeaveTrigger
+                                [config]="activeConfig">
+        </app-emitter-controller>
+    </ng-container>
+</div>

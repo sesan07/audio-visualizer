@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Color, IAudioConfig, VisualizerMode } from '../visualizer.types';
-import { _convertHexToColor, getRandomColor } from '../visualizer.utils';
+import { convertHexToColor, convertColorToHex, getRandomColor } from '../visualizer.utils';
 
 @Component({
     template: ''
@@ -13,6 +13,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     @Input() endColorHex?: string;
     @Input() oomph: number;
     @Input() scale: number;
+    @Input() shadowBlur: number = 0;
     @Input() startColorHex?: string;
 
     @Input() set maxDecibels(v: number) {
@@ -56,7 +57,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if ((changes.scale && !changes.scale?.firstChange) || (changes.oomph && !changes.oomph.firstChange)) {
+        if ((changes.scale && !changes.scale.firstChange) || (changes.oomph && !changes.oomph.firstChange)) {
             this._setCanvasDimensions();
             this._onScaleChanged();
             this._setUpCanvas();
@@ -66,11 +67,14 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
             this._onSampleCountChanged()
             this._setUpCanvas();
         }
+        if (changes.shadowBlur && !changes.shadowBlur.firstChange) {
+            this._canvasContext.shadowBlur = this.shadowBlur;
+        }
     }
 
     ngOnInit(): void {
-        this._startColor = this.startColorHex ? _convertHexToColor(this.startColorHex) : getRandomColor();
-        this._endColor = this.endColorHex ? _convertHexToColor(this.endColorHex) : getRandomColor();
+        this._startColor = this.startColorHex ? convertHexToColor(this.startColorHex) : getRandomColor();
+        this._endColor = this.endColorHex ? convertHexToColor(this.endColorHex) : getRandomColor();
 
         this._setCanvasDimensions();
         this._onScaleChanged();
@@ -104,9 +108,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     private _setUpCanvas(): void {
-        this._canvasContext = this.canvasElement.nativeElement.getContext('2d');
         this.canvasElement.nativeElement.width = this._canvasWidth;
         this.canvasElement.nativeElement.height = this._canvasHeight;
+        this._canvasContext = this.canvasElement.nativeElement.getContext('2d');
+        this._canvasContext.shadowColor = convertColorToHex(this._startColor)
+        this._canvasContext.shadowBlur = this.shadowBlur
     }
 
     private _baseAnimate(): void {

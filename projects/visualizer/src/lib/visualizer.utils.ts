@@ -16,7 +16,7 @@ export function getGradientColor(startColor: Color, endColor: Color, fadePercent
     }
 }
 
-export function _convertHexToColor(hex: string): Color {
+export function convertHexToColor(hex: string): Color {
     return {
         red: parseInt(_trimHex(hex).substring(0, 2), 16),
         green: parseInt(_trimHex(hex).substring(2, 4), 16),

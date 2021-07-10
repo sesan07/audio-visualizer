@@ -20,6 +20,7 @@ export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     endColorHex?: string;
     oomph: number;
     scale: number;
+    shadowBlur?: number;
     maxDecibels?: number;
     minDecibels?: number;
     sampleCount?: number;

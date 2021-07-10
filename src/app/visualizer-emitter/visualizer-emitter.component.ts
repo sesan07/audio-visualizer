@@ -4,6 +4,7 @@ import { DraggableComponent } from '../shared/draggable/draggable.component';
 import { VisualizerService } from '../services/visualizer.service';
 import { AudioService } from '../services/audio.service';
 import { IVisualizerConfig } from '../visualizer/visualizer.types';
+import { getRandomNumber } from '../shared/utils';
 
 @Component({
     selector: 'app-visualizer-emitter',
@@ -25,7 +26,7 @@ export class VisualizerEmitterComponent extends DraggableComponent implements On
             const visualizer: IVisualizerConfig = Object.assign({}, this.config.visualizer)
             visualizer.startLeft = this.config.emitterType === EmitterType.POINT ? rect.left + rect.width / 2 : undefined;
             visualizer.startTop = this.config.emitterType === EmitterType.POINT ? rect.top + rect.height / 2: undefined
-            this._visualizerService.addVisualizer(visualizer)
+            this._visualizerService.addEmittedVisualizer(visualizer, getRandomNumber(5000, 10000))
         }, this.config.interval)
     }
 

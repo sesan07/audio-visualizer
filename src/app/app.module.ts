@@ -10,6 +10,7 @@ import { VisualizerControllerComponent } from './visualizer-controller/visualize
 import { ControlComponent } from './shared/control/control.component';
 import { VisualizerEmitterComponent } from './visualizer-emitter/visualizer-emitter.component';
 import { EmitterControllerComponent } from './emitter-controller/emitter-controller.component';
+import { ControllerWrapperComponent } from './controller-wrapper/controller-wrapper.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -37,6 +38,7 @@ registerLocaleData(en);  // NG-Zorro
         ControlComponent,
         VisualizerEmitterComponent,
         EmitterControllerComponent,
+        ControllerWrapperComponent,
     ],
     imports: [
         BrowserModule,

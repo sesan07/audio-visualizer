@@ -1,7 +1,7 @@
 import { Component, Input, NgZone } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 import { Color } from '../visualizer.types';
-import { convertColorToHex, getGradientColor } from '../visualizer.utils';
+import { getGradientColor } from '../visualizer.utils';
 import { CircleEffect } from './circle-visualizer.types';
 
 @Component({
@@ -47,11 +47,10 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
             const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
-            const color = convertColorToHex(gradientColor);
 
-            this._drawPoint(xLeft, y, color);
+            this._drawPoint(xLeft, y, gradientColor);
             if (this.effect === CircleEffect.DEFAULT) {
-                this._drawPoint(xRight, y, color);
+                this._drawPoint(xRight, y, gradientColor);
             }
         }
     }
@@ -84,9 +83,9 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
         this._centerY = this._canvasHeight / 2;
     }
 
-    private _drawPoint(x: number, y: number, colorHex: string): void {
+    private _drawPoint(x: number, y: number, color: Color): void {
         this._canvasContext.strokeStyle = '#00000055';
-        this._canvasContext.fillStyle = colorHex;
+        this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
         this._canvasContext.beginPath();
         this._canvasContext.arc(x, y, this.sampleRadius * this.scale, 0, 2 * Math.PI);
         this._canvasContext.stroke();

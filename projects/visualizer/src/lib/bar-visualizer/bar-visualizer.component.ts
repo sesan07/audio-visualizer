@@ -1,7 +1,7 @@
 import { Component, Input, NgZone } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 import { Color, VisualizerBarOrientation } from '../visualizer.types';
-import { convertColorToHex, getGradientColor } from '../visualizer.utils';
+import { getGradientColor } from '../visualizer.utils';
 
 @Component({
     selector: 'lib-bar-visualizer',
@@ -11,7 +11,6 @@ import { convertColorToHex, getGradientColor } from '../visualizer.utils';
 export class BarVisualizerComponent extends BaseVisualizerComponent {
 
     @Input() barCapSize: number;
-    @Input() barCapColor: string;
     @Input() barOrientation: VisualizerBarOrientation;
     @Input() barSize: number;
     @Input() barSpacing: number;
@@ -53,7 +52,6 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
             const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
-            const color = convertColorToHex(gradientColor);
 
             if (this.barOrientation === 'vertical') {
                 this._drawBar(
@@ -61,7 +59,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
                     currPos,
                     amplitude,
                     this._scaledBarSize,
-                    color
+                    gradientColor
                 );
 
                 this._drawBar(
@@ -69,7 +67,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
                     currPos,
                     10,
                     this._scaledBarSize,
-                    this.barCapColor
+                    this._startColor
                 );
             } else {
                 this._drawBar(
@@ -77,7 +75,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
                     this._canvasHeight - amplitude,
                     Math.ceil(this._scaledBarSize),
                     amplitude,
-                    color
+                    gradientColor
                 );
 
                 this._drawBar(
@@ -85,7 +83,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
                     this._canvasHeight - cap - this._scaledBarCapSize,
                     Math.ceil(this._scaledBarSize),
                     this._scaledBarCapSize,
-                    this.barCapColor
+                    this._startColor
                 );
             }
             currPos += this._scaledBarSize + this._scaledBarSpacing;
@@ -119,8 +117,8 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
 
     protected _onScaleChanged(): void {}
 
-    private _drawBar(startX: number, startY: number, width: number, height: number, color: string): void {
-        this._canvasContext.fillStyle = color;
+    private _drawBar(startX: number, startY: number, width: number, height: number, color: Color): void {
+        this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
         this._canvasContext.fillRect(startX, startY, width, height);
     }
 

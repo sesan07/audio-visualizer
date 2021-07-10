@@ -1,7 +1,6 @@
 :host {
   display: flex;
   height: 100%;
-  //overflow-y: hidden;
 }
 
 .visualizer-view {
@@ -11,6 +10,7 @@
 }
 
 .control-view {
+  z-index: 3;
   flex: none;
   display: flex;
   flex-direction: column;
@@ -21,8 +21,12 @@
   overflow-y: auto;
 }
 
-.add-btn {
-  margin-left: 8px;
+.visualizer {
+  z-index: 2;
+}
+
+.visualizer-emitter {
+  z-index: 1;
 }
 
 .media-controls {
@@ -52,21 +56,6 @@
   .anticon {
     font-size: 25px;
   }
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  max-height: 300px;
-  overflow: auto;
-}
-
-.list-item {
-  margin-bottom: 8px;
-}
-
-.list-item:last-child {
-  margin-bottom: 0;
 }
 
 nz-radio-group.control-content {

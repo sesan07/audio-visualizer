@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
 import { VisualizerType } from '../visualizer/visualizer.types';
+import { VisualizerService } from '../services/visualizer.service';
 
 @Component({
     selector: 'app-emitter-controller',
@@ -9,8 +10,14 @@ import { VisualizerType } from '../visualizer/visualizer.types';
 })
 export class EmitterControllerComponent {
     @Input() config: IEmitterConfig;
-    @Output() remove: EventEmitter<void> = new EventEmitter();
 
     emitterTypeOptions: EmitterType[] = Object.values(EmitterType);
     visualizerTypeOptions: VisualizerType[] = Object.values(VisualizerType);
+
+    constructor(private _visualizerService: VisualizerService) {
+    }
+
+    onVisualizerTypeChange(type: VisualizerType): void {
+        this.config.visualizer = this._visualizerService.getDefaultVisualizer(type);
+    }
 }

@@ -5,25 +5,12 @@ export const animations: AnimationTriggerMetadata[] = [
         transition(':enter', [
             style({
                 opacity: '0',
-                transform: 'scale(0)'
+                transform: 'scaleY(0)'
             }),
-            animate(100, keyframes([
-                style({
-                    offset: 0.5,
-                    opacity: '1',
-                    transform: 'scale(1)'
-                }),
-                style({
-                    offset: 0.75,
-                    opacity: '1',
-                    transform: 'scale(1.03)'
-                }),
-                style({
-                    offset: 1,
-                    opacity: '1',
-                    transform: 'scale(1)'
-                })
-            ]))
+            animate(100, style({
+                opacity: '1',
+                transform: 'scaleY(1)'
+            }))
         ]),
         transition(':leave', [
             style({
@@ -32,7 +19,7 @@ export const animations: AnimationTriggerMetadata[] = [
             }),
             animate(100, style({
                 opacity: '0',
-                transform: 'scale(0)'
+                transform: 'scaleY(0)'
             }))
         ])
     ]),
