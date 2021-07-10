@@ -22,6 +22,12 @@
         <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.05" [nzMin]="0" [nzMax]="3"></nz-slider>
     </div>
 </app-control>
+<app-control name="Shadow Blur">
+    <div class="slider-wrapper">
+        <span>{{config.shadowBlur}}</span>
+        <nz-slider [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
+    </div>
+</app-control>
 
 <!-- Specific Controls -->
 <ng-container [ngSwitch]="config.type">

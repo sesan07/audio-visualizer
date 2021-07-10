@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer/visualizer.types';
-import { CircleEffect } from 'visualizer';
 import { AudioService } from './audio.service';
 import { EmitterType, IEmitterConfig } from '../visualizer-emitter/visualizer-emitter.types';
 
@@ -49,14 +48,11 @@ export class VisualizerService {
             ...baseConfig,
             amplitudes: this._audioService.getAmplitudes(sampleCount),
             animationStopTime: 1000,
-            audioConfig: this._audioService.selectedAudioConfig,
             // startColorHex: '#00b4d8',
             // endColorHex: '#ffb703',
             multiplier: 1,
             scale: 0.2,
             shadowBlur: 5,
-            maxDecibels: -20,
-            minDecibels: -80,
             sampleCount: sampleCount
         }
 
@@ -67,7 +63,6 @@ export class VisualizerService {
                     ...libBaseConfig,
                     barCapSize: 5,
                     barCapColor: '#ffb703',
-                    barOrientation: 'horizontal',
                     barSize: 20,
                     barSpacing: 2,
                     looseCaps: false,
@@ -85,7 +80,6 @@ export class VisualizerService {
                     ...libBaseConfig,
                     baseRadius: 80,
                     sampleRadius: 25,
-                    effect: CircleEffect.DEFAULT
                 };
                 break;
             default:

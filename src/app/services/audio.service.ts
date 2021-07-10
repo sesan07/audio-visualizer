@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { IAudioConfig, VisualizerMode } from 'visualizer';
+import { IAudioConfig, VisualizerMode } from './audio.service.types';
 
 @Injectable({
     providedIn: 'root'

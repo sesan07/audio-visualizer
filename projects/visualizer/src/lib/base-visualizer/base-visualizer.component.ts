@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Color, IAudioConfig, VisualizerMode } from '../visualizer.types';
+import { Color } from '../visualizer.types';
 import { convertHexToColor, convertColorToHex, getRandomColor } from '../visualizer.utils';
 
 @Component({
@@ -7,9 +7,10 @@ import { convertHexToColor, convertColorToHex, getRandomColor } from '../visuali
 })
 export abstract class BaseVisualizerComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
+    // Todo: add extra allowance to sides to show shadow blur
+
     @Input() amplitudes: Uint8Array;
     @Input() animationStopTime: number = 0;
-    @Input() audioConfig: IAudioConfig;
     @Input() endColorHex?: string;
     @Input() multiplier: number;
     @Input() sampleCount: number;

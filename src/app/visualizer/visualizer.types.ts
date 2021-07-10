@@ -1,5 +1,3 @@
-import { CircleEffect, IAudioConfig, VisualizerBarOrientation, VisualizerMode } from 'visualizer';
-
 export enum VisualizerType {
     BAR = 'Bar',
     BARCLE = 'Barcle',
@@ -15,21 +13,17 @@ export interface IBaseVisualizerConfig {
 
 export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     amplitudes: Uint8Array;
-    audioConfig: IAudioConfig;
     startColorHex?: string;
     endColorHex?: string;
     multiplier: number;
+    sampleCount: number;
     scale: number;
     shadowBlur?: number;
-    maxDecibels?: number;
-    minDecibels?: number;
-    sampleCount?: number;
 }
 
-export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig{
+export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig {
     barCapSize: number;
     barCapColor: string;
-    barOrientation: VisualizerBarOrientation;
     barSize: number;
     barSpacing: number;
     looseCaps: boolean;
@@ -42,7 +36,6 @@ export interface IBarcleVisualizerConfig extends ILibBaseVisualizerConfig{
 export interface ICircleVisualizerConfig extends ILibBaseVisualizerConfig{
     baseRadius: number;
     sampleRadius: number;
-    effect: CircleEffect;
 }
 
 export type IVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;

@@ -1,6 +1,6 @@
 import { Component, Input, NgZone } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
-import { Color, VisualizerBarOrientation } from '../visualizer.types';
+import { Color } from '../visualizer.types';
 import { getGradientColor } from '../visualizer.utils';
 
 @Component({
@@ -9,15 +9,10 @@ import { getGradientColor } from '../visualizer.utils';
     styleUrls: ['../base-visualizer/base-visualizer.component.scss']
 })
 export class BarVisualizerComponent extends BaseVisualizerComponent {
-
     @Input() barCapSize: number;
-    @Input() barOrientation: VisualizerBarOrientation;
     @Input() barSize: number;
     @Input() barSpacing: number;
     @Input() looseCaps: boolean;
-
-    protected _canvasHeight: number;
-    protected _canvasWidth: number;
 
     private _amplitudeCaps: Uint8Array;
 
@@ -53,61 +48,34 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
             const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
 
-            if (this.barOrientation === 'vertical') {
-                this._drawBar(
-                    0,
-                    currPos,
-                    amplitude,
-                    this._scaledBarSize,
-                    gradientColor
-                );
+            this._drawBar(
+                currPos,
+                this._canvasHeight - amplitude,
+                Math.ceil(this._scaledBarSize),
+                amplitude,
+                gradientColor
+            );
 
-                this._drawBar(
-                    cap,
-                    currPos,
-                    10,
-                    this._scaledBarSize,
-                    this._startColor
-                );
-            } else {
-                this._drawBar(
-                    currPos,
-                    this._canvasHeight - amplitude,
-                    Math.ceil(this._scaledBarSize),
-                    amplitude,
-                    gradientColor
-                );
+            this._drawBar(
+                currPos,
+                this._canvasHeight - cap - this._scaledBarCapSize,
+                Math.ceil(this._scaledBarSize),
+                this._scaledBarCapSize,
+                this._startColor
+            );
 
-                this._drawBar(
-                    currPos,
-                    this._canvasHeight - cap - this._scaledBarCapSize,
-                    Math.ceil(this._scaledBarSize),
-                    this._scaledBarCapSize,
-                    this._startColor
-                );
-            }
             currPos += this._scaledBarSize + this._scaledBarSpacing;
         });
     }
 
     protected _getCanvasHeight(): number {
-        const sampleCount: number = this.sampleCount;
-        const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
-        if (this.barOrientation === 'vertical') {
-            return this._scaledBarSize * sampleCount + totalBarSpacing;
-        } else {
-            return 255 * this.multiplier * this.scale + this._scaledBarCapSize;
-        }
+        return this.multiplier * this.scale * 255 + this._scaledBarCapSize;
     }
 
     protected _getCanvasWidth(): number {
         const sampleCount: number = this.sampleCount;
         const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
-        if (this.barOrientation === 'vertical') {
-            return 255 * this.multiplier * this.scale + this._scaledBarCapSize;
-        } else {
-            return this._scaledBarSize * sampleCount + totalBarSpacing
-        }
+        return this._scaledBarSize * sampleCount + totalBarSpacing
     }
 
     protected _onSampleCountChanged(): void {

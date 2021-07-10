@@ -9,11 +9,7 @@ import { getGradientColor } from '../visualizer.utils';
     styleUrls: ['../base-visualizer/base-visualizer.component.scss']
 })
 export class BarcleVisualizerComponent extends BaseVisualizerComponent {
-
     @Input() baseRadius: number;
-
-    protected _canvasHeight: number;
-    protected _canvasWidth: number;
 
     private _centerX: number;
     private _centerY: number;

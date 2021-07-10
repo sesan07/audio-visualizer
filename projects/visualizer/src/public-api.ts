@@ -10,7 +10,6 @@ export * from './lib/bar-visualizer/bar-visualizer.component';
 
 // Circle Visualizer
 export * from './lib/circle-visualizer/circle-visualizer.component';
-export * from './lib/circle-visualizer/circle-visualizer.types';
 
 // Barcle Visualizer
 export * from './lib/barcle-visualizer/barcle-visualizer.component';

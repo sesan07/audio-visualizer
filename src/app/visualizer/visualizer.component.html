@@ -2,7 +2,6 @@
     <lib-bar-visualizer *ngSwitchCase="VisualizerType.BAR"
                         [amplitudes]="config.amplitudes"
                         [animationStopTime]="config.animationStopTime"
-                        [audioConfig]="config.audioConfig"
                         [scale]="config.scale"
                         [shadowBlur]="config.shadowBlur"
                         [startColorHex]="config.startColorHex"
@@ -13,13 +12,11 @@
                         [barCapSize]="config.barCapSize"
                         [barSize]="config.barSize"
                         [barCapColor]="config.barCapColor"
-                        [barSpacing]="config.barSpacing"
-                        [barOrientation]="config.barOrientation">
+                        [barSpacing]="config.barSpacing">
     </lib-bar-visualizer>
     <lib-barcle-visualizer *ngSwitchCase="VisualizerType.BARCLE"
                            [amplitudes]="config.amplitudes"
                            [animationStopTime]="config.animationStopTime"
-                           [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
                            [shadowBlur]="config.shadowBlur"
                            [startColorHex]="config.startColorHex"
@@ -31,7 +28,6 @@
     <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
                            [amplitudes]="config.amplitudes"
                            [animationStopTime]="config.animationStopTime"
-                           [audioConfig]="config.audioConfig"
                            [scale]="config.scale"
                            [shadowBlur]="config.shadowBlur"
                            [startColorHex]="config.startColorHex"
@@ -39,7 +35,6 @@
                            [multiplier]="config.multiplier"
                            [sampleCount]="config.sampleCount"
                            [baseRadius]="config.baseRadius"
-                           [sampleRadius]="config.sampleRadius"
-                           [effect]="config.effect">
+                           [sampleRadius]="config.sampleRadius">
     </lib-circle-visualizer>
 </ng-container>
