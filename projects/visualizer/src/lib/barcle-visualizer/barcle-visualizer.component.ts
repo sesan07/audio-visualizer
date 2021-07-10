@@ -21,7 +21,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
     private _startAngle: number;
 
     private get _maxRadius(): number {
-        return (this.baseRadius + 255) * this.oomph * this.scale;
+        return (this.baseRadius + 255) * this.multiplier * this.scale;
     }
 
     constructor(ngZone: NgZone) {
@@ -40,7 +40,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
                 continue;
             }
 
-            const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
+            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this.scale;
             const startAngle = currAngle - this._sampleAngle / 2;
             const endAngle = currAngle + this._sampleAngle / 2;
             const startAngle2 = Math.PI - currAngle - this._sampleAngle / 2;

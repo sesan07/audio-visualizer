@@ -11,31 +11,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     @Input() animationStopTime: number = 0;
     @Input() audioConfig: IAudioConfig;
     @Input() endColorHex?: string;
-    @Input() oomph: number;
+    @Input() multiplier: number;
+    @Input() sampleCount: number;
     @Input() scale: number;
     @Input() shadowBlur: number = 0;
     @Input() startColorHex?: string;
-
-    @Input() set maxDecibels(v: number) {
-        this._maxDecibels = v;
-    }
-    get maxDecibels(): number {
-        return this._maxDecibels ?? -20;
-    }
-
-    @Input() set minDecibels(v: number) {
-        this._minDecibels = v;
-    }
-    get minDecibels(): number {
-        return this._minDecibels ?? -80;
-    }
-
-    @Input() set sampleCount(v: number) {
-        this._sampleCount = v;
-    }
-    get sampleCount(): number {
-        return this._sampleCount ?? 128;
-    }
 
     @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement>;
 
@@ -44,12 +24,6 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     protected _canvasWidth: number;
     protected _startColor: Color;
     protected _endColor: Color;
-
-    private _maxDecibels: number;
-    private _minDecibels: number;
-    private _mode: VisualizerMode;
-    private _sampleCount: number;
-    private _showLowerData: boolean;
 
     private _animationFrameId: number;
 

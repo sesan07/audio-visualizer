@@ -41,7 +41,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         let currPos = 0;
         this.amplitudes.forEach((amplitude, i) => {
             // if (currPos > 150) return
-            amplitude *= this.oomph * this.scale;
+            amplitude *= this.multiplier * this.scale;
             let cap: number = this._amplitudeCaps[i];
             if (this.looseCaps) {
                 cap = amplitude > cap ? amplitude : cap;
@@ -96,7 +96,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         if (this.barOrientation === 'vertical') {
             return this._scaledBarSize * sampleCount + totalBarSpacing;
         } else {
-            return 255 * this.oomph * this.scale + this._scaledBarCapSize;
+            return 255 * this.multiplier * this.scale + this._scaledBarCapSize;
         }
     }
 
@@ -104,7 +104,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         const sampleCount: number = this.sampleCount;
         const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
         if (this.barOrientation === 'vertical') {
-            return 255 * this.oomph * this.scale + this._scaledBarCapSize;
+            return 255 * this.multiplier * this.scale + this._scaledBarCapSize;
         } else {
             return this._scaledBarSize * sampleCount + totalBarSpacing
         }

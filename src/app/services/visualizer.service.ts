@@ -52,7 +52,7 @@ export class VisualizerService {
             audioConfig: this._audioService.selectedAudioConfig,
             // startColorHex: '#00b4d8',
             // endColorHex: '#ffb703',
-            oomph: 1.3,
+            multiplier: 1,
             scale: 0.2,
             shadowBlur: 5,
             maxDecibels: -20,

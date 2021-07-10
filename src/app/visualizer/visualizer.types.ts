@@ -18,7 +18,7 @@ export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     audioConfig: IAudioConfig;
     startColorHex?: string;
     endColorHex?: string;
-    oomph: number;
+    multiplier: number;
     scale: number;
     shadowBlur?: number;
     maxDecibels?: number;

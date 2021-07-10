@@ -24,7 +24,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
     private _startAngle: number;
 
     private get _maxRadius(): number {
-        return (this.baseRadius + this.sampleRadius + 255) * this.oomph * this.scale;
+        return (this.baseRadius + this.sampleRadius + 255) * this.multiplier * this.scale;
     }
 
     constructor(ngZone: NgZone) {
@@ -39,7 +39,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent {
         for (let i = 0; i < this.amplitudes.length; i++) {
             const amplitude: number = this.amplitudes[i];
 
-            const radius: number = (this.baseRadius + amplitude) * this.oomph * this.scale;
+            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this.scale;
             const xLeft = this._centerX + radius * Math.cos(currAngle);
             const xRight = this._centerX - radius * Math.cos(currAngle);
             const y = this._centerY + radius * Math.sin(currAngle);
