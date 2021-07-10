@@ -13,6 +13,7 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
     @Input() animationStopTime: number = 0;
     @Input() endColorHex: string;
     @Input() multiplier: number;
+    @Input() opacity: number;
     @Input() sampleCount: number;
     @Input() scale: number;
     @Input() shadowBlur: number = 0;
@@ -50,6 +51,9 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
         }
         if (changes.endColorHex) {
             this._endColor = convertHexToColor(this.endColorHex);
+        }
+        if (changes.opacity && !changes.opacity.firstChange) {
+            this._canvasContext.globalAlpha = this.opacity;
         }
     }
 
@@ -89,6 +93,7 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
         this._canvasContext = this.canvasElement.nativeElement.getContext('2d');
         this._canvasContext.shadowColor = this.startColorHex;
         this._canvasContext.shadowBlur = this.shadowBlur
+        this._canvasContext.globalAlpha = this.opacity;
     }
 
     private _baseAnimate(): void {

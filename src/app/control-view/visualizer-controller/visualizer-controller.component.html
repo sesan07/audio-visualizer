@@ -34,6 +34,12 @@
         <nz-slider [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
     </div>
 </app-control>
+<app-control name="Opacity">
+    <div class="slider-wrapper">
+        <nz-input-number [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+        <nz-slider [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+    </div>
+</app-control>
 
 <!-- Specific Controls -->
 <ng-container [ngSwitch]="config.type">

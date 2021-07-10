@@ -17,6 +17,7 @@ export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
     startColorHex: string;
     endColorHex: string;
     multiplier: number;
+    opacity: number;
     sampleCount: number;
     scale: number;
     shadowBlur?: number;

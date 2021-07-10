@@ -10,5 +10,6 @@ export interface IEmitterConfig {
     visualizer: IVisualizerConfig;
     name: string;
     interval: number;
+    lifespan: number;
     randomizeColors: boolean
 }

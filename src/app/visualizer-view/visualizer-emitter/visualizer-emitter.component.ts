@@ -38,7 +38,7 @@ export class VisualizerEmitterComponent extends DraggableComponent implements On
             visualizer.startColorHex = getRandomColorHex();
             visualizer.endColorHex = getRandomColorHex();
         }
-        this._visualizerService.addEmittedVisualizer(visualizer, getRandomNumber(5000, 10000))
+        this._visualizerService.addEmittedVisualizer(visualizer, this.config.lifespan * 1000)
 
         this._timeoutRef = setTimeout(() => this._emitVisualizer(), this.config.interval * 1000);
     }

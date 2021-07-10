@@ -37,6 +37,7 @@ export class VisualizerService {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
             interval: 1,
+            lifespan: 5,
             randomizeColors: randomizeColors,
             visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE, randomizeColors)
         }
@@ -54,6 +55,7 @@ export class VisualizerService {
             startColorHex: getRandomColorHex(),
             endColorHex: getRandomColorHex(),
             multiplier: 1,
+            opacity: 1,
             scale: 1,
             shadowBlur: 5,
             sampleCount: sampleCount
