@@ -36,6 +36,7 @@ export abstract class DraggableComponent {
     }
 
     protected constructor(protected _renderer: Renderer2, protected _elementRef: ElementRef<HTMLElement>) {
+        console.log(_elementRef)
     }
 
     protected _setPosition(left: number, top: number) {

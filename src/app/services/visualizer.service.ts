@@ -36,7 +36,7 @@ export class VisualizerService {
         const config: IEmitterConfig = {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
-            interval: 1000,
+            interval: 1,
             randomizeColors: randomizeColors,
             visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE, randomizeColors)
         }

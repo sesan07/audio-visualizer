@@ -15,10 +15,20 @@
         </ul>
     </nz-dropdown-menu>
 </app-control>
+<app-control name="Interval">
+    <div class="slider-wrapper">
+        <nz-input-number [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
+        <nz-slider [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
+    </div>
+</app-control>
 <app-control name="Random Colors">
     <nz-switch [(ngModel)]="config.randomizeColors"
                (ngModelChange)="config.visualizer.disableColorEdit = config.randomizeColors">
     </nz-switch>
 </app-control>
+
+<span>
+    <nz-divider nzText="Modify Emitter Visualizer"></nz-divider>
+</span>
 
 <app-visualizer-controller [config]="config.visualizer"></app-visualizer-controller>
