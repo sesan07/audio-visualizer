@@ -27,6 +27,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -53,6 +54,7 @@ registerLocaleData(en);  // NG-Zorro
         NzSliderModule,
         NzDividerModule,
         NzSwitchModule,
+        NzInputNumberModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent]

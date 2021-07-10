@@ -123,9 +123,19 @@ export class AudioService {
     }
 
     setDecibelRange(min: number, max: number): void {
+        if (min >= max) {
+            return;
+        }
+
         this._analyserNodeMap.forEach(node => {
-            node.minDecibels = min;
-            node.maxDecibels = max;
+            // Set min max in acceptable order to prevent error
+            if (max <= node.minDecibels) {
+                node.minDecibels = min;
+                node.maxDecibels = max;
+            } else  {
+                node.maxDecibels = max;
+                node.minDecibels = min;
+            }
         })
     }
 

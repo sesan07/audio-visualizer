@@ -4,42 +4,71 @@ body {
 }
 
 .card {
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 8px;
-}
-
-.control-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 12px;
     background: #333333;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
 
-    .control-group-title {
-        font-weight: 500;
-        font-size: 16px;
-    }
-
-    .control-group-header {
+    .card-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .card-title {
+            font-weight: 500;
+            font-size: 1.125rem;
+        }
+
+        nz-button-group .add-btn {
+            width: 12rem;
+        }
     }
 }
 
-.control-content {
+.control-group nz-input-number {
+    width: 4rem !important;
+}
+
+.control-group nz-switch button {
+    width: 4rem !important;
+}
+
+.control-group button {
     flex-grow: 1;
 }
 
-nz-slider {
+.control-group nz-radio-group {
     flex-grow: 1;
+    display: flex;
+
+    label {
+        flex-grow: 1;
+        text-align: center;
+    }
 }
 
 .slider-wrapper {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
+
+    nz-slider {
+        flex-grow: 1;
+    }
+
+    span {
+        width: 2rem !important;
+    }
+}
+
+nz-divider {
+    margin: 8px 0 !important;
+    font-weight: normal !important;
+    font-size: 0.875rem !important;
 }
 
 .outline {

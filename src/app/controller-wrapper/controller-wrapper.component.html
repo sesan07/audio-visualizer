@@ -1,8 +1,8 @@
-<div class="card control-group">
-        <span class="control-group-header">
-            <span class="control-group-title">{{name}}</span>
+<div class="card">
+        <span class="card-header">
+            <span class="card-title">{{name}}</span>
             <nz-button-group>
-                <button nz-button nzType="primary" (click)="add.emit(selectedAddOption)">
+                <button class="add-btn" nz-button nzType="primary" (click)="add.emit(selectedAddOption)">
                         <i nz-icon nzType="plus"></i>
                     {{'Add ' + selectedAddOption + ' ' + name}}
                 </button>
@@ -42,11 +42,11 @@
         <span>
             <nz-divider [nzText]="'Modify ' + name"></nz-divider>
         </span>
-        <app-visualizer-controller *ngIf="type === 'visualizer'"
+        <app-visualizer-controller class="control-group" *ngIf="type === 'visualizer'"
                                    @controllerEnterLeaveTrigger
                                    [config]="activeConfig">
         </app-visualizer-controller>
-        <app-emitter-controller *ngIf="type === 'emitter'"
+        <app-emitter-controller class="control-group" *ngIf="type === 'emitter'"
                                 @controllerEnterLeaveTrigger
                                 [config]="activeConfig">
         </app-emitter-controller>

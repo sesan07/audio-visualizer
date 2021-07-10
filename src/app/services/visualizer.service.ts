@@ -51,7 +51,7 @@ export class VisualizerService {
             // startColorHex: '#00b4d8',
             // endColorHex: '#ffb703',
             multiplier: 1,
-            scale: 0.2,
+            scale: 1,
             shadowBlur: 5,
             sampleCount: sampleCount
         }
@@ -64,15 +64,15 @@ export class VisualizerService {
                     barCapSize: 5,
                     barCapColor: '#ffb703',
                     barSize: 20,
-                    barSpacing: 2,
-                    looseCaps: false,
-                    scale: 0.5
+                    barSpacing: 10,
+                    looseCaps: false
                 };
                 break;
             case 'Barcle':
                 visualizer = {
                     ...libBaseConfig,
                     baseRadius: 80,
+                    scale: 0.5
                 };
                 break;
             case 'Circle':
@@ -80,6 +80,7 @@ export class VisualizerService {
                     ...libBaseConfig,
                     baseRadius: 80,
                     sampleRadius: 25,
+                    scale: 0.5
                 };
                 break;
             default:

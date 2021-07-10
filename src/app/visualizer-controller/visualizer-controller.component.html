@@ -12,19 +12,19 @@
 </app-control>
 <app-control name="Scale">
     <div class="slider-wrapper">
-        <span>{{config.scale}}</span>
-        <nz-slider [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="1"></nz-slider>
+        <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
+        <nz-slider [(ngModel)]="config.scale" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
     </div>
 </app-control>
 <app-control name="Multiplier">
     <div class="slider-wrapper">
-        <span>{{config.multiplier}}</span>
-        <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.05" [nzMin]="0" [nzMax]="3"></nz-slider>
+        <nz-input-number [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
+        <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
     </div>
 </app-control>
 <app-control name="Shadow Blur">
     <div class="slider-wrapper">
-        <span>{{config.shadowBlur}}</span>
+        <nz-input-number [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
         <nz-slider [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
     </div>
 </app-control>
@@ -35,20 +35,20 @@
     <ng-container *ngSwitchCase="VisualizerType.BAR">
         <app-control name="Bar Cap Size">
             <div class="slider-wrapper">
-                <span>{{config.barCapSize}}</span>
+                <nz-input-number [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                 <nz-slider [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Bar Size">
             <div class="slider-wrapper">
-                <span>{{config.barSize}}</span>
+                <nz-input-number [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                 <nz-slider [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Bar Spacing">
             <div class="slider-wrapper">
-                <span>{{config.barSpacing}}</span>
-                <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                <nz-input-number [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
+                <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
             </div>
         </app-control>
         <app-control name="Loose Caps">
@@ -60,7 +60,7 @@
     <ng-container *ngSwitchCase="VisualizerType.BARCLE">
         <app-control name="Base Radius">
             <div class="slider-wrapper">
-                <span>{{config.baseRadius}}</span>
+                <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                 <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
@@ -70,13 +70,13 @@
     <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
         <app-control name="Base Radius">
             <div class="slider-wrapper">
-                <span>{{config.baseRadius}}</span>
+                <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                 <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>
         <app-control name="Sample Radius">
             <div class="slider-wrapper">
-                <span>{{config.sampleRadius}}</span>
+                <nz-input-number [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                 <nz-slider [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
             </div>
         </app-control>

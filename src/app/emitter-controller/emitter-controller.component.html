@@ -1,5 +1,5 @@
 <app-control name="Emitter Type">
-    <nz-radio-group [(ngModel)]="config.emitterType" nzButtonStyle="solid">
+    <nz-radio-group [(ngModel)]="config.emitterType">
         <label *ngFor="let option of emitterTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
     </nz-radio-group>
 </app-control>
