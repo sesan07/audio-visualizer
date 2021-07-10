@@ -6,7 +6,7 @@
                         <i nz-icon nzType="plus"></i>
                     {{'Add ' + selectedAddOption + ' ' + name}}
                 </button>
-                <button nz-button nz-dropdown nzType="primary" [nzDropdownMenu]="menu"  nzTrigger="click" nzPlacement="bottomRight" [title]="'Select ' + name">
+                <button class="expand-btn" nz-button nz-dropdown nzType="primary" [nzDropdownMenu]="menu"  nzTrigger="click" nzPlacement="bottomRight" [title]="'Select ' + name">
                     <i nz-icon nzType="ellipsis"></i>
                 </button>
                 <nz-dropdown-menu #menu="nzDropdownMenu">

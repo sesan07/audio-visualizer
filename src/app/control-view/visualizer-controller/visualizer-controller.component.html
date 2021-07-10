@@ -6,15 +6,9 @@
     <app-color-picker [(color)]="config.endColorHex"></app-color-picker>
 </app-control>
 <app-control name="Samples">
-    <button nz-button nz-dropdown [nzDropdownMenu]="samplesMenu">
-        {{config.sampleCount}}
-        <i nz-icon nzType="down"></i>
-    </button>
-    <nz-dropdown-menu #samplesMenu="nzDropdownMenu">
-        <ul nz-menu nzSelectable>
-            <li *ngFor="let option of sampleCountOptions" nz-menu-item (click)="onSampleCountChanged(option)">{{option}}</li>
-        </ul>
-    </nz-dropdown-menu>
+    <nz-select [(ngModel)]="config.sampleCount" (ngModelChange)="onSampleCountChanged()">
+        <nz-option *ngFor="let option of sampleCountOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+    </nz-select>
 </app-control>
 <app-control name="Scale">
     <div class="slider-wrapper">

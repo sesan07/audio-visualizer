@@ -46,15 +46,9 @@
         </span>
         <div class="control-group">
             <app-control name="Song">
-                <button nz-button nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzDropdownMenu]="audioMenu">
-                    {{getAudioName(audioService.selectedAudioConfig.src)}}
-                    <i nz-icon nzType="down"></i>
-                </button>
-                <nz-dropdown-menu #audioMenu="nzDropdownMenu">
-                    <ul nz-menu nzSelectable>
-                        <li *ngFor="let option of audioService.audioConfigs" nz-menu-item (click)="audioService.selectedAudioConfig = option">{{getAudioName(option.src)}}</li>
-                    </ul>
-                </nz-dropdown-menu>
+                <nz-select [(ngModel)]="audioService.selectedAudioConfig">
+                    <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option" [nzLabel]="getAudioName(option.src)"></nz-option>
+                </nz-select>
             </app-control>
             <app-control name="Mode">
                 <nz-radio-group [(ngModel)]="audioService.mode">

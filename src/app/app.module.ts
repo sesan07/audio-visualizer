@@ -37,6 +37,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -67,6 +68,7 @@ registerLocaleData(en);  // NG-Zorro
         NzSwitchModule,
         NzInputNumberModule,
         NzPopoverModule,
+        NzSelectModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }],
     bootstrap: [AppComponent]

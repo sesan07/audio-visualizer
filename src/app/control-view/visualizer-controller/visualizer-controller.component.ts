@@ -28,8 +28,7 @@ export class VisualizerControllerComponent {
         this.sampleCountOptions = this._audioService.sampleCounts;
     }
 
-    onSampleCountChanged(sampleCount: number): void {
-        this.config.sampleCount = sampleCount;
-        this.config.amplitudes = this._audioService.getAmplitudes(sampleCount);
+    onSampleCountChanged(): void {
+        this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
     }
 }

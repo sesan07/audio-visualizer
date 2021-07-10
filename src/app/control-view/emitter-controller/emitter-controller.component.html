@@ -5,15 +5,9 @@
 </app-control>
 
 <app-control name="Visualizer Type">
-    <button nz-button nz-dropdown [nzDropdownMenu]="visualizerMenu">
-        {{config.visualizer.type}}
-        <i nz-icon nzType="down"></i>
-    </button>
-    <nz-dropdown-menu #visualizerMenu="nzDropdownMenu">
-        <ul nz-menu nzSelectable>
-            <li *ngFor="let option of visualizerTypeOptions" nz-menu-item (click)="onVisualizerTypeChange(option)">{{option}}</li>
-        </ul>
-    </nz-dropdown-menu>
+    <nz-select [(ngModel)]="config.visualizer.type" (ngModelChange)="onVisualizerTypeChange()">
+        <nz-option *ngFor="let option of visualizerTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+    </nz-select>
 </app-control>
 <app-control name="Interval">
     <div class="slider-wrapper">

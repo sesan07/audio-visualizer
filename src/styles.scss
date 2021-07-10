@@ -22,8 +22,14 @@ body {
             font-size: 1.125rem;
         }
 
-        nz-button-group .add-btn {
-            width: 12rem;
+        nz-button-group {
+            .add-btn {
+                width: 12rem;
+            }
+
+            .expand-btn {
+                width: 3rem
+            }
         }
     }
 }
@@ -36,7 +42,7 @@ body {
     width: 4rem !important;
 }
 
-.control-group button, app-color-picker {
+.control-group nz-select, app-color-picker {
     flex-grow: 1;
 }
 

@@ -17,7 +17,7 @@ export class EmitterControllerComponent {
     constructor(private _visualizerService: VisualizerService) {
     }
 
-    onVisualizerTypeChange(type: VisualizerType): void {
-        this.config.visualizer = this._visualizerService.getDefaultVisualizer(type, this.config.randomizeColors);
+    onVisualizerTypeChange(): void {
+        this.config.visualizer = this._visualizerService.getDefaultVisualizer(this.config.visualizer.type, this.config.randomizeColors);
     }
 }
