@@ -1,4 +1,4 @@
-import { Component, Input, NgZone } from '@angular/core';
+import { Component, Input, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 import { Color } from '../visualizer.types';
 import { getGradientColor } from '../visualizer.utils';
@@ -8,7 +8,7 @@ import { getGradientColor } from '../visualizer.utils';
     templateUrl: './bar-visualizer.component.html',
     styleUrls: ['../base-visualizer/base-visualizer.component.scss']
 })
-export class BarVisualizerComponent extends BaseVisualizerComponent {
+export class BarVisualizerComponent extends BaseVisualizerComponent implements OnChanges {
     @Input() barCapSize: number;
     @Input() barSize: number;
     @Input() barSpacing: number;
@@ -30,10 +30,21 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
         super(ngZone);
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        super.ngOnChanges(changes);
+
+        if ((changes.barCapSize && !changes.barCapSize.firstChange)
+            || (changes.barSize && !changes.barSize.firstChange)
+            || (changes.barSpacing && !changes.barSpacing.firstChange)) {
+
+            this._updateDimensions();
+        }
+    }
+
     protected _animate(): void {
         this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
-        let currPos = 0;
+        let currPos = this._canvasPadding;
         this.amplitudes.forEach((amplitude, i) => {
             // if (currPos > 150) return
             amplitude *= this.multiplier * this.scale;
@@ -50,7 +61,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
 
             this._drawBar(
                 currPos,
-                this._canvasHeight - amplitude,
+                this._canvasHeight - this._canvasPadding - amplitude,
                 Math.ceil(this._scaledBarSize),
                 amplitude,
                 gradientColor
@@ -58,7 +69,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
 
             this._drawBar(
                 currPos,
-                this._canvasHeight - cap - this._scaledBarCapSize,
+                this._canvasHeight - this._canvasPadding - cap - this._scaledBarCapSize,
                 Math.ceil(this._scaledBarSize),
                 this._scaledBarCapSize,
                 this._startColor
@@ -69,21 +80,18 @@ export class BarVisualizerComponent extends BaseVisualizerComponent {
     }
 
     protected _getCanvasHeight(): number {
-        return this.multiplier * this.scale * 255 + this._scaledBarCapSize;
+        return this.multiplier * 255 * this.scale + this._scaledBarCapSize;
     }
 
     protected _getCanvasWidth(): number {
         const sampleCount: number = this.sampleCount;
         const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
-        return this._scaledBarSize * sampleCount + totalBarSpacing
+        return this._scaledBarSize * sampleCount + totalBarSpacing;
     }
 
-    protected _onSampleCountChanged(): void {
+    protected _onDimensionsChanged(): void {
         this._amplitudeCaps = new Uint8Array(this.sampleCount);
-        this._setCanvasDimensions();
     }
-
-    protected _onScaleChanged(): void {}
 
     private _drawBar(startX: number, startY: number, width: number, height: number, color: Color): void {
         this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;

@@ -1,4 +1,4 @@
-import { Component, Input, NgZone } from '@angular/core';
+import { Component, Input, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
 import { Color } from '../visualizer.types';
 import { getGradientColor } from '../visualizer.utils';
@@ -8,7 +8,7 @@ import { getGradientColor } from '../visualizer.utils';
     templateUrl: './barcle-visualizer.component.html',
     styleUrls: ['../base-visualizer/base-visualizer.component.scss']
 })
-export class BarcleVisualizerComponent extends BaseVisualizerComponent {
+export class BarcleVisualizerComponent extends BaseVisualizerComponent implements OnChanges {
     @Input() baseRadius: number;
 
     private _centerX: number;
@@ -17,11 +17,19 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
     private _startAngle: number;
 
     private get _maxRadius(): number {
-        return (this.baseRadius + 255) * this.multiplier * this.scale;
+        return (this.multiplier * 255 + this.baseRadius) * this.scale;
     }
 
     constructor(ngZone: NgZone) {
         super(ngZone);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        super.ngOnChanges(changes);
+
+        if (changes.baseRadius && !changes.baseRadius.firstChange) {
+            this._updateDimensions();
+        }
     }
 
     protected _animate() {
@@ -60,12 +68,9 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent {
         return this._maxRadius * 2;
     }
 
-    protected _onSampleCountChanged(): void {
+    protected _onDimensionsChanged(): void {
         this._sampleAngle = ((2 * Math.PI) / this.sampleCount) / 2;
         this._startAngle = (Math.PI / 2) + (this._sampleAngle / 2);
-    }
-
-    protected _onScaleChanged(): void {
         this._centerX = this._canvasWidth / 2;
         this._centerY = this._canvasHeight / 2;
     }

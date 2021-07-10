@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { Color } from '../visualizer.types';
 import { convertHexToColor } from '../visualizer.utils';
 
 @Component({
     template: ''
 })
-export abstract class BaseVisualizerComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export abstract class BaseVisualizerComponent implements OnChanges, AfterViewInit, OnDestroy {
 
     // Todo: add extra allowance to sides to show shadow blur
 
@@ -23,6 +23,7 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     protected _canvasContext: CanvasRenderingContext2D;
     protected _canvasHeight: number;
     protected _canvasWidth: number;
+    protected readonly _canvasPadding: number = 20; // used to reduce the hard cut off of shadow blur on the sides
     protected _startColor: Color;
     protected _endColor: Color;
 
@@ -32,15 +33,11 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if ((changes.scale && !changes.scale.firstChange) || (changes.oomph && !changes.oomph.firstChange)) {
-            this._setCanvasDimensions();
-            this._onScaleChanged();
-            this._setUpCanvas();
-        }
-        if (changes.sampleCount && !changes.sampleCount.firstChange) {
-            this._setCanvasDimensions();
-            this._onSampleCountChanged()
-            this._setUpCanvas();
+        if ((changes.scale && !changes.scale.firstChange)
+            || (changes.multiplier && !changes.multiplier.firstChange)
+            || (changes.sampleCount && !changes.sampleCount.firstChange)) {
+
+            this._updateDimensions();
         }
         if (changes.shadowBlur && !changes.shadowBlur.firstChange) {
             this._canvasContext.shadowBlur = this.shadowBlur;
@@ -56,14 +53,8 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         }
     }
 
-    ngOnInit(): void {
-        this._setCanvasDimensions();
-        this._onScaleChanged();
-        this._onSampleCountChanged();
-    }
-
     ngAfterViewInit(): void {
-        this._setUpCanvas();
+        this._updateDimensions();
         this._baseAnimate();
     }
 
@@ -83,14 +74,18 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
         }
     }
 
-    protected _setCanvasDimensions(): void {
-        this._canvasHeight = this._getCanvasHeight();
-        this._canvasWidth = this._getCanvasWidth();
+    protected _updateDimensions(): void {
+        this._setUpCanvas();
+        this._onDimensionsChanged();
     }
 
     private _setUpCanvas(): void {
+        this._canvasHeight = this._getCanvasHeight() + this._canvasPadding * 2; // add space to the sides of the canvas
+        this._canvasWidth = this._getCanvasWidth() + this._canvasPadding * 2; // add space to the sides of the canvas
+
         this.canvasElement.nativeElement.width = this._canvasWidth;
         this.canvasElement.nativeElement.height = this._canvasHeight;
+
         this._canvasContext = this.canvasElement.nativeElement.getContext('2d');
         this._canvasContext.shadowColor = this.startColorHex;
         this._canvasContext.shadowBlur = this.shadowBlur
@@ -109,7 +104,5 @@ export abstract class BaseVisualizerComponent implements OnInit, OnChanges, Afte
 
     protected abstract _getCanvasWidth(): number;
 
-    protected abstract _onSampleCountChanged(): void;
-
-    protected abstract _onScaleChanged(): void;
+    protected abstract _onDimensionsChanged(): void;
 }
