@@ -1,9 +1,13 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from './visualizer-view/visualizer/visualizer.types';
 import { animations } from './shared/animations';
 import { AudioService } from './services/audio.service';
 import { VisualizerService } from './services/visualizer.service';
 import { EmitterType, IEmitterConfig } from './visualizer-view/visualizer-emitter/visualizer-emitter.types';
+import { IAudioConfig } from './services/audio.service.types';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
     selector: 'app-root',
@@ -11,8 +15,9 @@ import { EmitterType, IEmitterConfig } from './visualizer-view/visualizer-emitte
     styleUrls: ['./app.component.scss'],
     animations: animations
 })
-export class AppComponent implements AfterViewInit {
-    @ViewChild('audioElement') audioElement: ElementRef<HTMLAudioElement>;
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
+    @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
     // Todo support adding images
 
@@ -30,12 +35,24 @@ export class AppComponent implements AfterViewInit {
         },
     ];
     decibelRange: [number, number] = [-80, -20];
+    selectedAudioConfig: IAudioConfig = this.audioService.audioConfigs[5];
+
+    private _destroy$: Subject<void> = new Subject();
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
-    constructor(public audioService: AudioService, public visualizerService: VisualizerService) {
+    constructor(public audioService: AudioService,
+                public visualizerService: VisualizerService,
+                private _messageService: NzMessageService) {
+    }
+
+    ngOnInit(): void {
+        this.audioService.activeConfigChange$
+            .pipe(takeUntil(this._destroy$))
+            .subscribe(config => this.selectedAudioConfig = config)
+        this.audioService.setActiveConfig(this.selectedAudioConfig);
     }
 
     ngAfterViewInit(): void {
@@ -43,8 +60,17 @@ export class AppComponent implements AfterViewInit {
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
     }
 
-    getAudioName(src: string): string {
-        return src.split('/').pop().split('.').shift();
+    ngOnDestroy(): void {
+        this._destroy$.next();
+        this._destroy$.complete();
+    }
+
+    getAudioName(config: IAudioConfig): string {
+        if (config.isAsset) {
+            return (config.src as string).split('/').pop().split('.').shift()
+        } else {
+            return config.file.name.split('.').shift()
+        }
     }
 
     onPlayPause(): void {
@@ -97,5 +123,12 @@ export class AppComponent implements AfterViewInit {
 
     onDecibelChanged(): void {
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
+    }
+
+    onFileChange() {
+        const files: FileList = this.fileInputElement.nativeElement.files;
+        if (this.audioService.uploadAudioFiles(files)) {
+            this._messageService.success('Upload successful')
+        }
     }
 }

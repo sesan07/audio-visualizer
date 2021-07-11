@@ -1,4 +1,4 @@
-<audio #audioElement [src]="audioService.selectedAudioConfig.src" (ended)="onEnded()"></audio>
+<audio #audio [src]="audioService.activeSrc" (ended)="onEnded()"></audio>
 
 <div #visualizerView class="visualizer-view"
      (click)="onVisualizerViewClicked()">
@@ -46,9 +46,16 @@
         </span>
         <div class="control-group">
             <app-control name="Song">
-                <nz-select [(ngModel)]="audioService.selectedAudioConfig">
-                    <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option" [nzLabel]="getAudioName(option.src)"></nz-option>
-                </nz-select>
+                <div class="song-select-wrapper">
+                    <nz-select [(ngModel)]="selectedAudioConfig" (ngModelChange)="audioService.setActiveConfig(selectedAudioConfig)">
+                        <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option" [nzLabel]="getAudioName(option)"></nz-option>
+                    </nz-select>
+                    <input #fileInput type="file" id="file" hidden accept="audio/*" multiple (change)="onFileChange()"/>
+                    <button nz-button (click)="fileInput.click()">
+                        <i nz-icon nzType="upload"></i>
+                        Upload Files
+                    </button>
+                </div>
             </app-control>
             <app-control name="Mode">
                 <nz-radio-group [(ngModel)]="audioService.mode">
