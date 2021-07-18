@@ -1,124 +1,65 @@
 import { Injectable } from '@angular/core';
-import {
-    IBaseEntityConfig,
-    IBaseVisualizerConfig,
-    IVisualizerConfig, IEntityConfig,
-    EntityType
-} from './entity.types';
+import { EntityType, IEntityConfig, IEntityContentConfig } from './entity.types';
 import { AudioService } from '../shared/audio-service/audio.service';
-import { getRandomColorHex } from 'visualizer';
-import { getRandomNumber } from '../shared/utils';
+import { VisualizerType } from 'visualizer';
+import { IVisualizerConfig } from './visualizer-entity/visualizer-entity.types';
+import { VisualizerService } from './visualizer-entity/visualizer.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class EntityService {
-    activeVisualizer: IEntityConfig;
-    visualizers: IEntityConfig[] = [];
-    emittedVisualizers: IEntityConfig[] = [];
+    activeEntity: IEntityConfig;
+    entities: IEntityConfig[] = [];
+    emittedEntities: IEntityConfig[] = [];
 
-    constructor(private _audioService: AudioService) {
+    constructor(private _audioService: AudioService,
+                private _visualizerService: VisualizerService) {
     }
 
-    addVisualizer(type: EntityType, setActive?: boolean): void {
-        const visualizer: IEntityConfig = {
-            ...this.getDefaultAppVisualizerConfig(type),
-            ...this.getDefaultLibVisualizerConfig(type)
-        };
-        this.visualizers.push(visualizer)
-
-        if (setActive) {
-            this.activeVisualizer = visualizer;
-        }
-    }
-
-    addEmittedVisualizer(visualizer: IEntityConfig, autoRemoveTime: number): void {
-        this.emittedVisualizers.push(visualizer)
-        setTimeout(() => this.removeEmittedVisualizer(visualizer), autoRemoveTime)
-    }
-
-
-    getDefaultLibVisualizerConfig(type: EntityType): IVisualizerConfig {
-        const sampleCount: number = 16;
-        const libBaseConfig: IBaseVisualizerConfig = {
-            amplitudes: this._audioService.getAmplitudes(sampleCount),
-            startColorHex: getRandomColorHex(),
-            endColorHex: getRandomColorHex(),
-            multiplier: 1,
-            opacity: 1,
-            scale: 1,
-            shadowBlur: 5,
-            sampleCount: sampleCount
-        }
-
-        let visualizer: IVisualizerConfig;
+    addEntity(type: EntityType, setActive?: boolean): void {
+        let entity: IEntityConfig;
         switch (type) {
-            case EntityType.BAR:
-                visualizer = {
-                    ...libBaseConfig,
-                    barCapSize: 5,
-                    barSize: 20,
-                    barSpacing: 10,
-                    looseCaps: false
-                };
+            case EntityType.VISUALIZER:
+                const visualizer: IVisualizerConfig = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+                entity = this.getDefaultEntity(type, visualizer);
                 break;
-            case EntityType.BARCLE:
-                visualizer = {
-                    ...libBaseConfig,
-                    baseRadius: 80,
-                    scale: 0.5
-                };
-                break;
-            case EntityType.CIRCLE:
-                visualizer = {
-                    ...libBaseConfig,
-                    baseRadius: 80,
-                    sampleRadius: 25,
-                    scale: 0.5
-                };
-                break;
-            default:
-                throw new Error('Unknown entity option selected');
+            default: throw new Error('Unknown entity type')
         }
 
-        return visualizer;
+        this.entities.push(entity)
+        if (setActive) {
+            this.activeEntity = entity;
+        }
     }
 
-    getDefaultAppVisualizerConfig(type: EntityType): IBaseEntityConfig {
+    addEmittedEntity(entity: IEntityConfig, autoRemoveTime: number): void {
+        this.emittedEntities.push(entity)
+        setTimeout(() => this.removeEmittedEntity(entity), autoRemoveTime)
+    }
+
+    getDefaultEntity(type: EntityType, contentConfig: IEntityContentConfig): IEntityConfig {
         return {
             type: type,
             animationStopTime: 1000,
             disableAnimation: true,
-            rotation: 0
+            rotation: 0,
+            entityContentConfig: contentConfig
         }
     }
 
-    getDefaultAppEmitterVisualizerConfig(type: EntityType): IBaseEntityConfig {
-        return {
-            type: type,
-            animationStopTime: 1000,
-            animateMovement: true,
-            animateRotation: true,
-            movementAngle: getRandomNumber(0, 360),
-            movementSpeed: getRandomNumber(0.5, 2),
-            rotation: getRandomNumber(0, 360),
-            rotationSpeed: getRandomNumber(0.5, 2),
-            disableColorEdit: true
+    removeEntity(index: number): void {
+        const entity: IEntityConfig = this.entities[index];
+        this.entities.splice(index, 1);
+        if (entity === this.activeEntity) {
+            this.activeEntity = null;
         }
     }
 
-    removeVisualizer(index: number): void {
-        const visualizer: IEntityConfig = this.visualizers[index];
-        this.visualizers.splice(index, 1);
-        if (visualizer === this.activeVisualizer) {
-            this.activeVisualizer = null;
-        }
-    }
-
-    removeEmittedVisualizer(visualizer?: IEntityConfig): void {
-        const index: number = this.emittedVisualizers.indexOf(visualizer);
+    removeEmittedEntity(entity?: IEntityConfig): void {
+        const index: number = this.emittedEntities.indexOf(entity);
         if (index !== -1) {
-            this.emittedVisualizers.splice(index, 1);
+            this.emittedEntities.splice(index, 1);
         }
     }
 }

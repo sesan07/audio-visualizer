@@ -1,24 +1,24 @@
 <audio #audio [src]="audioService.activeSrc" (ended)="onEnded()"></audio>
 
-<div #visualizerView class="visualizer-view"
-     (click)="onVisualizerViewClicked()">
-    <app-entity class="visualizer"
-                @visualizerEnterLeaveTrigger
-                *ngFor="let visualizer of entityService.visualizers"
-                [boundaryElement]="visualizerView"
-                [config]="visualizer"
-                [showOutline]="visualizer === entityService.activeVisualizer"
-                (click)="onVisualizerSelected(visualizer, $event)">
+<div #entityView class="entity-view"
+     (click)="onEntityViewClicked()">
+    <app-entity class="entity"
+                @entityEnterLeaveTrigger
+                *ngFor="let entity of entityService.entities"
+                [boundaryElement]="entityView"
+                [config]="entity"
+                [showOutline]="entity === entityService.activeEntity"
+                (click)="onEntitySelected(entity, $event)">
     </app-entity>
 
-    <app-entity @visualizerEnterLeaveTrigger
-                *ngFor="let visualizer of entityService.emittedVisualizers"
-                [boundaryElement]="visualizerView"
-                [config]="visualizer">
+    <app-entity @entityEnterLeaveTrigger
+                *ngFor="let entity of entityService.emittedEntities"
+                [boundaryElement]="entityView"
+                [config]="entity">
     </app-entity>
 
-    <app-entity-emitter class="visualizer-emitter"
-                        @visualizerEnterLeaveTrigger
+    <app-entity-emitter class="entity-emitter"
+                        @entityEnterLeaveTrigger
                         *ngFor="let emitter of entityEmitterService.emitters"
                         [config]="emitter"
                         (click)="onEmitterSelected(emitter, $event)">
@@ -71,13 +71,13 @@
         </div>
     </div>
 
-    <app-controller-wrapper type="visualizer"
-                            [configs]="entityService.visualizers"
-                            [activeConfig]="entityService.activeVisualizer"
-                            [addOptions]="addVisualizerOptions"
-                            (configSelect)="onVisualizerSelected($event)"
-                            (add)="onAddVisualizer($event)"
-                            (remove)="onRemoveVisualizer($event)" >
+    <app-controller-wrapper type="entity"
+                            [configs]="entityService.entities"
+                            [activeConfig]="entityService.activeEntity"
+                            [addOptions]="addEntityOptions"
+                            (configSelect)="onEntitySelected($event)"
+                            (add)="onAddEntity($event)"
+                            (remove)="onRemoveEntity($event)" >
     </app-controller-wrapper>
 
     <app-controller-wrapper type="emitter"

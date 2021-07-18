@@ -10,7 +10,7 @@ import { animations } from '../../animations';
     animations: animations
 })
 export class ControllerWrapperComponent implements OnInit {
-    @Input() type: 'visualizer' | 'emitter';
+    @Input() type: 'entity' | 'emitter';
     @Input() addOptions: EntityType[] | EntityEmitterType[];
     @Input() activeConfig: IEntityConfig | IEntityEmitterConfig;
     @Input() configs: IEntityConfig[] | IEntityEmitterConfig[];
@@ -21,7 +21,7 @@ export class ControllerWrapperComponent implements OnInit {
     selectedAddOption: EntityType | EntityEmitterType;
 
     get name(): string {
-        return this.type === 'visualizer' ? 'Visualizer' : 'Emitter'
+        return this.type === 'entity' ? 'Entity' : 'Entity Emitter'
     }
 
     ngOnInit(): void {

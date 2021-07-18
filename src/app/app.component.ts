@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Todo support adding images
 
-    addVisualizerOptions: EntityType[] = Object.values(EntityType);
+    addEntityOptions: EntityType[] = Object.values(EntityType);
     addEmitterOptions: EntityEmitterType[] = Object.values(EntityEmitterType);
 
     modeOptions: any[] = [
@@ -91,16 +91,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.audioService.playNextSong();
     }
 
-    onAddVisualizer(type: EntityType): void {
-        this.entityService.addVisualizer(type, true)
+    onAddEntity(type: EntityType): void {
+        this.entityService.addEntity(type, true)
     }
 
     onAddEmitter(type: EntityEmitterType): void {
         this.entityEmitterService.addEmitter(type)
     }
 
-    onVisualizerSelected(config: IEntityConfig, event?: MouseEvent): void {
-        this.entityService.activeVisualizer = config;
+    onEntitySelected(config: IEntityConfig, event?: MouseEvent): void {
+        this.entityService.activeEntity = config;
         event?.stopPropagation();
     }
 
@@ -109,16 +109,16 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         event?.stopPropagation();
     }
 
-    onRemoveVisualizer(index: number): void {
-        this.entityService.removeVisualizer(index)
+    onRemoveEntity(index: number): void {
+        this.entityService.removeEntity(index)
     }
 
     onRemoveEmitter(index: number): void {
         this.entityEmitterService.removeEmitter(index)
     }
 
-    onVisualizerViewClicked(): void {
-        this.entityService.activeVisualizer = null;
+    onEntityViewClicked(): void {
+        this.entityService.activeEntity = null;
         this.entityEmitterService.activeEmitter = null;
     }
 

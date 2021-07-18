@@ -7,4 +7,4 @@ export interface IAudioConfig {
     isAsset: boolean;
 }
 
-export type VisualizerMode = 'frequency' | 'timeDomain';
+export type AnalyserMode = 'frequency' | 'timeDomain';

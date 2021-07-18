@@ -19,16 +19,16 @@ import { DraggableComponent } from '../shared/components/draggable/draggable.com
     templateUrl: './entity.component.html',
     styleUrls: ['./entity.component.scss']
 })
-export class EntityComponent extends DraggableComponent implements /*OnChanges,*/ OnDestroy {
+export class EntityComponent extends DraggableComponent implements OnChanges, OnDestroy {
     @Input() boundaryElement: HTMLElement;
     @Input() config: IEntityConfig;
     @Input() @HostBinding('class.outline') showOutline: boolean;
-    @ViewChild('libVisualizerElement') _libVisualizerElementRef: ElementRef<HTMLElement>
+    @ViewChild('entityTypeElement') _entityTypeElementRef: ElementRef<HTMLElement>
 
     // todo: fall down effect (slowly change angle to 90 degrees)
 
-    // This allows VisualizerType to be used in the HTML file
-    VisualizerType = EntityType;
+    // This allows EntityType to be used in the HTML file
+    EntityType = EntityType;
 
     private _animationFrameId: number;
     private _rotation: number = 0;
@@ -85,7 +85,7 @@ export class EntityComponent extends DraggableComponent implements /*OnChanges,*
 
     protected _setRotation(rotation: number) {
         this._rotation =  Math.ceil(rotation);
-        this._renderer.setStyle(this._libVisualizerElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)`)
+        this._renderer.setStyle(this._entityTypeElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)`)
     }
 
     private _stopAnimation(stopTime: number): void {

@@ -3,7 +3,7 @@
   height: 100%;
 }
 
-.visualizer-view {
+.entity-view {
   flex: auto;
   position: relative;
   overflow: hidden;
@@ -21,11 +21,11 @@
   overflow-y: auto;
 }
 
-.visualizer {
+.entity {
   z-index: 2;
 }
 
-.visualizer-emitter {
+.entity-emitter {
   z-index: 1;
 }
 

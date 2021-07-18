@@ -1,0 +1,18 @@
+<!-- Shared App Controls -->
+<ng-container *ngIf="!config.disableAnimation">
+    <app-control-line name="Animate Movement">
+        <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
+    </app-control-line>
+    <app-control-line name="Animate Rotation">
+        <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
+    </app-control-line>
+</ng-container>
+
+<app-control-line *ngIf="config.disableAnimation" name="Rotation">
+    <div class="slider-wrapper">
+        <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+        <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+    </div>
+</app-control-line>
+
+<app-visualizer-controller [config]="config.entityContentConfig"></app-visualizer-controller>

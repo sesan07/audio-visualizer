@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter.types';
-import { IEntityConfig, EntityType } from '../entity/entity.types';
+import { EntityType, IEntityConfig } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
+import { IVisualizerConfig } from '../entity/visualizer-entity/visualizer-entity.types';
+import { VisualizerType } from 'visualizer';
+import { getRandomNumber } from '../shared/utils';
+import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,25 +15,36 @@ export class EntityEmitterService {
     activeEmitter: IEntityEmitterConfig;
     emitters: IEntityEmitterConfig[] = [];
 
-    constructor(private _entityService: EntityService) {
+    constructor(private _entityService: EntityService, private _visualizerService: VisualizerService) {
     }
 
     addEmitter(type: EntityEmitterType): void {
-        const randomizeColors = true;
-        const visualizer: IEntityConfig = {
-            ...this._entityService.getDefaultAppEmitterVisualizerConfig(EntityType.BARCLE),
-            ...this._entityService.getDefaultLibVisualizerConfig(EntityType.BARCLE)
-        };
         const config: IEntityEmitterConfig = {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
             interval: 1,
             lifespan: 5,
-            randomizeColors: randomizeColors,
-            entity: visualizer
+            randomizeColors: true,
+            entity: this._getDefaultEmitterEntity()
         };
         this.emitters.push(config);
         this.activeEmitter = config;
+    }
+
+    private _getDefaultEmitterEntity(): IEntityConfig {
+        const visualizer: IVisualizerConfig = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+        return {
+            type: EntityType.VISUALIZER,
+            animationStopTime: 1000,
+            animateMovement: true,
+            animateRotation: true,
+            movementAngle: getRandomNumber(0, 360),
+            movementSpeed: getRandomNumber(0.5, 2),
+            rotation: getRandomNumber(0, 360),
+            rotationSpeed: getRandomNumber(0.5, 2),
+            disableColorEdit: true,
+            entityContentConfig: visualizer
+        }
     }
 
     removeEmitter(index: number): void {

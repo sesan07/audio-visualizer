@@ -42,7 +42,7 @@
         <span>
             <nz-divider [nzText]="'Modify ' + selectedAddOption"></nz-divider>
         </span>
-        <app-entity-controller class="control-group" *ngIf="type === 'visualizer'"
+        <app-entity-controller class="control-group" *ngIf="type === 'entity'"
                                @controllerEnterLeaveTrigger
                                [config]="activeConfig">
         </app-entity-controller>

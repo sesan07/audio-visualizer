@@ -13,12 +13,14 @@ import { ColorSketchModule } from 'ngx-color/sketch';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EntityComponent } from './entity/entity.component';
-import { EntityControllerComponent } from './entity/entity-controller/entity-controller.component';
+import { EntityControllerComponent } from './entity-controller/entity-controller.component';
 import { ControlLineComponent } from './shared/components/control-line/control-line.component';
 import { EntityEmitterComponent } from './entity-emitter/entity-emitter.component';
-import { EntityEmitterControllerComponent } from './entity-emitter/entity-emitter-controller/entity-emitter-controller.component';
+import { EntityEmitterControllerComponent } from './entity-emitter-controller/entity-emitter-controller.component';
 import { ControllerWrapperComponent } from './shared/components/controller-wrapper/controller-wrapper.component';
 import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
+import { VisualizerControllerComponent } from './entity-controller/visualizer-controller/visualizer-controller.component';
+import { VisualizerEntityComponent } from './entity/visualizer-entity/visualizer-entity.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -53,6 +55,8 @@ registerLocaleData(en);  // NG-Zorro
         EntityEmitterControllerComponent,
         ControllerWrapperComponent,
         ColorPickerComponent,
+        VisualizerControllerComponent,
+        VisualizerEntityComponent,
     ],
     imports: [
         BrowserModule,

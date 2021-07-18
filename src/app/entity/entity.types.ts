@@ -1,10 +1,14 @@
+import { VisualizerType } from 'visualizer';
+import { IVisualizerConfig } from './visualizer-entity/visualizer-entity.types';
+
 export enum EntityType {
-    BAR = 'Bar Visualizer',
-    BARCLE = 'Barcle Visualizer',
-    CIRCLE = 'Circle Visualizer'
+    VISUALIZER = 'Visualizer',
 }
 
-export interface IBaseEntityConfig {
+export type EntityContentType = VisualizerType;
+export type IEntityContentConfig = IVisualizerConfig;
+
+export interface IEntityConfig<I = IEntityContentConfig> {
     type: EntityType;
     animationStopTime?: number;
     animateMovement?: boolean;
@@ -17,35 +21,10 @@ export interface IBaseEntityConfig {
     startTop?: number;
     disableColorEdit?: boolean;
     disableAnimation?: boolean;
+    entityContentConfig: I;
 }
 
-export interface IBaseVisualizerConfig {
-    amplitudes: Uint8Array;
-    startColorHex: string;
-    endColorHex: string;
-    multiplier: number;
-    opacity: number;
-    sampleCount: number;
-    scale: number;
-    shadowBlur?: number;
+export interface IEntityContentService<T = EntityContentType, C = IEntityContentConfig> {
+    beforeEmit(config: C): void;
+    getDefaultContent(contentType: T): C;
 }
-
-export interface IBarVisualizerConfig extends IBaseVisualizerConfig {
-    barCapSize: number;
-    barSize: number;
-    barSpacing: number;
-    looseCaps: boolean;
-}
-
-export interface IBarcleVisualizerConfig extends IBaseVisualizerConfig{
-    baseRadius: number;
-}
-
-export interface ICircleVisualizerConfig extends IBaseVisualizerConfig{
-    baseRadius: number;
-    sampleRadius: number;
-}
-
-export type IVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;
-
-export type IEntityConfig = IBaseEntityConfig & IVisualizerConfig;

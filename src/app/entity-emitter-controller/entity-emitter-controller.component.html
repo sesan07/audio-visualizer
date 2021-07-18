@@ -4,9 +4,9 @@
     </nz-radio-group>
 </app-control-line>
 
-<app-control-line name="Visualizer Type">
-    <nz-select [(ngModel)]="config.entity.type" (ngModelChange)="onVisualizerTypeChange()">
-        <nz-option *ngFor="let option of visualizerTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+<app-control-line name="Entity Type">
+    <nz-select [(ngModel)]="config.entity.type" (ngModelChange)="onEntityTypeChange()">
+        <nz-option *ngFor="let option of entityTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
     </nz-select>
 </app-control-line>
 <app-control-line name="Interval">
@@ -28,7 +28,7 @@
 </app-control-line>
 
 <span>
-    <nz-divider nzText="Modify Emitter Visualizer"></nz-divider>
+    <nz-divider nzText="Modify Emitter Entity"></nz-divider>
 </span>
 
 <app-entity-controller [config]="config.entity"></app-entity-controller>

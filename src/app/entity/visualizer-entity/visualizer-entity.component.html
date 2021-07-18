@@ -1,0 +1,42 @@
+<ng-container [ngSwitch]="config.type">
+    <lib-bar-visualizer *ngSwitchCase="VisualizerType.BAR"
+                        [amplitudes]="config.amplitudes"
+                        [animationStopTime]="animationStopTime"
+                        [scale]="config.scale"
+                        [shadowBlur]="config.shadowBlur"
+                        [startColorHex]="config.startColorHex"
+                        [endColorHex]="config.endColorHex"
+                        [multiplier]="config.multiplier"
+                        [opacity]="config.opacity"
+                        [sampleCount]="config.sampleCount"
+                        [looseCaps]="config.looseCaps"
+                        [barCapSize]="config.barCapSize"
+                        [barSize]="config.barSize"
+                        [barSpacing]="config.barSpacing">
+    </lib-bar-visualizer>
+    <lib-barcle-visualizer *ngSwitchCase="VisualizerType.BARCLE"
+                           [amplitudes]="config.amplitudes"
+                           [animationStopTime]="animationStopTime"
+                           [scale]="config.scale"
+                           [shadowBlur]="config.shadowBlur"
+                           [startColorHex]="config.startColorHex"
+                           [endColorHex]="config.endColorHex"
+                           [multiplier]="config.multiplier"
+                           [opacity]="config.opacity"
+                           [sampleCount]="config.sampleCount"
+                           [baseRadius]="config.baseRadius">
+    </lib-barcle-visualizer>
+    <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
+                           [amplitudes]="config.amplitudes"
+                           [animationStopTime]="animationStopTime"
+                           [scale]="config.scale"
+                           [shadowBlur]="config.shadowBlur"
+                           [startColorHex]="config.startColorHex"
+                           [endColorHex]="config.endColorHex"
+                           [multiplier]="config.multiplier"
+                           [opacity]="config.opacity"
+                           [sampleCount]="config.sampleCount"
+                           [baseRadius]="config.baseRadius"
+                           [sampleRadius]="config.sampleRadius">
+    </lib-circle-visualizer>
+</ng-container>

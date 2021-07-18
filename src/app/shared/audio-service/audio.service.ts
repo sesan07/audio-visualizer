@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { IAudioConfig, VisualizerMode } from './audio.service.types';
+import { IAudioConfig, AnalyserMode } from './audio.service.types';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 
@@ -76,7 +76,7 @@ export class AudioService {
         return this._activeConfigSubject$.asObservable();
     }
 
-    mode: VisualizerMode = 'frequency';
+    mode: AnalyserMode = 'frequency';
 
     private _activeConfig: IAudioConfig;
     private _activeConfigSubject$: Subject<IAudioConfig> = new Subject();

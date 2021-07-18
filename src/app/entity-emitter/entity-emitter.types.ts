@@ -1,8 +1,8 @@
 import { IEntityConfig } from '../entity/entity.types';
 
 export enum EntityEmitterType {
-    POINT = 'Point Emitter',
-    PAGE = 'Page Emitter'
+    PAGE = 'Page Emitter',
+    POINT = 'Point Emitter'
 }
 
 export interface IEntityEmitterConfig {
