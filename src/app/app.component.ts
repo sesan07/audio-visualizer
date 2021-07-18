@@ -90,8 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onAddVisualizer(type: VisualizerType): void {
-        const visualizer: IVisualizerConfig = this.visualizerService.getDefaultVisualizer(type)
-        this.visualizerService.addVisualizer(visualizer, true)
+        this.visualizerService.addVisualizer(type, true)
     }
 
     onAddEmitter(type: EmitterType): void {

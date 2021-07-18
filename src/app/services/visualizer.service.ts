@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { IBaseVisualizerConfig, ILibBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from '../visualizer-view/visualizer/visualizer.types';
+import {
+    IAppVisualizerConfig,
+    ILibBaseVisualizerConfig,
+    ILibVisualizerConfig, IVisualizerConfig,
+    VisualizerType
+} from '../visualizer-view/visualizer/visualizer.types';
 import { AudioService } from './audio.service';
 import { EmitterType, IEmitterConfig } from '../visualizer-view/visualizer-emitter/visualizer-emitter.types';
 import { getRandomColorHex } from 'visualizer';
+import { getRandomNumber } from '../shared/utils';
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +25,13 @@ export class VisualizerService {
     constructor(private _audioService: AudioService) {
     }
 
-    addVisualizer(visualizer: IVisualizerConfig, setActive?: boolean): void {
+    addVisualizer(type: VisualizerType, setActive?: boolean): void {
+        const visualizer: IVisualizerConfig = {
+            ...this.getDefaultAppVisualizerConfig(type),
+            ...this.getDefaultLibVisualizerConfig(type)
+        };
         this.visualizers.push(visualizer)
+
         if (setActive) {
             this.activeVisualizer = visualizer;
         }
@@ -33,25 +44,27 @@ export class VisualizerService {
 
     addEmitter(type: EmitterType): void {
         const randomizeColors = true;
+        const visualizer: IVisualizerConfig = {
+            ...this.getDefaultAppEmitterVisualizerConfig(VisualizerType.BARCLE),
+            ...this.getDefaultLibVisualizerConfig(VisualizerType.BARCLE)
+        };
         const config: IEmitterConfig = {
             emitterType: type,
             name: `Emitter (${this.emitterCount++})`,
             interval: 1,
             lifespan: 5,
             randomizeColors: randomizeColors,
-            visualizer: this.getDefaultVisualizer(VisualizerType.BARCLE, randomizeColors)
+            visualizer: visualizer
         }
         this.emitters.push(config);
         this.activeEmitter = config;
     }
 
-    getDefaultVisualizer(type: VisualizerType, disableColorEdit?: boolean): IVisualizerConfig {
+
+    getDefaultLibVisualizerConfig(type: VisualizerType): ILibVisualizerConfig {
         const sampleCount: number = 16;
-        const baseConfig: IBaseVisualizerConfig = { type, disableColorEdit };
         const libBaseConfig: ILibBaseVisualizerConfig = {
-            ...baseConfig,
             amplitudes: this._audioService.getAmplitudes(sampleCount),
-            animationStopTime: 1000,
             startColorHex: getRandomColorHex(),
             endColorHex: getRandomColorHex(),
             multiplier: 1,
@@ -61,9 +74,9 @@ export class VisualizerService {
             sampleCount: sampleCount
         }
 
-        let visualizer: IVisualizerConfig;
+        let visualizer: ILibVisualizerConfig;
         switch (type) {
-            case 'Bar':
+            case VisualizerType.BAR:
                 visualizer = {
                     ...libBaseConfig,
                     barCapSize: 5,
@@ -72,14 +85,14 @@ export class VisualizerService {
                     looseCaps: false
                 };
                 break;
-            case 'Barcle':
+            case VisualizerType.BARCLE:
                 visualizer = {
                     ...libBaseConfig,
                     baseRadius: 80,
                     scale: 0.5
                 };
                 break;
-            case 'Circle':
+            case VisualizerType.CIRCLE:
                 visualizer = {
                     ...libBaseConfig,
                     baseRadius: 80,
@@ -92,6 +105,29 @@ export class VisualizerService {
         }
 
         return visualizer;
+    }
+
+    getDefaultAppVisualizerConfig(type: VisualizerType): IAppVisualizerConfig {
+        return {
+            type: type,
+            animationStopTime: 1000,
+            disableAnimation: true,
+            rotation: 0
+        }
+    }
+
+    getDefaultAppEmitterVisualizerConfig(type: VisualizerType): IAppVisualizerConfig {
+        return {
+            type: type,
+            animationStopTime: 1000,
+            animateMovement: true,
+            animateRotation: true,
+            movementAngle: getRandomNumber(0, 360),
+            movementSpeed: getRandomNumber(0.5, 2),
+            rotation: getRandomNumber(0, 360),
+            rotationSpeed: getRandomNumber(0.5, 2),
+            disableColorEdit: true
+        }
     }
 
     removeEmitter(index: number): void {

@@ -8,6 +8,7 @@ import { AudioService } from '../../services/audio.service';
     styleUrls: ['./visualizer-controller.component.css'],
 })
 export class VisualizerControllerComponent {
+    // Todo this controller should be used to change visualizer type
     @Input() config: IVisualizerConfig;
 
     VisualizerType = VisualizerType;

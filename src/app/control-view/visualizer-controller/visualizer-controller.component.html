@@ -1,4 +1,21 @@
-<!-- Shared Controls -->
+<!-- Shared App Controls -->
+<ng-container *ngIf="!config.disableAnimation">
+    <app-control name="Animate Movement">
+        <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
+    </app-control>
+    <app-control name="Animate Rotation">
+        <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
+    </app-control>
+</ng-container>
+
+<app-control *ngIf="config.disableAnimation" name="Rotation">
+    <div class="slider-wrapper">
+        <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+        <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+    </div>
+</app-control>
+
+<!-- Shared Lib Controls -->
 <app-control *ngIf="!config.disableColorEdit" name="Start Color">
     <app-color-picker [(color)]="config.startColorHex"></app-color-picker>
 </app-control>
@@ -35,7 +52,7 @@
     </div>
 </app-control>
 
-<!-- Specific Controls -->
+<!-- Specific Lib Controls -->
 <ng-container [ngSwitch]="config.type">
     <!--  Bar Controls  -->
     <ng-container *ngSwitchCase="VisualizerType.BAR">

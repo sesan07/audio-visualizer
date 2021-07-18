@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EmitterType, IEmitterConfig } from '../../visualizer-view/visualizer-emitter/visualizer-emitter.types';
-import { VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
+import { ILibVisualizerConfig, VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
 import { VisualizerService } from '../../services/visualizer.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class EmitterControllerComponent {
     }
 
     onVisualizerTypeChange(): void {
-        this.config.visualizer = this._visualizerService.getDefaultVisualizer(this.config.visualizer.type, this.config.randomizeColors);
+        const newLibConfig: ILibVisualizerConfig = this._visualizerService.getDefaultLibVisualizerConfig(this.config.visualizer.type)
+        this.config.visualizer = Object.assign(this.config.visualizer, newLibConfig);
     }
 }

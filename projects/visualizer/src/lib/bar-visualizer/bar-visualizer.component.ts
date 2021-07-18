@@ -47,6 +47,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
         let currPos = this._canvasPadding;
         this.amplitudes.forEach((amplitude, i) => {
             // if (currPos > 150) return
+            // Todo use original amplitude for gradient calculation
             amplitude *= this.multiplier * this.scale;
             let cap: number = this._amplitudeCaps[i];
             if (this.looseCaps) {

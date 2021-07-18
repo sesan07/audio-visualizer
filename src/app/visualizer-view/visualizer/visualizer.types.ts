@@ -4,15 +4,22 @@ export enum VisualizerType {
     CIRCLE = 'Circle'
 }
 
-export interface IBaseVisualizerConfig {
+export interface IAppVisualizerConfig {
     type: VisualizerType;
     animationStopTime?: number;
+    animateMovement?: boolean;
+    animateRotation?: boolean;
+    movementAngle?: number;
+    movementSpeed?: number;
+    rotation: number;
+    rotationSpeed?: number;
     startLeft?: number;
     startTop?: number;
     disableColorEdit?: boolean;
+    disableAnimation?: boolean;
 }
 
-export interface ILibBaseVisualizerConfig extends IBaseVisualizerConfig{
+export interface ILibBaseVisualizerConfig {
     amplitudes: Uint8Array;
     startColorHex: string;
     endColorHex: string;
@@ -39,4 +46,6 @@ export interface ICircleVisualizerConfig extends ILibBaseVisualizerConfig{
     sampleRadius: number;
 }
 
-export type IVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;
+export type ILibVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;
+
+export type IVisualizerConfig = IAppVisualizerConfig & ILibVisualizerConfig;

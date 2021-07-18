@@ -19,7 +19,7 @@ describe('AppComponent', () => {
   it(`should have as title 'audio-visualizer'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('audio-visualizer');
+    expect(app.isPlaying).toEqual(false);
   });
 
   it('should render title', () => {

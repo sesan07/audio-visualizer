@@ -1,4 +1,15 @@
-import { Component, ElementRef, HostBinding, Input, NgZone, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    HostBinding,
+    Input,
+    NgZone,
+    OnChanges,
+    OnDestroy,
+    Renderer2,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from './visualizer.types';
 import { getRadians, getRandomNumber } from '../../shared/utils';
 import { DraggableComponent } from '../draggable/draggable.component';
@@ -8,13 +19,11 @@ import { DraggableComponent } from '../draggable/draggable.component';
     templateUrl: './visualizer.component.html',
     styleUrls: ['./visualizer.component.scss']
 })
-export class VisualizerComponent extends DraggableComponent implements OnChanges, OnDestroy {
+export class VisualizerComponent extends DraggableComponent implements /*OnChanges,*/ OnDestroy {
     @Input() boundaryElement: HTMLElement;
     @Input() config: IVisualizerConfig;
     @Input() @HostBinding('class.outline') showOutline: boolean;
-    @Input() animateMovement: boolean;
-    @Input() animationAngle: number = getRandomNumber(0, 360);
-    @Input() animationSpeed: number = getRandomNumber(0.5, 2);
+    @ViewChild('libVisualizerElement') _libVisualizerElementRef: ElementRef<HTMLElement>
 
     // todo: fall down effect (slowly change angle to 90 degrees)
 
@@ -22,19 +31,13 @@ export class VisualizerComponent extends DraggableComponent implements OnChanges
     VisualizerType = VisualizerType;
 
     private _animationFrameId: number;
-    private _animationAngleRadians: number = getRadians(this.animationAngle);
+    private _rotation: number = 0;
 
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) {
         super(renderer, elementRef);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.animationAngle) {
-            this._animationAngleRadians = getRadians(this.animationAngle);
-        }
-        if (changes.animateMovement && !changes.animateMovement.firstChange) {
-            this.animateMovement ? this._animate() : this._stopAnimation();
-        }
     }
 
     ngAfterViewInit(): void {
@@ -50,24 +53,42 @@ export class VisualizerComponent extends DraggableComponent implements OnChanges
             top = getRandomNumber(0, this.boundaryElement.clientHeight - clientHeight);
         }
         this._setPosition(left, top);
+        this._setRotation(this.config.rotation)
 
-        if (this.animateMovement) {
-            this._animate();
-        }
+        this._animate();
     }
 
     private _animate(): void {
         this._ngZone.runOutsideAngular(() => {
-            const angleRadians: number = this._animationAngleRadians;
-            const newLeft: number = this._left + this.animationSpeed * Math.cos(angleRadians);
-            const newTop: number = this._top + this.animationSpeed * Math.sin(angleRadians);
-            this._setPosition(newLeft, newTop);
+            if (this.config.animateMovement) {
+                this._animateMovement();
+            }
+            if (this.config.animateRotation) {
+                this._animateRotation();
+            }
 
             this._animationFrameId = requestAnimationFrame(() => this._animate());
         });
     }
 
-    private _stopAnimation(stopTime?: number): void {
+    private _animateMovement(): void {
+        const angleRadians: number = getRadians(this.config.movementAngle);
+        const newLeft: number = this._left + this.config.movementSpeed * Math.cos(angleRadians);
+        const newTop: number = this._top + this.config.movementSpeed * Math.sin(angleRadians);
+        this._setPosition(newLeft, newTop);
+    }
+
+    private _animateRotation(): void {
+        const newRotation = (this._rotation + this.config.rotationSpeed) % 360;
+        this._setRotation(newRotation)
+    }
+
+    protected _setRotation(rotation: number) {
+        this._rotation =  Math.ceil(rotation);
+        this._renderer.setStyle(this._libVisualizerElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)`)
+    }
+
+    private _stopAnimation(stopTime: number): void {
         // Stop animation
         if (this._animationFrameId) {
             if (stopTime > 0) {

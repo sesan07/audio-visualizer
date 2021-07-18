@@ -1,4 +1,4 @@
-import { animate, AnimationTriggerMetadata, keyframes, style, transition, trigger } from '@angular/animations';
+import { animate, AnimationTriggerMetadata, style, transition, trigger } from '@angular/animations';
 
 export const animations: AnimationTriggerMetadata[] = [
     trigger('controllerEnterLeaveTrigger', [
