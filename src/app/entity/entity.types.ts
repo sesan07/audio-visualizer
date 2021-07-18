@@ -19,7 +19,7 @@ export interface IEntityConfig<I = IEntityContentConfig> {
     rotationSpeed?: number;
     startLeft?: number;
     startTop?: number;
-    disableColorEdit?: boolean;
+    disableRotationEdit?: boolean;
     disableAnimation?: boolean;
     entityContentConfig: I;
 }

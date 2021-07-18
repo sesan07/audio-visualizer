@@ -6,15 +6,35 @@
                 @entityEnterLeaveTrigger
                 *ngFor="let entity of entityService.entities"
                 [boundaryElement]="entityView"
-                [config]="entity"
                 [showOutline]="entity === entityService.activeEntity"
+                [type]="entity.type"
+                [animationStopTime]="entity.animationStopTime"
+                [animateMovement]="entity.animateMovement"
+                [animateRotation]="entity.animateRotation"
+                [movementAngle]="entity.movementAngle"
+                [movementSpeed]="entity.movementSpeed"
+                [rotation]="entity.rotation"
+                [rotationSpeed]="entity.rotationSpeed"
+                [startLeft]="entity.startLeft"
+                [startTop]="entity.startTop"
+                [entityContentConfig]="entity.entityContentConfig"
                 (click)="onEntitySelected(entity, $event)">
     </app-entity>
 
-    <app-entity @entityEnterLeaveTrigger
+    <app-entity class="emitted-entity" @entityEnterLeaveTrigger
                 *ngFor="let entity of entityService.emittedEntities"
                 [boundaryElement]="entityView"
-                [config]="entity">
+                [type]="entity.type"
+                [animationStopTime]="entity.animationStopTime"
+                [animateMovement]="entity.animateMovement"
+                [animateRotation]="entity.animateRotation"
+                [movementAngle]="entity.movementAngle"
+                [movementSpeed]="entity.movementSpeed"
+                [rotation]="entity.rotation"
+                [rotationSpeed]="entity.rotationSpeed"
+                [startLeft]="entity.startLeft"
+                [startTop]="entity.startTop"
+                [entityContentConfig]="entity.entityContentConfig">
     </app-entity>
 
     <app-entity-emitter class="entity-emitter"

@@ -1,17 +1,18 @@
 import { Component, Input } from '@angular/core';
-import { IEntityConfig, EntityType } from '../entity.types';
 import { AudioService } from '../../shared/audio-service/audio.service';
+import { IVisualizerConfig } from '../../entity/visualizer-entity/visualizer-entity.types';
+import { VisualizerType } from 'visualizer';
 
 @Component({
-    selector: 'app-entity-controller',
-    templateUrl: './entity-controller.component.html',
-    styleUrls: ['./entity-controller.component.css'],
+    selector: 'app-visualizer-controller',
+    templateUrl: './visualizer-controller.component.html',
+    styleUrls: ['./visualizer-controller.component.css']
 })
-export class EntityControllerComponent {
-    // Todo this controller should be used to change entity type
-    @Input() config: IEntityConfig;
+export class VisualizerControllerComponent {
+    @Input() config: IVisualizerConfig;
+    @Input() disableColorEdit: boolean;
 
-    VisualizerType = EntityType;
+    VisualizerType = VisualizerType;
 
     modeOptions: any[] = [
         {

@@ -1,5 +1,8 @@
 <!-- Shared Lib Controls -->
-<ng-container *ngIf="!disableColorEdit">
+<app-control-line name="Random Colors">
+    <nz-switch [(ngModel)]="config.randomizeColors"></nz-switch>
+</app-control-line>
+<ng-container *ngIf="!config.randomizeColors">
     <app-control-line name="Start Color">
         <app-color-picker [(color)]="config.startColorHex"></app-color-picker>
     </app-control-line>

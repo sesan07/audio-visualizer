@@ -1,7 +1,7 @@
-<div #entityTypeElement [ngSwitch]="config.type"
+<div #entityTypeElement [ngSwitch]="type"
      [class.outline]="showOutline">
     <app-visualizer-entity *ngSwitchCase="EntityType.VISUALIZER"
-                           [config]="config.entityContentConfig"
-                           [animationStopTime]="config.animationStopTime">
+                           [config]="entityContentConfig"
+                           [animationStopTime]="animationStopTime">
     </app-visualizer-entity>
 </div>

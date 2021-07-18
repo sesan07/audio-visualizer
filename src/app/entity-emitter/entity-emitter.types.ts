@@ -11,5 +11,4 @@ export interface IEntityEmitterConfig {
     name: string;
     interval: number;
     lifespan: number;
-    randomizeColors: boolean
 }

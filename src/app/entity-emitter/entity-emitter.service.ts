@@ -24,7 +24,6 @@ export class EntityEmitterService {
             name: `Emitter (${this.emitterCount++})`,
             interval: 1,
             lifespan: 5,
-            randomizeColors: true,
             entity: this._getDefaultEmitterEntity()
         };
         this.emitters.push(config);
@@ -42,7 +41,7 @@ export class EntityEmitterService {
             movementSpeed: getRandomNumber(0.5, 2),
             rotation: getRandomNumber(0, 360),
             rotationSpeed: getRandomNumber(0.5, 2),
-            disableColorEdit: true,
+            disableRotationEdit: true,
             entityContentConfig: visualizer
         }
     }
