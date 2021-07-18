@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AudioService } from '../../shared/audio-service/audio.service';
 import { IVisualizerConfig } from '../../entity/visualizer-entity/visualizer-entity.types';
 import { VisualizerType } from 'visualizer';
+import { VisualizerService } from '../../entity/visualizer-entity/visualizer.service';
 
 @Component({
     selector: 'app-visualizer-controller',
@@ -14,6 +15,7 @@ export class VisualizerControllerComponent {
 
     VisualizerType = VisualizerType;
 
+    visualizerTypeOptions: VisualizerType[] = Object.values(VisualizerType);
     modeOptions: any[] = [
         {
             name: 'Frequency',
@@ -26,11 +28,15 @@ export class VisualizerControllerComponent {
     ];
     sampleCountOptions: number[];
 
-    constructor(private _audioService: AudioService) {
+    constructor(private _audioService: AudioService, private _visualizerService: VisualizerService) {
         this.sampleCountOptions = this._audioService.sampleCounts;
     }
 
     onSampleCountChanged(): void {
         this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
+    }
+
+    onVisualizerTypeChange(): void {
+        Object.assign(this.config, this._visualizerService.getDefaultContent(this.config.type))
     }
 }

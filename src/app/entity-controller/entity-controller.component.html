@@ -1,3 +1,13 @@
+<span>
+    <nz-divider nzText="Entity Options"></nz-divider>
+</span>
+
+<app-control-line name="Entity Type">
+    <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onEntityTypeChange()">
+        <label *ngFor="let option of entityTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
+    </nz-radio-group>
+</app-control-line>
+
 <app-control-line *ngIf="!config.disableRotationEdit" name="Rotation">
     <div class="slider-wrapper">
         <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
@@ -14,4 +24,9 @@
     </app-control-line>
 </ng-container>
 
-<app-visualizer-controller [config]="config.entityContentConfig"></app-visualizer-controller>
+<ng-container [ngSwitch]="config.type">
+    <!--  Visualizer Controls  -->
+    <ng-container *ngSwitchCase="EntityType.VISUALIZER">
+        <app-visualizer-controller [config]="config.entityContentConfig"></app-visualizer-controller>
+    </ng-container>
+</ng-container>

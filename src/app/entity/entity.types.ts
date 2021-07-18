@@ -8,7 +8,7 @@ export enum EntityType {
 export type EntityContentType = VisualizerType;
 export type IEntityContentConfig = IVisualizerConfig;
 
-export interface IEntityConfig<I = IEntityContentConfig> {
+export interface IEntityConfig {
     type: EntityType;
     animationStopTime?: number;
     animateMovement?: boolean;
@@ -21,10 +21,10 @@ export interface IEntityConfig<I = IEntityContentConfig> {
     startTop?: number;
     disableRotationEdit?: boolean;
     disableAnimation?: boolean;
-    entityContentConfig: I;
+    entityContentConfig: IEntityContentConfig;
 }
 
-export interface IEntityContentService<T = EntityContentType, C = IEntityContentConfig> {
-    beforeEmit(config: C): void;
-    getDefaultContent(contentType: T): C;
+export interface IEntityContentService {
+    beforeEmit(config: IEntityContentConfig): void;
+    getDefaultContent(contentType: EntityContentType): IEntityContentConfig;
 }

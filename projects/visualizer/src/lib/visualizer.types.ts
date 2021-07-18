@@ -4,7 +4,7 @@ export interface Color {
     blue: number;
 }
 export enum VisualizerType {
-    BAR = 'Bar Visualizer',
-    BARCLE = 'Barcle Visualizer',
-    CIRCLE = 'Circle Visualizer'
+    BAR = 'Bar',
+    BARCLE = 'Barcle',
+    CIRCLE = 'Circle'
 }

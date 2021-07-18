@@ -7,7 +7,7 @@ import { AudioService } from '../../shared/audio-service/audio.service';
 @Injectable({
     providedIn: 'root'
 })
-export class VisualizerService implements IEntityContentService<VisualizerType, IVisualizerConfig> {
+export class VisualizerService implements IEntityContentService {
 
     constructor(private _audioService: AudioService) {
     }
@@ -61,8 +61,7 @@ export class VisualizerService implements IEntityContentService<VisualizerType, 
                     scale: 0.5
                 };
                 break;
-            default:
-                throw new Error('Unknown entity option selected');
+            default: throw new Error('Unknown visualizer type');
         }
 
         return visualizer;

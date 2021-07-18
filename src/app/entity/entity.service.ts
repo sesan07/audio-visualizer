@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { EntityType, IEntityConfig, IEntityContentConfig } from './entity.types';
 import { AudioService } from '../shared/audio-service/audio.service';
 import { VisualizerType } from 'visualizer';
-import { IVisualizerConfig } from './visualizer-entity/visualizer-entity.types';
 import { VisualizerService } from './visualizer-entity/visualizer.service';
 
 @Injectable({
@@ -18,15 +17,7 @@ export class EntityService {
     }
 
     addEntity(type: EntityType, setActive?: boolean): void {
-        let entity: IEntityConfig;
-        switch (type) {
-            case EntityType.VISUALIZER:
-                const visualizer: IVisualizerConfig = this._visualizerService.getDefaultContent(VisualizerType.BAR)
-                entity = this.getDefaultEntity(type, visualizer);
-                break;
-            default: throw new Error('Unknown entity type')
-        }
-
+        const entity: IEntityConfig = this.getDefaultEntity(type);
         this.entities.push(entity)
         if (setActive) {
             this.activeEntity = entity;
@@ -38,13 +29,21 @@ export class EntityService {
         setTimeout(() => this.removeEmittedEntity(entity), autoRemoveTime)
     }
 
-    getDefaultEntity(type: EntityType, contentConfig: IEntityContentConfig): IEntityConfig {
+    getDefaultEntity(type: EntityType): IEntityConfig {
+        let entityContent: IEntityContentConfig;
+        switch (type) {
+            case EntityType.VISUALIZER:
+                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+                break;
+            default: throw new Error('Unknown entity type')
+        }
+
         return {
             type: type,
             animationStopTime: 1000,
             disableAnimation: true,
             rotation: 0,
-            entityContentConfig: contentConfig
+            entityContentConfig: entityContent
         }
     }
 

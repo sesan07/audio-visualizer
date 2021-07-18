@@ -1,4 +1,13 @@
-<!-- Shared Lib Controls -->
+<span>
+    <nz-divider nzText="Visualizer Options"></nz-divider>
+</span>
+
+<!-- Shared Controls -->
+<app-control-line name="Visualizer Type">
+    <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onVisualizerTypeChange()">
+        <label *ngFor="let option of visualizerTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
+    </nz-radio-group>
+</app-control-line>
 <app-control-line name="Random Colors">
     <nz-switch [(ngModel)]="config.randomizeColors"></nz-switch>
 </app-control-line>
@@ -40,7 +49,7 @@
     </div>
 </app-control-line>
 
-<!-- Specific Lib Controls -->
+<!-- Specific Controls -->
 <ng-container [ngSwitch]="config.type">
     <!--  Bar Controls  -->
     <ng-container *ngSwitchCase="VisualizerType.BAR">
