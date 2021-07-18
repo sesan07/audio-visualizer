@@ -10,25 +10,25 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from './visualizer.types';
-import { getRadians, getRandomNumber } from '../../shared/utils';
-import { DraggableComponent } from '../draggable/draggable.component';
+import { IEntityConfig, EntityType } from './entity.types';
+import { getRadians, getRandomNumber } from '../shared/utils';
+import { DraggableComponent } from '../shared/components/draggable/draggable.component';
 
 @Component({
-    selector: 'app-visualizer',
-    templateUrl: './visualizer.component.html',
-    styleUrls: ['./visualizer.component.scss']
+    selector: 'app-entity',
+    templateUrl: './entity.component.html',
+    styleUrls: ['./entity.component.scss']
 })
-export class VisualizerComponent extends DraggableComponent implements /*OnChanges,*/ OnDestroy {
+export class EntityComponent extends DraggableComponent implements /*OnChanges,*/ OnDestroy {
     @Input() boundaryElement: HTMLElement;
-    @Input() config: IVisualizerConfig;
+    @Input() config: IEntityConfig;
     @Input() @HostBinding('class.outline') showOutline: boolean;
     @ViewChild('libVisualizerElement') _libVisualizerElementRef: ElementRef<HTMLElement>
 
     // todo: fall down effect (slowly change angle to 90 degrees)
 
     // This allows VisualizerType to be used in the HTML file
-    VisualizerType = VisualizerType;
+    VisualizerType = EntityType;
 
     private _animationFrameId: number;
     private _rotation: number = 0;

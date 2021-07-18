@@ -1,17 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from '../../visualizer-view/visualizer/visualizer.types';
-import { AudioService } from '../../services/audio.service';
+import { IEntityConfig, EntityType } from '../entity.types';
+import { AudioService } from '../../shared/audio-service/audio.service';
 
 @Component({
-    selector: 'app-visualizer-controller',
-    templateUrl: './visualizer-controller.component.html',
-    styleUrls: ['./visualizer-controller.component.css'],
+    selector: 'app-entity-controller',
+    templateUrl: './entity-controller.component.html',
+    styleUrls: ['./entity-controller.component.css'],
 })
-export class VisualizerControllerComponent {
-    // Todo this controller should be used to change visualizer type
-    @Input() config: IVisualizerConfig;
+export class EntityControllerComponent {
+    // Todo this controller should be used to change entity type
+    @Input() config: IEntityConfig;
 
-    VisualizerType = VisualizerType;
+    VisualizerType = EntityType;
 
     modeOptions: any[] = [
         {

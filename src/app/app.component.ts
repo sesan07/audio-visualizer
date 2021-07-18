@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IVisualizerConfig, VisualizerType } from './visualizer-view/visualizer/visualizer.types';
+import { IEntityConfig, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
-import { AudioService } from './services/audio.service';
-import { VisualizerService } from './services/visualizer.service';
-import { EmitterType, IEmitterConfig } from './visualizer-view/visualizer-emitter/visualizer-emitter.types';
-import { IAudioConfig } from './services/audio.service.types';
+import { AudioService } from './shared/audio-service/audio.service';
+import { EntityService } from './entity/entity.service';
+import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter/entity-emitter.types';
+import { IAudioConfig } from './shared/audio-service/audio.service.types';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { EntityEmitterService } from './entity-emitter/entity-emitter.service';
 
 @Component({
     selector: 'app-root',
@@ -21,8 +22,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Todo support adding images
 
-    addVisualizerOptions: VisualizerType[] = Object.values(VisualizerType);
-    addEmitterOptions: EmitterType[] = Object.values(EmitterType);
+    addVisualizerOptions: EntityType[] = Object.values(EntityType);
+    addEmitterOptions: EntityEmitterType[] = Object.values(EntityEmitterType);
 
     modeOptions: any[] = [
         {
@@ -44,7 +45,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     constructor(public audioService: AudioService,
-                public visualizerService: VisualizerService,
+                public entityService: EntityService,
+                public entityEmitterService: EntityEmitterService,
                 private _messageService: NzMessageService) {
     }
 
@@ -89,35 +91,35 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.audioService.playNextSong();
     }
 
-    onAddVisualizer(type: VisualizerType): void {
-        this.visualizerService.addVisualizer(type, true)
+    onAddVisualizer(type: EntityType): void {
+        this.entityService.addVisualizer(type, true)
     }
 
-    onAddEmitter(type: EmitterType): void {
-        this.visualizerService.addEmitter(type)
+    onAddEmitter(type: EntityEmitterType): void {
+        this.entityEmitterService.addEmitter(type)
     }
 
-    onVisualizerSelected(config: IVisualizerConfig, event?: MouseEvent): void {
-        this.visualizerService.activeVisualizer = config;
+    onVisualizerSelected(config: IEntityConfig, event?: MouseEvent): void {
+        this.entityService.activeVisualizer = config;
         event?.stopPropagation();
     }
 
-    onEmitterSelected(config: IEmitterConfig, event?: MouseEvent): void {
-        this.visualizerService.activeEmitter = config;
+    onEmitterSelected(config: IEntityEmitterConfig, event?: MouseEvent): void {
+        this.entityEmitterService.activeEmitter = config;
         event?.stopPropagation();
     }
 
     onRemoveVisualizer(index: number): void {
-        this.visualizerService.removeVisualizer(index)
+        this.entityService.removeVisualizer(index)
     }
 
     onRemoveEmitter(index: number): void {
-        this.visualizerService.removeEmitter(index)
+        this.entityEmitterService.removeEmitter(index)
     }
 
     onVisualizerViewClicked(): void {
-        this.visualizerService.activeVisualizer = null;
-        this.visualizerService.activeEmitter = null;
+        this.entityService.activeVisualizer = null;
+        this.entityEmitterService.activeEmitter = null;
     }
 
     onDecibelChanged(): void {

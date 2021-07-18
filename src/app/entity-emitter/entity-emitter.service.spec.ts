@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VisualizerService } from './visualizer.service';
+import { EntityEmitterService } from './entity-emitter.service';
 
-describe('VisualizerService', () => {
-  let service: VisualizerService;
+describe('EntityEmitterService', () => {
+  let service: EntityEmitterService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(VisualizerService);
+    service = TestBed.inject(EntityEmitterService);
   });
 
   it('should be created', () => {

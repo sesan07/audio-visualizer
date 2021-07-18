@@ -1,34 +1,34 @@
-<app-control name="Emitter Type">
+<app-control-line name="Emitter Type">
     <nz-radio-group [(ngModel)]="config.emitterType">
         <label *ngFor="let option of emitterTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
     </nz-radio-group>
-</app-control>
+</app-control-line>
 
-<app-control name="Visualizer Type">
-    <nz-select [(ngModel)]="config.visualizer.type" (ngModelChange)="onVisualizerTypeChange()">
+<app-control-line name="Visualizer Type">
+    <nz-select [(ngModel)]="config.entity.type" (ngModelChange)="onVisualizerTypeChange()">
         <nz-option *ngFor="let option of visualizerTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
     </nz-select>
-</app-control>
-<app-control name="Interval">
+</app-control-line>
+<app-control-line name="Interval">
     <div class="slider-wrapper">
         <nz-input-number [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
         <nz-slider [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
     </div>
-</app-control>
-<app-control name="Lifespan">
+</app-control-line>
+<app-control-line name="Lifespan">
     <div class="slider-wrapper">
         <nz-input-number [(ngModel)]="config.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
         <nz-slider [(ngModel)]="config.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
     </div>
-</app-control>
-<app-control name="Random Colors">
+</app-control-line>
+<app-control-line name="Random Colors">
     <nz-switch [(ngModel)]="config.randomizeColors"
-               (ngModelChange)="config.visualizer.disableColorEdit = config.randomizeColors">
+               (ngModelChange)="config.entity.disableColorEdit = config.randomizeColors">
     </nz-switch>
-</app-control>
+</app-control-line>
 
 <span>
     <nz-divider nzText="Modify Emitter Visualizer"></nz-divider>
 </span>
 
-<app-visualizer-controller [config]="config.visualizer"></app-visualizer-controller>
+<app-entity-controller [config]="config.entity"></app-entity-controller>

@@ -4,7 +4,7 @@
             <nz-button-group>
                 <button class="add-btn" nz-button nzType="primary" (click)="add.emit(selectedAddOption)">
                         <i nz-icon nzType="plus"></i>
-                    {{'Add ' + selectedAddOption + ' ' + name}}
+                    {{'Add ' + selectedAddOption}}
                 </button>
                 <button class="expand-btn" nz-button nz-dropdown nzType="primary" [nzDropdownMenu]="menu"  nzTrigger="click" nzPlacement="bottomRight" [title]="'Select ' + name">
                     <i nz-icon nzType="ellipsis"></i>
@@ -40,15 +40,15 @@
     <ng-container *ngIf="activeConfig">
         <!-- Divider doesn't look right without span -->
         <span>
-            <nz-divider [nzText]="'Modify ' + name"></nz-divider>
+            <nz-divider [nzText]="'Modify ' + selectedAddOption"></nz-divider>
         </span>
-        <app-visualizer-controller class="control-group" *ngIf="type === 'visualizer'"
-                                   @controllerEnterLeaveTrigger
-                                   [config]="activeConfig">
-        </app-visualizer-controller>
-        <app-emitter-controller class="control-group" *ngIf="type === 'emitter'"
-                                @controllerEnterLeaveTrigger
-                                [config]="activeConfig">
-        </app-emitter-controller>
+        <app-entity-controller class="control-group" *ngIf="type === 'visualizer'"
+                               @controllerEnterLeaveTrigger
+                               [config]="activeConfig">
+        </app-entity-controller>
+        <app-entity-emitter-controller class="control-group" *ngIf="type === 'emitter'"
+                                       @controllerEnterLeaveTrigger
+                                       [config]="activeConfig">
+        </app-entity-emitter-controller>
     </ng-container>
 </div>

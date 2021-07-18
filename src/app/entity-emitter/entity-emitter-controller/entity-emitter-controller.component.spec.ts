@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmitterControllerComponent } from './emitter-controller.component';
+import { EntityEmitterControllerComponent } from './entity-emitter-controller.component';
 
 describe('EmitterControllerComponent', () => {
-  let component: EmitterControllerComponent;
-  let fixture: ComponentFixture<EmitterControllerComponent>;
+  let component: EntityEmitterControllerComponent;
+  let fixture: ComponentFixture<EntityEmitterControllerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmitterControllerComponent ]
+      declarations: [ EntityEmitterControllerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmitterControllerComponent);
+    fixture = TestBed.createComponent(EntityEmitterControllerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

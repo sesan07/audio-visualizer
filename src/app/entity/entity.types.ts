@@ -1,11 +1,11 @@
-export enum VisualizerType {
-    BAR = 'Bar',
-    BARCLE = 'Barcle',
-    CIRCLE = 'Circle'
+export enum EntityType {
+    BAR = 'Bar Visualizer',
+    BARCLE = 'Barcle Visualizer',
+    CIRCLE = 'Circle Visualizer'
 }
 
-export interface IAppVisualizerConfig {
-    type: VisualizerType;
+export interface IBaseEntityConfig {
+    type: EntityType;
     animationStopTime?: number;
     animateMovement?: boolean;
     animateRotation?: boolean;
@@ -19,7 +19,7 @@ export interface IAppVisualizerConfig {
     disableAnimation?: boolean;
 }
 
-export interface ILibBaseVisualizerConfig {
+export interface IBaseVisualizerConfig {
     amplitudes: Uint8Array;
     startColorHex: string;
     endColorHex: string;
@@ -30,22 +30,22 @@ export interface ILibBaseVisualizerConfig {
     shadowBlur?: number;
 }
 
-export interface IBarVisualizerConfig extends ILibBaseVisualizerConfig {
+export interface IBarVisualizerConfig extends IBaseVisualizerConfig {
     barCapSize: number;
     barSize: number;
     barSpacing: number;
     looseCaps: boolean;
 }
 
-export interface IBarcleVisualizerConfig extends ILibBaseVisualizerConfig{
+export interface IBarcleVisualizerConfig extends IBaseVisualizerConfig{
     baseRadius: number;
 }
 
-export interface ICircleVisualizerConfig extends ILibBaseVisualizerConfig{
+export interface ICircleVisualizerConfig extends IBaseVisualizerConfig{
     baseRadius: number;
     sampleRadius: number;
 }
 
-export type ILibVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;
+export type IVisualizerConfig = IBarVisualizerConfig | IBarcleVisualizerConfig | ICircleVisualizerConfig;
 
-export type IVisualizerConfig = IAppVisualizerConfig & ILibVisualizerConfig;
+export type IEntityConfig = IBaseEntityConfig & IVisualizerConfig;

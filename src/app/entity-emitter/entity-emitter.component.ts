@@ -1,24 +1,24 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { EmitterType, IEmitterConfig } from './visualizer-emitter.types';
-import { DraggableComponent } from '../draggable/draggable.component';
-import { VisualizerService } from '../../services/visualizer.service';
-import { ILibVisualizerConfig, IVisualizerConfig } from '../visualizer/visualizer.types';
-import { getRandomNumber } from '../../shared/utils';
+import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter.types';
+import { DraggableComponent } from '../shared/components/draggable/draggable.component';
+import { EntityService } from '../entity/entity.service';
+import { IEntityConfig } from '../entity/entity.types';
+import { getRandomNumber } from '../shared/utils';
 import { getRandomColorHex } from 'visualizer';
 
 @Component({
-    selector: 'app-visualizer-emitter',
-    templateUrl: './visualizer-emitter.component.html',
-    styleUrls: ['./visualizer-emitter.component.css']
+    selector: 'app-entity-emitter',
+    templateUrl: './entity-emitter.component.html',
+    styleUrls: ['./entity-emitter.component.css']
 })
-export class VisualizerEmitterComponent extends DraggableComponent implements OnInit {
-    @Input() config: IEmitterConfig;
+export class EntityEmitterComponent extends DraggableComponent implements OnInit {
+    @Input() config: IEntityEmitterConfig;
 
     protected _dragHandle: ElementRef<HTMLElement>
 
     private _timeoutRef: ReturnType<typeof setTimeout>;
 
-    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _visualizerService: VisualizerService) {
+    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _entityService: EntityService) {
         super(renderer, elementRef);
     }
 
@@ -34,12 +34,12 @@ export class VisualizerEmitterComponent extends DraggableComponent implements On
 
     private _emitVisualizer(): void {
         const rect: DOMRect = this._elementRef.nativeElement.getBoundingClientRect();
-        const visualizer: IVisualizerConfig = Object.assign({}, this.config.visualizer)
+        const visualizer: IEntityConfig = Object.assign({}, this.config.entity)
 
         // Randomize transform
         // Todo move random start pos here
-        visualizer.startLeft = this.config.emitterType === EmitterType.POINT ? rect.left + rect.width / 2 : undefined;
-        visualizer.startTop = this.config.emitterType === EmitterType.POINT ? rect.top + rect.height / 2: undefined
+        visualizer.startLeft = this.config.emitterType === EntityEmitterType.POINT ? rect.left + rect.width / 2 : undefined;
+        visualizer.startTop = this.config.emitterType === EntityEmitterType.POINT ? rect.top + rect.height / 2: undefined
         visualizer.rotation = getRandomNumber(0, 360);
 
         // Randomize colors
@@ -59,7 +59,7 @@ export class VisualizerEmitterComponent extends DraggableComponent implements On
             visualizer.movementSpeed = getRandomNumber(0.5, 2);
         }
 
-        this._visualizerService.addEmittedVisualizer(visualizer, this.config.lifespan * 1000)
+        this._entityService.addEmittedVisualizer(visualizer, this.config.lifespan * 1000)
 
         this._timeoutRef = setTimeout(() => this._emitVisualizer(), this.config.interval * 1000);
     }

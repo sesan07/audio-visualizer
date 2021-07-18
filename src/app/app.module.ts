@@ -12,13 +12,13 @@ import { ColorSketchModule } from 'ngx-color/sketch';
 // Local Components
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VisualizerComponent } from './visualizer-view/visualizer/visualizer.component';
-import { VisualizerControllerComponent } from './control-view/visualizer-controller/visualizer-controller.component';
-import { ControlComponent } from './control-view/control/control.component';
-import { VisualizerEmitterComponent } from './visualizer-view/visualizer-emitter/visualizer-emitter.component';
-import { EmitterControllerComponent } from './control-view/emitter-controller/emitter-controller.component';
-import { ControllerWrapperComponent } from './control-view/controller-wrapper/controller-wrapper.component';
-import { ColorPickerComponent } from './control-view/color-picker/color-picker.component';
+import { EntityComponent } from './entity/entity.component';
+import { EntityControllerComponent } from './entity/entity-controller/entity-controller.component';
+import { ControlLineComponent } from './shared/components/control-line/control-line.component';
+import { EntityEmitterComponent } from './entity-emitter/entity-emitter.component';
+import { EntityEmitterControllerComponent } from './entity-emitter/entity-emitter-controller/entity-emitter-controller.component';
+import { ControllerWrapperComponent } from './shared/components/controller-wrapper/controller-wrapper.component';
+import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -46,11 +46,11 @@ registerLocaleData(en);  // NG-Zorro
 @NgModule({
     declarations: [
         AppComponent,
-        VisualizerComponent,
-        VisualizerControllerComponent,
-        ControlComponent,
-        VisualizerEmitterComponent,
-        EmitterControllerComponent,
+        EntityComponent,
+        EntityControllerComponent,
+        ControlLineComponent,
+        EntityEmitterComponent,
+        EntityEmitterControllerComponent,
         ControllerWrapperComponent,
         ColorPickerComponent,
     ],

@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
 import {
-    IAppVisualizerConfig,
-    ILibBaseVisualizerConfig,
-    ILibVisualizerConfig, IVisualizerConfig,
-    VisualizerType
-} from '../visualizer-view/visualizer/visualizer.types';
-import { AudioService } from './audio.service';
-import { EmitterType, IEmitterConfig } from '../visualizer-view/visualizer-emitter/visualizer-emitter.types';
+    IBaseEntityConfig,
+    IBaseVisualizerConfig,
+    IVisualizerConfig, IEntityConfig,
+    EntityType
+} from './entity.types';
+import { AudioService } from '../shared/audio-service/audio.service';
 import { getRandomColorHex } from 'visualizer';
 import { getRandomNumber } from '../shared/utils';
 
 @Injectable({
     providedIn: 'root'
 })
-export class VisualizerService {
-    activeVisualizer: IVisualizerConfig;
-    visualizers: IVisualizerConfig[] = [];
-    emittedVisualizers: IVisualizerConfig[] = [];
-
-    emitterCount: number = 0;
-    activeEmitter: IEmitterConfig;
-    emitters: IEmitterConfig[] = [];
+export class EntityService {
+    activeVisualizer: IEntityConfig;
+    visualizers: IEntityConfig[] = [];
+    emittedVisualizers: IEntityConfig[] = [];
 
     constructor(private _audioService: AudioService) {
     }
 
-    addVisualizer(type: VisualizerType, setActive?: boolean): void {
-        const visualizer: IVisualizerConfig = {
+    addVisualizer(type: EntityType, setActive?: boolean): void {
+        const visualizer: IEntityConfig = {
             ...this.getDefaultAppVisualizerConfig(type),
             ...this.getDefaultLibVisualizerConfig(type)
         };
@@ -37,33 +32,15 @@ export class VisualizerService {
         }
     }
 
-    addEmittedVisualizer(visualizer: IVisualizerConfig, autoRemoveTime: number): void {
+    addEmittedVisualizer(visualizer: IEntityConfig, autoRemoveTime: number): void {
         this.emittedVisualizers.push(visualizer)
         setTimeout(() => this.removeEmittedVisualizer(visualizer), autoRemoveTime)
     }
 
-    addEmitter(type: EmitterType): void {
-        const randomizeColors = true;
-        const visualizer: IVisualizerConfig = {
-            ...this.getDefaultAppEmitterVisualizerConfig(VisualizerType.BARCLE),
-            ...this.getDefaultLibVisualizerConfig(VisualizerType.BARCLE)
-        };
-        const config: IEmitterConfig = {
-            emitterType: type,
-            name: `Emitter (${this.emitterCount++})`,
-            interval: 1,
-            lifespan: 5,
-            randomizeColors: randomizeColors,
-            visualizer: visualizer
-        }
-        this.emitters.push(config);
-        this.activeEmitter = config;
-    }
 
-
-    getDefaultLibVisualizerConfig(type: VisualizerType): ILibVisualizerConfig {
+    getDefaultLibVisualizerConfig(type: EntityType): IVisualizerConfig {
         const sampleCount: number = 16;
-        const libBaseConfig: ILibBaseVisualizerConfig = {
+        const libBaseConfig: IBaseVisualizerConfig = {
             amplitudes: this._audioService.getAmplitudes(sampleCount),
             startColorHex: getRandomColorHex(),
             endColorHex: getRandomColorHex(),
@@ -74,9 +51,9 @@ export class VisualizerService {
             sampleCount: sampleCount
         }
 
-        let visualizer: ILibVisualizerConfig;
+        let visualizer: IVisualizerConfig;
         switch (type) {
-            case VisualizerType.BAR:
+            case EntityType.BAR:
                 visualizer = {
                     ...libBaseConfig,
                     barCapSize: 5,
@@ -85,14 +62,14 @@ export class VisualizerService {
                     looseCaps: false
                 };
                 break;
-            case VisualizerType.BARCLE:
+            case EntityType.BARCLE:
                 visualizer = {
                     ...libBaseConfig,
                     baseRadius: 80,
                     scale: 0.5
                 };
                 break;
-            case VisualizerType.CIRCLE:
+            case EntityType.CIRCLE:
                 visualizer = {
                     ...libBaseConfig,
                     baseRadius: 80,
@@ -101,13 +78,13 @@ export class VisualizerService {
                 };
                 break;
             default:
-                throw new Error('Unknown visualizer option selected');
+                throw new Error('Unknown entity option selected');
         }
 
         return visualizer;
     }
 
-    getDefaultAppVisualizerConfig(type: VisualizerType): IAppVisualizerConfig {
+    getDefaultAppVisualizerConfig(type: EntityType): IBaseEntityConfig {
         return {
             type: type,
             animationStopTime: 1000,
@@ -116,7 +93,7 @@ export class VisualizerService {
         }
     }
 
-    getDefaultAppEmitterVisualizerConfig(type: VisualizerType): IAppVisualizerConfig {
+    getDefaultAppEmitterVisualizerConfig(type: EntityType): IBaseEntityConfig {
         return {
             type: type,
             animationStopTime: 1000,
@@ -130,23 +107,15 @@ export class VisualizerService {
         }
     }
 
-    removeEmitter(index: number): void {
-        const emitter: IEmitterConfig = this.emitters[index];
-        this.emitters.splice(index, 1);
-        if (emitter === this.activeEmitter) {
-            this.activeEmitter = null;
-        }
-    }
-
     removeVisualizer(index: number): void {
-        const visualizer: IVisualizerConfig = this.visualizers[index];
+        const visualizer: IEntityConfig = this.visualizers[index];
         this.visualizers.splice(index, 1);
         if (visualizer === this.activeVisualizer) {
             this.activeVisualizer = null;
         }
     }
 
-    removeEmittedVisualizer(visualizer?: IVisualizerConfig): void {
+    removeEmittedVisualizer(visualizer?: IEntityConfig): void {
         const index: number = this.emittedVisualizers.indexOf(visualizer);
         if (index !== -1) {
             this.emittedVisualizers.splice(index, 1);

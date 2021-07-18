@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VisualizerComponent } from './visualizer.component';
+import { ControlLineComponent } from './control-line.component';
 
-describe('BaseVisualizerComponent', () => {
-  let component: VisualizerComponent;
-  let fixture: ComponentFixture<VisualizerComponent>;
+describe('ControlComponent', () => {
+  let component: ControlLineComponent;
+  let fixture: ComponentFixture<ControlLineComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VisualizerComponent ]
+      declarations: [ ControlLineComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VisualizerComponent);
+    fixture = TestBed.createComponent(ControlLineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
