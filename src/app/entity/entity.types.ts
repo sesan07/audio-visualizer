@@ -17,10 +17,10 @@ export interface IEntityConfig {
     movementSpeed?: number;
     rotation: number;
     rotationSpeed?: number;
+    randomizeMovement?: boolean;
     startLeft?: number;
     startTop?: number;
-    disableRotationEdit?: boolean;
-    disableAnimation?: boolean;
+    disableMovement?: boolean;
     entityContentConfig: IEntityContentConfig;
 }
 

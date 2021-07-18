@@ -37,11 +37,11 @@ export class EntityEmitterService {
             animationStopTime: 1000,
             animateMovement: true,
             animateRotation: true,
-            movementAngle: getRandomNumber(0, 360),
-            movementSpeed: getRandomNumber(0.5, 2),
-            rotation: getRandomNumber(0, 360),
-            rotationSpeed: getRandomNumber(0.5, 2),
-            disableRotationEdit: true,
+            movementAngle: 0,
+            movementSpeed: 0.5,
+            rotation: 0,
+            rotationSpeed: 0.5,
+            randomizeMovement: true,
             entityContentConfig: visualizer
         }
     }

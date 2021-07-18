@@ -37,19 +37,13 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
         const entity: IEntityConfig = Object.assign({}, this.config.entity)
         entity.entityContentConfig = Object.assign({}, this.config.entity.entityContentConfig)
 
-        // Randomize transform
+        // Randomize position
         // Todo move random start pos here
         entity.startLeft = this.config.emitterType === EntityEmitterType.POINT ? rect.left + rect.width / 2 : undefined;
         entity.startTop = this.config.emitterType === EntityEmitterType.POINT ? rect.top + rect.height / 2: undefined
-        entity.rotation = getRandomNumber(0, 360);
-
-        // Randomize rotation animation
-        if (entity.animateRotation) {
-            entity.rotationSpeed = getRandomNumber(0.5, 2);
-        }
 
         // Randomize movement animation
-        if (entity.animateMovement) {
+        if (entity.animateMovement && entity.randomizeMovement) {
             entity.movementAngle = getRandomNumber(0, 360);
             entity.movementSpeed = getRandomNumber(0.5, 2);
         }

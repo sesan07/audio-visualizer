@@ -41,8 +41,10 @@ export class EntityService {
         return {
             type: type,
             animationStopTime: 1000,
-            disableAnimation: true,
+            disableMovement: true,
+            animateRotation: false,
             rotation: 0,
+            rotationSpeed: 0.5,
             entityContentConfig: entityContent
         }
     }

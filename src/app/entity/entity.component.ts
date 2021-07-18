@@ -81,7 +81,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     }
 
     private _animate(): void {
-        this._isAnimating = true;
         this._ngZone.runOutsideAngular(() => {
             if (this.animateMovement) {
                 this._animateMovement();
