@@ -40,6 +40,7 @@ export class EntityEmitterService {
             movementAngle: 0,
             movementSpeed: 0.5,
             rotation: 0,
+            rotationDirection: 'Right',
             rotationSpeed: 0.5,
             randomizeMovement: true,
             entityContentConfig: visualizer

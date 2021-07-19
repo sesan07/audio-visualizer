@@ -32,12 +32,19 @@
         <app-control-line name="Animate Rotation">
             <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
         </app-control-line>
-        <app-control-line *ngIf="config.animateRotation" name="Rotation Speed">
-            <div class="slider-wrapper">
-                <nz-input-number [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
-                <nz-slider [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
-            </div>
-        </app-control-line>
+        <ng-container *ngIf="config.animateRotation">
+            <app-control-line name="Rotation Direction">
+                <nz-radio-group [(ngModel)]="config.rotationDirection">
+                    <label *ngFor="let option of ['Left', 'Right']" nz-radio-button [nzValue]="option">{{option}}</label>
+                </nz-radio-group>
+            </app-control-line>
+            <app-control-line name="Rotation Speed">
+                <div class="slider-wrapper">
+                    <nz-input-number [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
+                </div>
+            </app-control-line>
+        </ng-container>
         <app-control-line *ngIf="!config.animateRotation" name="Rotation">
             <div class="slider-wrapper">
                 <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>

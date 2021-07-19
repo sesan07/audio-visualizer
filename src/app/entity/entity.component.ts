@@ -29,6 +29,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     @Input() movementAngle?: number;
     @Input() movementSpeed?: number;
     @Input() rotation: number;
+    @Input() rotationDirection: 'Left' | 'Right';
     @Input() rotationSpeed?: number;
     @Input() startLeft?: number;
     @Input() startTop?: number;
@@ -45,6 +46,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     private _isAnimating: boolean;
     private _movementAngleRadians: number;
     private _rotation: number = 0;
+    private _rotationSpeed: number;
 
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) {
         super(renderer, elementRef);
@@ -53,6 +55,9 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     ngOnChanges(changes: SimpleChanges) {
         if (changes.movementAngle) {
             this._movementAngleRadians = getRadians(this.movementAngle);
+        }
+        if (changes.rotationDirection || changes.rotationSpeed) {
+            this._rotationSpeed = this.rotationDirection.toLowerCase() === 'right' ? this.rotationSpeed : -this.rotationSpeed;
         }
         if ((changes.animateMovement && !changes.animateMovement.firstChange)
             || (changes.animateRotation && !changes.animateRotation.firstChange)) {
@@ -100,7 +105,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     }
 
     private _animateRotation(): void {
-        this._setRotation((this._rotation + this.rotationSpeed) % 360)
+        this._setRotation((this._rotation + this._rotationSpeed) % 360)
     }
 
     protected _setRotation(rotation: number) {

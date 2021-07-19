@@ -16,6 +16,7 @@ export interface IEntityConfig {
     movementAngle?: number;
     movementSpeed?: number;
     rotation: number;
+    rotationDirection: 'Left' | 'Right';
     rotationSpeed?: number;
     randomizeMovement?: boolean;
     startLeft?: number;

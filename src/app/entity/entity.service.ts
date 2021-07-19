@@ -44,6 +44,7 @@ export class EntityService {
             disableMovement: true,
             animateRotation: false,
             rotation: 0,
+            rotationDirection: 'Right',
             rotationSpeed: 0.5,
             entityContentConfig: entityContent
         }
