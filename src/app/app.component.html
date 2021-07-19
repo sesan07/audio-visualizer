@@ -58,37 +58,40 @@
                 <i nz-icon nzType="step-forward"></i>
             </button>
         </div>
-
-        <span>
-            <nz-divider nzText="Options"></nz-divider>
-        </span>
-        <div class="control-group">
-            <app-control-line name="Song">
-                <div class="song-select-wrapper">
-                    <nz-select [(ngModel)]="selectedAudioConfig" (ngModelChange)="audioService.setActiveConfig(selectedAudioConfig)">
-                        <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option" [nzLabel]="getAudioName(option)"></nz-option>
-                    </nz-select>
-                    <input #fileInput type="file" id="file" hidden accept="audio/*" multiple (change)="onFileChange()"/>
-                    <button nz-button (click)="fileInput.click()">
-                        <i nz-icon nzType="upload"></i>
-                        Upload Files
-                    </button>
-                </div>
-            </app-control-line>
-            <app-control-line name="Mode">
-                <nz-radio-group [(ngModel)]="audioService.mode">
-                    <label *ngFor="let option of modeOptions" nz-radio-button [nzValue]="option.value">{{option.name}}</label>
-                </nz-radio-group>
-            </app-control-line>
-            <app-control-line name="Decibel Range">
-                <!-- TODO: replace spans with number inputs -->
-                <div class="slider-wrapper">
-                    <span>{{decibelRange[0]}}</span>
-                    <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0" (ngModelChange)="onDecibelChanged()"></nz-slider>
-                    <span>{{decibelRange[1]}}</span>
-                </div>
-            </app-control-line>
-        </div>
+        <nz-collapse>
+            <nz-collapse-panel  class="control-group" nzHeader="Options">
+                <app-control-line name="Song">
+                    <div class="song-select-wrapper">
+                        <nz-select [(ngModel)]="selectedAudioConfig"
+                                   (ngModelChange)="audioService.setActiveConfig(selectedAudioConfig)">
+                            <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option"
+                                       [nzLabel]="getAudioName(option)">
+                            </nz-option>
+                        </nz-select>
+                        <input #fileInput type="file" id="file" hidden accept="audio/*" multiple
+                               (change)="onFileChange()"/>
+                        <button nz-button (click)="fileInput.click()">
+                            <i nz-icon nzType="upload"></i>
+                            Upload Files
+                        </button>
+                    </div>
+                </app-control-line>
+                <app-control-line name="Mode">
+                    <nz-radio-group [(ngModel)]="audioService.mode">
+                        <label *ngFor="let option of modeOptions" nz-radio-button
+                               [nzValue]="option.value">{{option.name}}</label>
+                    </nz-radio-group>
+                </app-control-line>
+                <app-control-line name="Decibel Range">
+                    <div class="slider-wrapper">
+                        <span>{{decibelRange[0]}}</span>
+                        <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
+                                   (ngModelChange)="onDecibelChanged()"></nz-slider>
+                        <span>{{decibelRange[1]}}</span>
+                    </div>
+                </app-control-line>
+            </nz-collapse-panel>
+        </nz-collapse>
     </div>
 
     <app-controller-wrapper type="entity"

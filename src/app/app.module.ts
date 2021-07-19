@@ -42,6 +42,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -76,6 +77,7 @@ registerLocaleData(en);  // NG-Zorro
         NzPopoverModule,
         NzSelectModule,
         NzUploadModule,
+        NzCollapseModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
     bootstrap: [AppComponent]

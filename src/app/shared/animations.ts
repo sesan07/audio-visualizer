@@ -12,16 +12,17 @@ export const animations: AnimationTriggerMetadata[] = [
                 transform: 'scaleY(1)'
             }))
         ]),
-        transition(':leave', [
-            style({
-                opacity: '*',
-                transform: '*'
-            }),
-            animate(100, style({
-                opacity: '0',
-                transform: 'scaleY(0)'
-            }))
-        ])
+        // Todo try to get leave transition working right..
+        // transition(':leave', [
+        //     style({
+        //         opacity: '*',
+        //         transform: '*'
+        //     }),
+        //     animate(100, style({
+        //         opacity: '0',
+        //         transform: 'scaleY(0)'
+        //     }))
+        // ])
     ]),
     trigger('entityEnterLeaveTrigger', [
         transition(':enter', [

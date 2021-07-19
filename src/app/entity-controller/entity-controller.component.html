@@ -1,55 +1,55 @@
-<span>
-    <nz-divider nzText="Entity Options"></nz-divider>
-</span>
+<nz-collapse>
+    <nz-collapse-panel nzHeader="Entity Options">
+        <app-control-line name="Entity Type">
+            <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onEntityTypeChange()">
+                <label *ngFor="let option of entityTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
+            </nz-radio-group>
+        </app-control-line>
 
-<app-control-line name="Entity Type">
-    <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onEntityTypeChange()">
-        <label *ngFor="let option of entityTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
-    </nz-radio-group>
-</app-control-line>
+        <ng-container *ngIf="!config.disableMovement">
+            <app-control-line name="Animate Movement">
+                <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
+            </app-control-line>
+            <app-control-line *ngIf="config.animateMovement" name="Random Movement">
+                <nz-switch [(ngModel)]="config.randomizeMovement"></nz-switch>
+            </app-control-line>
+            <ng-container *ngIf="config.animateMovement && !config.randomizeMovement">
+                <app-control-line name="Movement Angle">
+                    <div class="slider-wrapper">
+                        <nz-input-number [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+                        <nz-slider [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+                    </div>
+                </app-control-line>
+                <app-control-line name="Movement Speed">
+                    <div class="slider-wrapper">
+                        <nz-input-number [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
+                        <nz-slider [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
+                    </div>
+                </app-control-line>
+            </ng-container>
+        </ng-container>
 
-<ng-container *ngIf="!config.disableMovement">
-    <app-control-line name="Animate Movement">
-        <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
-    </app-control-line>
-    <app-control-line *ngIf="config.animateMovement" name="Random Movement">
-        <nz-switch [(ngModel)]="config.randomizeMovement"></nz-switch>
-    </app-control-line>
-    <ng-container *ngIf="config.animateMovement && !config.randomizeMovement">
-        <app-control-line name="Movement Angle">
+        <app-control-line name="Animate Rotation">
+            <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
+        </app-control-line>
+        <app-control-line *ngIf="config.animateRotation" name="Rotation Speed">
             <div class="slider-wrapper">
-                <nz-input-number [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
-                <nz-slider [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+                <nz-input-number [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
+                <nz-slider [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
             </div>
         </app-control-line>
-        <app-control-line name="Movement Speed">
+        <app-control-line *ngIf="!config.animateRotation" name="Rotation">
             <div class="slider-wrapper">
-                <nz-input-number [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
-                <nz-slider [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
+                <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+                <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
             </div>
         </app-control-line>
-    </ng-container>
-</ng-container>
-
-<app-control-line name="Animate Rotation">
-    <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
-</app-control-line>
-<app-control-line *ngIf="config.animateRotation" name="Rotation Speed">
-    <div class="slider-wrapper">
-        <nz-input-number [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
-        <nz-slider [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
-    </div>
-</app-control-line>
-<app-control-line *ngIf="!config.animateRotation" name="Rotation">
-    <div class="slider-wrapper">
-        <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
-        <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
-    </div>
-</app-control-line>
+    </nz-collapse-panel>
+</nz-collapse>
 
 <ng-container [ngSwitch]="config.type">
     <!--  Visualizer Controls  -->
-    <ng-container *ngSwitchCase="EntityType.VISUALIZER">
-        <app-visualizer-controller [config]="config.entityContentConfig"></app-visualizer-controller>
-    </ng-container>
+    <app-visualizer-controller *ngSwitchCase="EntityType.VISUALIZER"
+                               [config]="config.entityContentConfig">
+    </app-visualizer-controller>
 </ng-container>
