@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { EntityType, IEntityConfig, IEntityContentConfig } from './entity.types';
 import { AudioService } from '../shared/audio-service/audio.service';
-import { VisualizerType } from 'visualizer';
 import { VisualizerService } from './visualizer-entity/visualizer.service';
+import { VisualizerType } from './visualizer-entity/visualizer-entity.types';
+import { ImageService } from './image-entity/image.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ export class EntityService {
     emittedEntities: IEntityConfig[] = [];
 
     constructor(private _audioService: AudioService,
-                private _visualizerService: VisualizerService) {
+                private _visualizerService: VisualizerService,
+                private _imageService: ImageService) {
     }
 
     addEntity(type: EntityType, setActive?: boolean): void {
@@ -35,11 +37,15 @@ export class EntityService {
             case EntityType.VISUALIZER:
                 entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
                 break;
+            case EntityType.IMAGE:
+                entityContent = this._imageService.getDefaultContent()
+                break;
             default: throw new Error('Unknown entity type')
         }
 
         return {
             type: type,
+            isEmitted: false,
             animationStopTime: 1000,
             disableMovement: true,
             animateRotation: false,

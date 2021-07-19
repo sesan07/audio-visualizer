@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IEntityContentService } from '../entity.types';
-import { IBaseVisualizerConfig, IVisualizerConfig } from './visualizer-entity.types';
-import { getRandomColorHex, VisualizerType } from 'visualizer';
+import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer-entity.types';
+import { getRandomColorHex } from 'visualizer';
 import { AudioService } from '../../shared/audio-service/audio.service';
 
 @Injectable({

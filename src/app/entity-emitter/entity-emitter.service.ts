@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter.types';
-import { EntityType, IEntityConfig } from '../entity/entity.types';
+import { EntityType, IEntityConfig, IEntityContentConfig } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
-import { IVisualizerConfig } from '../entity/visualizer-entity/visualizer-entity.types';
-import { VisualizerType } from 'visualizer';
-import { getRandomNumber } from '../shared/utils';
+import { VisualizerType } from '../entity/visualizer-entity/visualizer-entity.types';
 import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
+import { ImageService } from '../entity/image-entity/image.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +14,9 @@ export class EntityEmitterService {
     activeEmitter: IEntityEmitterConfig;
     emitters: IEntityEmitterConfig[] = [];
 
-    constructor(private _entityService: EntityService, private _visualizerService: VisualizerService) {
+    constructor(private _entityService: EntityService,
+                private _visualizerService: VisualizerService,
+                private _imageService: ImageService) {
     }
 
     addEmitter(type: EntityEmitterType): void {
@@ -24,16 +25,27 @@ export class EntityEmitterService {
             name: `Emitter (${this.emitterCount++})`,
             interval: 1,
             lifespan: 5,
-            entity: this._getDefaultEmitterEntity()
+            entity: this.getDefaultEmitterEntity(EntityType.VISUALIZER)
         };
         this.emitters.push(config);
         this.activeEmitter = config;
     }
 
-    private _getDefaultEmitterEntity(): IEntityConfig {
-        const visualizer: IVisualizerConfig = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+    getDefaultEmitterEntity(type: EntityType): IEntityConfig {
+        let entityContent: IEntityContentConfig;
+        switch (type) {
+            case EntityType.VISUALIZER:
+                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+                break;
+            case EntityType.IMAGE:
+                entityContent = this._imageService.getDefaultContent()
+                break;
+            default: throw new Error('Unknown entity type')
+        }
+
         return {
-            type: EntityType.VISUALIZER,
+            type: type,
+            isEmitted: true,
             animationStopTime: 1000,
             animateMovement: true,
             animateRotation: true,
@@ -43,7 +55,7 @@ export class EntityEmitterService {
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
             randomizeMovement: true,
-            entityContentConfig: visualizer
+            entityContentConfig: entityContent
         }
     }
 

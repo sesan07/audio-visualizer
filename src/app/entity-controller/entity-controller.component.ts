@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { EntityType, IEntityConfig } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
+import { EntityEmitterService } from '../entity-emitter/entity-emitter.service';
 
 @Component({
     selector: 'app-entity-controller',
@@ -8,16 +9,20 @@ import { EntityService } from '../entity/entity.service';
     styleUrls: ['./entity-controller.component.css'],
 })
 export class EntityControllerComponent {
-    // Todo this controller should be used to change entity type
     @Input() config: IEntityConfig;
 
     EntityType = EntityType;
     entityTypeOptions: EntityType[] = Object.values(EntityType);
 
-    constructor(private _entityService: EntityService) {
+    constructor(private _entityService: EntityService,
+                private _entityEmitterService: EntityEmitterService,) {
     }
 
     onEntityTypeChange(): void {
-        Object.assign(this.config, this._entityService.getDefaultEntity(this.config.type))
+        if (this.config.isEmitted) {
+            Object.assign(this.config, this._entityEmitterService.getDefaultEmitterEntity(this.config.type))
+        } else {
+            Object.assign(this.config, this._entityService.getDefaultEntity(this.config.type))
+        }
     }
 }

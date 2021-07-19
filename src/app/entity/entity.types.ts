@@ -1,15 +1,17 @@
-import { VisualizerType } from 'visualizer';
-import { IVisualizerConfig } from './visualizer-entity/visualizer-entity.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer-entity/visualizer-entity.types';
+import { IImageConfig } from './image-entity/image-entity.types';
 
 export enum EntityType {
     VISUALIZER = 'Visualizer',
+    IMAGE = 'Image',
 }
 
 export type EntityContentType = VisualizerType;
-export type IEntityContentConfig = IVisualizerConfig;
+export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
 
 export interface IEntityConfig {
     type: EntityType;
+    isEmitted: boolean;
     animationStopTime?: number;
     animateMovement?: boolean;
     animateRotation?: boolean;
@@ -27,5 +29,5 @@ export interface IEntityConfig {
 
 export interface IEntityContentService {
     beforeEmit(config: IEntityContentConfig): void;
-    getDefaultContent(contentType: EntityContentType): IEntityContentConfig;
+    getDefaultContent(contentType?: EntityContentType): IEntityContentConfig;
 }

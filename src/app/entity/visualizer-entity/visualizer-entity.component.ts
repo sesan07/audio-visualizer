@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { VisualizerType } from 'visualizer';
-import { IVisualizerConfig } from './visualizer-entity.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer-entity.types';
 
 @Component({
     selector: 'app-visualizer-entity',

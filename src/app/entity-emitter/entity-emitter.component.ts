@@ -5,6 +5,9 @@ import { EntityService } from '../entity/entity.service';
 import { EntityType, IEntityConfig } from '../entity/entity.types';
 import { getRandomNumber } from '../shared/utils';
 import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
+import { ImageService } from '../entity/image-entity/image.service';
+import { IVisualizerConfig } from '../entity/visualizer-entity/visualizer-entity.types';
+import { IImageConfig } from '../entity/image-entity/image-entity.types';
 
 @Component({
     selector: 'app-entity-emitter',
@@ -19,7 +22,8 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
     constructor(renderer: Renderer2,
                 elementRef: ElementRef<HTMLElement>,
                 private _entityService: EntityService,
-                private _visualizerService: VisualizerService) {
+                private _visualizerService: VisualizerService,
+                private _imageService: ImageService) {
         super(renderer, elementRef);
     }
 
@@ -50,7 +54,10 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
 
         switch (entity.type) {
             case EntityType.VISUALIZER:
-                this._visualizerService.beforeEmit(entity.entityContentConfig);
+                this._visualizerService.beforeEmit(entity.entityContentConfig as IVisualizerConfig);
+                break;
+            case EntityType.IMAGE:
+                this._imageService.beforeEmit(entity.entityContentConfig as IImageConfig);
                 break;
         }
 

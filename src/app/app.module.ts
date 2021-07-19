@@ -21,6 +21,8 @@ import { ControllerWrapperComponent } from './shared/components/controller-wrapp
 import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
 import { VisualizerControllerComponent } from './entity-controller/visualizer-controller/visualizer-controller.component';
 import { VisualizerEntityComponent } from './entity/visualizer-entity/visualizer-entity.component';
+import { ImageEntityComponent } from './entity/image-entity/image-entity.component';
+import { ImageControllerComponent } from './entity-controller/image-controller/image-controller.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -58,6 +60,8 @@ registerLocaleData(en);  // NG-Zorro
         ColorPickerComponent,
         VisualizerControllerComponent,
         VisualizerEntityComponent,
+        ImageEntityComponent,
+        ImageControllerComponent,
     ],
     imports: [
         BrowserModule,

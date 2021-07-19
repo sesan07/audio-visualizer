@@ -4,4 +4,7 @@
                            [config]="entityContentConfig"
                            [animationStopTime]="animationStopTime">
     </app-visualizer-entity>
+    <app-image-entity *ngSwitchCase="EntityType.IMAGE"
+                           [config]="entityContentConfig">
+    </app-image-entity>
 </div>

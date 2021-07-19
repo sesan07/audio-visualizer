@@ -59,4 +59,8 @@
     <app-visualizer-controller *ngSwitchCase="EntityType.VISUALIZER"
                                [config]="config.entityContentConfig">
     </app-visualizer-controller>
+    <!--  Image Controls  -->
+    <app-image-controller *ngSwitchCase="EntityType.IMAGE"
+                               [config]="config.entityContentConfig">
+    </app-image-controller>
 </ng-container>

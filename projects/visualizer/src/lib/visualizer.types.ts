@@ -3,8 +3,3 @@ export interface Color {
     green: number;
     blue: number;
 }
-export enum VisualizerType {
-    BAR = 'Bar',
-    BARCLE = 'Barcle',
-    CIRCLE = 'Circle'
-}

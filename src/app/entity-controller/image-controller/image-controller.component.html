@@ -1,0 +1,31 @@
+<nz-collapse>
+    <nz-collapse-panel nzHeader="Image Options">
+        <app-control-line name="Image">
+            <div class="file-select-wrapper">
+                <nz-select [(ngModel)]="config.src">
+                    <nz-option *ngFor="let option of imageService.imageSources" [nzValue]="option.src"
+                               [nzLabel]="getImageName(option)">
+                    </nz-option>
+                </nz-select>
+                <input #fileInput type="file" id="file" hidden accept="image/*" multiple
+                       (change)="onFileChange()"/>
+                <button nz-button (click)="fileInput.click()">
+                    <i nz-icon nzType="upload"></i>
+                    Upload Files
+                </button>
+            </div>
+        </app-control-line>
+        <app-control-line name="Scale">
+            <div class="slider-wrapper">
+                <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
+                <nz-slider [(ngModel)]="config.scale" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
+            </div>
+        </app-control-line>
+        <app-control-line name="Opacity">
+            <div class="slider-wrapper">
+                <nz-input-number [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+                <nz-slider [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </div>
+        </app-control-line>
+    </nz-collapse-panel>
+</nz-collapse>

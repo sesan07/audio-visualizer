@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AudioService } from '../../shared/audio-service/audio.service';
-import { IVisualizerConfig } from '../../entity/visualizer-entity/visualizer-entity.types';
-import { VisualizerType } from 'visualizer';
+import { IVisualizerConfig, VisualizerType } from '../../entity/visualizer-entity/visualizer-entity.types';
 import { VisualizerService } from '../../entity/visualizer-entity/visualizer.service';
 
 @Component({

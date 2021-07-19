@@ -63,7 +63,7 @@
         <nz-collapse>
             <nz-collapse-panel  class="control-group" nzHeader="Options">
                 <app-control-line name="Song">
-                    <div class="song-select-wrapper">
+                    <div class="file-select-wrapper">
                         <nz-select [(ngModel)]="selectedAudioConfig"
                                    (ngModelChange)="audioService.setActiveConfig(selectedAudioConfig)">
                             <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option"

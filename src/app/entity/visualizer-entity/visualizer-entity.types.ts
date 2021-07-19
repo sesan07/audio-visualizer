@@ -1,4 +1,8 @@
-import { VisualizerType } from 'visualizer';
+export enum VisualizerType {
+    BAR = 'Bar',
+    BARCLE = 'Barcle',
+    CIRCLE = 'Circle'
+}
 
 export interface IBaseVisualizerConfig {
     type: VisualizerType,
