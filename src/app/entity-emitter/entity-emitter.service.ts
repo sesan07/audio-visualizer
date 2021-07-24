@@ -46,7 +46,6 @@ export class EntityEmitterService {
         return {
             type: type,
             isEmitted: true,
-            animationStopTime: 1000,
             animateMovement: true,
             animateRotation: true,
             movementAngle: 0,
@@ -55,6 +54,8 @@ export class EntityEmitterService {
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
             randomizeMovement: true,
+            fadeTime: 1,
+            disableFadeEdit: false,
             entityContentConfig: entityContent
         }
     }

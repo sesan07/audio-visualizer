@@ -12,7 +12,6 @@ export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
 export interface IEntityConfig {
     type: EntityType;
     isEmitted: boolean;
-    animationStopTime?: number;
     animateMovement?: boolean;
     animateRotation?: boolean;
     movementAngle?: number;
@@ -23,7 +22,9 @@ export interface IEntityConfig {
     randomizeMovement?: boolean;
     startLeft?: number;
     startTop?: number;
-    disableMovement?: boolean;
+    fadeTime: number;
+    disableFadeEdit?: boolean;
+    disableMovementEdit?: boolean;
     entityContentConfig: IEntityContentConfig;
 }
 

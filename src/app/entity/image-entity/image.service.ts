@@ -8,9 +8,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 export class ImageService implements IEntityContentService {
     imageSources: IImageSource[] = [
-        {
-            src: 'assets/image/mako.png'
-        }
+        { src: 'assets/image/mako.png' },
+        { src: 'assets/image/rain-drop.png' }
     ]
 
     constructor(private _sanitizer: DomSanitizer) {

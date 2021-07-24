@@ -3,12 +3,13 @@
 <div #entityView class="entity-view"
      (click)="onEntityViewClicked()">
     <app-entity class="entity"
-                @entityEnterLeaveTrigger
                 *ngFor="let entity of entityService.entities"
+                [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
+                [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
                 [boundaryElement]="entityView"
                 [showOutline]="entity === entityService.activeEntity"
                 [type]="entity.type"
-                [animationStopTime]="entity.animationStopTime"
+                [fadeTime]="entity.fadeTime"
                 [animateMovement]="entity.animateMovement"
                 [animateRotation]="entity.animateRotation"
                 [movementAngle]="entity.movementAngle"
@@ -22,11 +23,13 @@
                 (click)="onEntitySelected(entity, $event)">
     </app-entity>
 
-    <app-entity class="emitted-entity" @entityEnterLeaveTrigger
+    <app-entity class="emitted-entity"
                 *ngFor="let entity of entityService.emittedEntities"
+                [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
+                [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
                 [boundaryElement]="entityView"
                 [type]="entity.type"
-                [animationStopTime]="entity.animationStopTime"
+                [fadeTime]="entity.fadeTime"
                 [animateMovement]="entity.animateMovement"
                 [animateRotation]="entity.animateRotation"
                 [movementAngle]="entity.movementAngle"
@@ -39,8 +42,8 @@
                 [entityContentConfig]="entity.entityContentConfig">
     </app-entity>
 
+    <!-- Todo add height animations based on active -->
     <app-entity-emitter class="entity-emitter"
-                        @entityEnterLeaveTrigger
                         *ngFor="let emitter of entityEmitterService.emitters"
                         [config]="emitter"
                         (click)="onEmitterSelected(emitter, $event)">

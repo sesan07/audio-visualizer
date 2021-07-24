@@ -24,14 +24,16 @@ export const animations: AnimationTriggerMetadata[] = [
         //     }))
         // ])
     ]),
-    trigger('entityEnterLeaveTrigger', [
+    trigger('entityEnterTrigger', [
         transition(':enter', [
             style({ opacity: '0' }),
-            animate(1000, style({ opacity: '1' }))
-        ]),
+            animate('{{speed}}s', style({ opacity: '1' }))
+        ],  { params: { speed: 1 } })
+    ]),
+    trigger('entityLeaveTrigger', [
         transition(':leave', [
             style({ opacity: '1' }),
-            animate(1000, style({ opacity: '0' }))
-        ])
+            animate('{{speed}}s', style({ opacity: '0' }))
+        ],  { params: { speed: 1 } })
     ])
 ];

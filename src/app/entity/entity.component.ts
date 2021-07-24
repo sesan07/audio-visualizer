@@ -23,7 +23,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     @Input() boundaryElement: HTMLElement;
     @Input() @HostBinding('class.outline') showOutline: boolean;
     @Input() type: EntityType;
-    @Input() animationStopTime?: number;
     @Input() animateMovement?: boolean;
     @Input() animateRotation?: boolean;
     @Input() movementAngle?: number;
@@ -33,6 +32,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     @Input() rotationSpeed?: number;
     @Input() startLeft?: number;
     @Input() startTop?: number;
+    @Input() fadeTime?: number;
     @Input() entityContentConfig: IEntityContentConfig;
     
     @ViewChild('entityTypeElement') _entityTypeElementRef: ElementRef<HTMLElement>
@@ -137,11 +137,11 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             this._animate();
         } else if (this._isAnimating) {
             this._isAnimating = false;
-            this._stopAnimation(this.animationStopTime)
+            this._stopAnimation(this.fadeTime * 1000)
         }
     }
 
     ngOnDestroy(): void {
-        this._stopAnimation(this.animationStopTime);
+        this._stopAnimation(this.fadeTime * 1000);
     }
 }

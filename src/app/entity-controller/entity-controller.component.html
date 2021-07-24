@@ -6,7 +6,14 @@
             </nz-radio-group>
         </app-control-line>
 
-        <ng-container *ngIf="!config.disableMovement">
+        <app-control-line name="Fade Time" *ngIf="!config.disableFadeEdit">
+            <div class="slider-wrapper">
+                <nz-input-number [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
+                <nz-slider [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
+            </div>
+        </app-control-line>
+
+        <ng-container *ngIf="!config.disableMovementEdit">
             <app-control-line name="Animate Movement">
                 <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
             </app-control-line>

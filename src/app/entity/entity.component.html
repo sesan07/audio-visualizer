@@ -2,7 +2,7 @@
      [class.outline]="showOutline">
     <app-visualizer-entity *ngSwitchCase="EntityType.VISUALIZER"
                            [config]="entityContentConfig"
-                           [animationStopTime]="animationStopTime">
+                           [animationStopTime]="fadeTime * 1000">
     </app-visualizer-entity>
     <app-image-entity *ngSwitchCase="EntityType.IMAGE"
                            [config]="entityContentConfig">
