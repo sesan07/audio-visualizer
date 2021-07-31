@@ -46,8 +46,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
 
         let currPos = this._canvasPadding;
         this.amplitudes.forEach((amplitude, i) => {
-            // if (currPos > 150) return
-            // Todo use original amplitude for gradient calculation
+            const originalAmplitude: number = amplitude;
             amplitude *= this.multiplier * this.scale;
             let cap: number = this._amplitudeCaps[i];
             if (this.looseCaps) {
@@ -58,7 +57,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
             }
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
+            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (originalAmplitude / 255));
 
             this._drawBar(
                 currPos,

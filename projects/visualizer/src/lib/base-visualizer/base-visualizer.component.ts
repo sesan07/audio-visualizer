@@ -6,9 +6,6 @@ import { convertHexToColor } from '../visualizer.utils';
     template: ''
 })
 export abstract class BaseVisualizerComponent implements OnChanges, AfterViewInit, OnDestroy {
-
-    // Todo: add extra allowance to sides to show shadow blur
-
     @Input() amplitudes: Uint8Array;
     @Input() animationStopTime: number = 0;
     @Input() endColorHex: string;
