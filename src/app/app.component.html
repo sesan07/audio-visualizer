@@ -7,16 +7,19 @@
                 [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
                 [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
                 [boundaryElement]="entityView"
+                [oomphAmplitudes]="audioService.oomphAmplitudes"
                 [showOutline]="entity === entityService.activeEntity"
                 [type]="entity.type"
                 [fadeTime]="entity.fadeTime"
                 [animateMovement]="entity.animateMovement"
                 [animateRotation]="entity.animateRotation"
+                [animateOomph]="entity.animateOomph"
                 [movementAngle]="entity.movementAngle"
                 [movementSpeed]="entity.movementSpeed"
                 [rotation]="entity.rotation"
                 [rotationDirection]="entity.rotationDirection"
                 [rotationSpeed]="entity.rotationSpeed"
+                [oomphAmount]="entity.oomphAmount"
                 [startLeft]="entity.startLeft"
                 [startTop]="entity.startTop"
                 [entityContentConfig]="entity.entityContentConfig"
@@ -28,15 +31,18 @@
                 [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
                 [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
                 [boundaryElement]="entityView"
+                [oomphAmplitudes]="audioService.oomphAmplitudes"
                 [type]="entity.type"
                 [fadeTime]="entity.fadeTime"
                 [animateMovement]="entity.animateMovement"
                 [animateRotation]="entity.animateRotation"
+                [animateOomph]="entity.animateOomph"
                 [movementAngle]="entity.movementAngle"
                 [movementSpeed]="entity.movementSpeed"
                 [rotation]="entity.rotation"
                 [rotationDirection]="entity.rotationDirection"
                 [rotationSpeed]="entity.rotationSpeed"
+                [oomphAmount]="entity.oomphAmount"
                 [startLeft]="entity.startLeft"
                 [startTop]="entity.startTop"
                 [entityContentConfig]="entity.entityContentConfig">
@@ -77,7 +83,6 @@
                                (change)="onFileChange()"/>
                         <button nz-button (click)="fileInput.click()">
                             <i nz-icon nzType="upload"></i>
-                            Upload Files
                         </button>
                     </div>
                 </app-control-line>

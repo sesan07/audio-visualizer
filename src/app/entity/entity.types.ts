@@ -14,11 +14,13 @@ export interface IEntityConfig {
     isEmitted: boolean;
     animateMovement?: boolean;
     animateRotation?: boolean;
+    animateOomph?: boolean;
     movementAngle?: number;
     movementSpeed?: number;
     rotation: number;
     rotationDirection: 'Left' | 'Right';
     rotationSpeed?: number;
+    oomphAmount?: number;
     randomizeMovement?: boolean;
     startLeft?: number;
     startTop?: number;

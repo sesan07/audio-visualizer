@@ -48,9 +48,11 @@ export class EntityService {
             isEmitted: false,
             disableMovementEdit: true,
             animateRotation: false,
+            animateOomph: true,
             rotation: 0,
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
+            oomphAmount: 0.8,
             fadeTime: 1,
             disableFadeEdit: true,
             entityContentConfig: entityContent

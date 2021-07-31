@@ -77,6 +77,7 @@ export class AudioService {
     }
 
     mode: AnalyserMode = 'frequency';
+    oomphAmplitudes: Uint8Array;
 
     private _activeConfig: IAudioConfig;
     private _activeConfigSubject$: Subject<IAudioConfig> = new Subject();
@@ -165,6 +166,7 @@ export class AudioService {
         })
 
         this._updateAmplitudes();
+        this.oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[0]);
     }
 
     uploadAudioFiles (files: FileList): boolean {

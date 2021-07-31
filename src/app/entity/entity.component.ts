@@ -21,15 +21,18 @@ import { DraggableComponent } from '../shared/components/draggable/draggable.com
 })
 export class EntityComponent extends DraggableComponent implements OnChanges, OnDestroy {
     @Input() boundaryElement: HTMLElement;
+    @Input() oomphAmplitudes: Uint8Array;
     @Input() @HostBinding('class.outline') showOutline: boolean;
     @Input() type: EntityType;
     @Input() animateMovement?: boolean;
     @Input() animateRotation?: boolean;
+    @Input() animateOomph?: boolean;
     @Input() movementAngle?: number;
     @Input() movementSpeed?: number;
     @Input() rotation: number;
     @Input() rotationDirection: 'Left' | 'Right';
     @Input() rotationSpeed?: number;
+    @Input() oomphAmount?: number;
     @Input() startLeft?: number;
     @Input() startTop?: number;
     @Input() fadeTime?: number;
@@ -47,6 +50,8 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     private _movementAngleRadians: number;
     private _rotation: number = 0;
     private _rotationSpeed: number;
+    private _scale: number = 1;
+    private _maxAmplitudeTotal: number;
 
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) {
         super(renderer, elementRef);
@@ -56,15 +61,23 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
         if (changes.movementAngle) {
             this._movementAngleRadians = getRadians(this.movementAngle);
         }
+        if (changes.oomphAmplitudes) {
+            this._maxAmplitudeTotal = 255 * this.oomphAmplitudes.length;
+        }
         if (changes.rotationDirection || changes.rotationSpeed) {
             this._rotationSpeed = this.rotationDirection.toLowerCase() === 'right' ? this.rotationSpeed : -this.rotationSpeed;
         }
         if ((changes.animateMovement && !changes.animateMovement.firstChange)
-            || (changes.animateRotation && !changes.animateRotation.firstChange)) {
+            || (changes.animateRotation && !changes.animateRotation.firstChange)
+            || (changes.animateOomph && !changes.animateOomph.firstChange)) {
             this._updateAnimationState();
+
+            if (!this.animateOomph) {
+                this._setTransform(this._rotation, 1);
+            }
         }
         if (changes.rotation && !changes.rotation.firstChange) {
-            this._setRotation(this.rotation);
+            this._setTransform(this.rotation, this._scale);
         }
     }
 
@@ -81,7 +94,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             top = getRandomNumber(0, this.boundaryElement.clientHeight - clientHeight);
         }
         this._setPosition(left, top);
-        this._setRotation(this.rotation)
+        this._setTransform(this._rotation, this._scale)
         this._updateAnimationState();
     }
 
@@ -90,8 +103,8 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             if (this.animateMovement) {
                 this._animateMovement();
             }
-            if (this.animateRotation) {
-                this._animateRotation();
+            if (this.animateRotation || this.animateOomph) {
+                this._animateTransform();
             }
 
             this._animationFrameId = requestAnimationFrame(() => this._animate());
@@ -104,13 +117,26 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
         this._setPosition(newLeft, newTop);
     }
 
-    private _animateRotation(): void {
-        this._setRotation((this._rotation + this._rotationSpeed) % 360)
+    private _animateTransform(): void {
+        let rotation: number = this._rotation;
+        if (this.animateRotation) {
+            rotation = (this._rotation + this._rotationSpeed) % 360;
+        }
+
+        let scale: number = this._scale;
+        if (this.animateOomph) {
+            const amplitudeTotal: number = this.oomphAmplitudes.reduce((prev, curr) => prev + curr)
+            const oomphScale: number = (amplitudeTotal / this._maxAmplitudeTotal) * this.oomphAmount;
+            scale = oomphScale + (1 - this.oomphAmount);
+        }
+
+        this._setTransform(rotation, scale)
     }
 
-    protected _setRotation(rotation: number) {
-        this._rotation =  rotation;
-        this._renderer.setStyle(this._entityTypeElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)`)
+    protected _setTransform(rotation: number, scale: number) {
+        this._rotation = rotation;
+        this._scale = scale;
+        this._renderer.setStyle(this._entityTypeElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)` + ` scale(${scale})`)
     }
 
     private _stopAnimation(stopTime: number): void {
@@ -132,7 +158,10 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     }
 
     private _updateAnimationState(): void {
-        if ((this.animateMovement || this.animateRotation) && !this._isAnimating) {
+        if (this.animateMovement || this.animateRotation || this.animateOomph) {
+            if (this._isAnimating) {
+                return;
+            }
             this._isAnimating = true;
             this._animate();
         } else if (this._isAnimating) {

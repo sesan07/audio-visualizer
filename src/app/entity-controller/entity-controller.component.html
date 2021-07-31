@@ -58,6 +58,15 @@
                 <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
             </div>
         </app-control-line>
+        <app-control-line name="Animate Oomph">
+            <nz-switch [(ngModel)]="config.animateOomph"></nz-switch>
+        </app-control-line>
+        <app-control-line *ngIf="config.animateOomph" name="Oomph Amount">
+            <div class="slider-wrapper">
+                <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+                <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+            </div>
+        </app-control-line>
     </nz-collapse-panel>
 </nz-collapse>
 
