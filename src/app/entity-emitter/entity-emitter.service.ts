@@ -36,6 +36,8 @@ export class EntityEmitterService {
         switch (type) {
             case EntityType.VISUALIZER:
                 entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+                entityContent.shadowBlur = 0;
+                entityContent.disableShadowEdit = true;
                 break;
             case EntityType.IMAGE:
                 entityContent = this._imageService.getDefaultContent()
@@ -57,7 +59,6 @@ export class EntityEmitterService {
             oomphAmount: 0.8,
             randomizeMovement: true,
             fadeTime: 1,
-            disableFadeEdit: false,
             entityContentConfig: entityContent
         }
     }

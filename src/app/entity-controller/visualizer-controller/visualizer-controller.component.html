@@ -34,7 +34,7 @@
                 <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
             </div>
         </app-control-line>
-        <app-control-line name="Shadow Blur">
+        <app-control-line *ngIf="!config.disableShadowEdit" name="Shadow Blur">
             <div class="slider-wrapper">
                 <nz-input-number [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
                 <nz-slider [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>

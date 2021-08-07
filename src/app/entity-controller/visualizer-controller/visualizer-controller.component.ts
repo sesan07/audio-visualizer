@@ -10,7 +10,6 @@ import { VisualizerService } from '../../entity/visualizer-entity/visualizer.ser
 })
 export class VisualizerControllerComponent {
     @Input() config: IVisualizerConfig;
-    @Input() disableColorEdit: boolean;
 
     VisualizerType = VisualizerType;
 
