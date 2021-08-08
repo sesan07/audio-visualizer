@@ -1,124 +1,151 @@
-<audio #audio [src]="audioService.activeSrc" (ended)="onEnded()"></audio>
+<audio #audio [src]="audioService.activeSource.src" (ended)="onEnded()"></audio>
 
 <div #entityView class="entity-view"
      (click)="onEntityViewClicked()">
-    <app-entity class="entity"
-                *ngFor="let entity of entityService.entities"
-                [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
-                [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
-                [boundaryElement]="entityView"
-                [oomphAmplitudes]="audioService.oomphAmplitudes"
-                [showOutline]="entity === entityService.activeEntity"
-                [type]="entity.type"
-                [fadeTime]="entity.fadeTime"
-                [animateMovement]="entity.animateMovement"
-                [animateRotation]="entity.animateRotation"
-                [animateOomph]="entity.animateOomph"
-                [movementAngle]="entity.movementAngle"
-                [movementSpeed]="entity.movementSpeed"
-                [rotation]="entity.rotation"
-                [rotationDirection]="entity.rotationDirection"
-                [rotationSpeed]="entity.rotationSpeed"
-                [oomphAmount]="entity.oomphAmount"
-                [startLeft]="entity.startLeft"
-                [startTop]="entity.startTop"
-                [entityContentConfig]="entity.entityContentConfig"
-                (click)="onEntitySelected(entity, $event)">
-    </app-entity>
+    <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8 }"
+            nz-button nzType="primary" title="Toggle"
+            (click)="toggleControlView()">
+        <i nz-icon [ngStyle]="{ transform: isControlViewOpen ? 'rotate(0deg)' : 'rotate(-180deg)' }" [nzType]="'right'"></i>
+    </button>
+    <div #entityViewContent class="entity-view-content">
+        <img class="background-image" [ngStyle]="{ opacity: 0.5 }" [src]="backgroundImageService.activeSource.src" alt="Background Image" draggable="false">
+        <app-entity class="entity"
+                    *ngFor="let entity of entityService.entities"
+                    [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
+                    [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
+                    [boundaryElement]="entityView"
+                    [oomphAmplitudes]="audioService.oomphAmplitudes"
+                    [viewScale]="entityViewContentScale"
+                    [showOutline]="entity === entityService.activeEntity"
+                    [type]="entity.type"
+                    [fadeTime]="entity.fadeTime"
+                    [animateMovement]="entity.animateMovement"
+                    [animateRotation]="entity.animateRotation"
+                    [animateOomph]="entity.animateOomph"
+                    [movementAngle]="entity.movementAngle"
+                    [movementSpeed]="entity.movementSpeed"
+                    [rotation]="entity.rotation"
+                    [rotationDirection]="entity.rotationDirection"
+                    [rotationSpeed]="entity.rotationSpeed"
+                    [oomphAmount]="entity.oomphAmount"
+                    [startLeft]="entity.startLeft"
+                    [startTop]="entity.startTop"
+                    [entityContentConfig]="entity.entityContentConfig"
+                    (click)="onEntitySelected(entity, $event)">
+        </app-entity>
 
-    <app-entity class="emitted-entity"
-                *ngFor="let entity of entityService.emittedEntities"
-                [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
-                [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
-                [boundaryElement]="entityView"
-                [oomphAmplitudes]="audioService.oomphAmplitudes"
-                [type]="entity.type"
-                [fadeTime]="entity.fadeTime"
-                [animateMovement]="entity.animateMovement"
-                [animateRotation]="entity.animateRotation"
-                [animateOomph]="entity.animateOomph"
-                [movementAngle]="entity.movementAngle"
-                [movementSpeed]="entity.movementSpeed"
-                [rotation]="entity.rotation"
-                [rotationDirection]="entity.rotationDirection"
-                [rotationSpeed]="entity.rotationSpeed"
-                [oomphAmount]="entity.oomphAmount"
-                [startLeft]="entity.startLeft"
-                [startTop]="entity.startTop"
-                [entityContentConfig]="entity.entityContentConfig">
-    </app-entity>
+        <app-entity class="emitted-entity"
+                    *ngFor="let entity of entityService.emittedEntities"
+                    [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
+                    [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
+                    [boundaryElement]="entityView"
+                    [oomphAmplitudes]="audioService.oomphAmplitudes"
+                    [viewScale]="entityViewContentScale"
+                    [type]="entity.type"
+                    [fadeTime]="entity.fadeTime"
+                    [animateMovement]="entity.animateMovement"
+                    [animateRotation]="entity.animateRotation"
+                    [animateOomph]="entity.animateOomph"
+                    [movementAngle]="entity.movementAngle"
+                    [movementSpeed]="entity.movementSpeed"
+                    [rotation]="entity.rotation"
+                    [rotationDirection]="entity.rotationDirection"
+                    [rotationSpeed]="entity.rotationSpeed"
+                    [oomphAmount]="entity.oomphAmount"
+                    [startLeft]="entity.startLeft"
+                    [startTop]="entity.startTop"
+                    [entityContentConfig]="entity.entityContentConfig">
+        </app-entity>
 
-    <!-- Todo add height animations based on active -->
-    <app-entity-emitter class="entity-emitter"
-                        *ngFor="let emitter of entityEmitterService.emitters"
-                        [config]="emitter"
-                        (click)="onEmitterSelected(emitter, $event)">
-    </app-entity-emitter>
+        <!-- Todo add height animations based on active -->
+        <app-entity-emitter class="entity-emitter"
+                            *ngFor="let emitter of entityEmitterService.emitters"
+                            [config]="emitter"
+                            (click)="onEmitterSelected(emitter, $event)">
+        </app-entity-emitter>
+    </div>
 </div>
 
-<div class="control-view">
-    <div class="card">
-        <div class="media-controls">
-            <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="onPrevSong()">
-                <i nz-icon nzType="step-backward"></i>
-            </button>
-            <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="onPlayPause()">
-                <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
-            </button>
-            <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="onNextSong()">
-                <i nz-icon nzType="step-forward"></i>
-            </button>
+<div class="control-view" [ngStyle]="{ 'width.px': controlViewWidth }">
+    <div class="control-view-content" [ngStyle]="{ 'min-width.px': controlViewContentWidth }">
+        <div class="card">
+            <div class="media-controls">
+                <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="onPrevSong()">
+                    <i nz-icon nzType="step-backward"></i>
+                </button>
+                <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="onPlayPause()">
+                    <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
+                </button>
+                <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="onNextSong()">
+                    <i nz-icon nzType="step-forward"></i>
+                </button>
+            </div>
+            <nz-collapse>
+                <nz-collapse-panel  class="control-group" nzHeader="Options">
+                    <app-control-line name="Song">
+                        <div class="file-select-wrapper">
+                            <nz-select [ngModel]="audioService.activeSource"
+                                       (ngModelChange)="audioService.setActiveSource($event)">
+                                <nz-option *ngFor="let option of audioService.sources" [nzValue]="option"
+                                           [nzLabel]="option.name">
+                                </nz-option>
+                            </nz-select>
+                            <input #audioFileInput type="file" id="audioFile" hidden accept="audio/*" multiple
+                                   (change)="onAudioFileUpload()"/>
+                            <button nz-button (click)="audioFileInput.click()">
+                                <i nz-icon nzType="upload"></i>
+                            </button>
+                        </div>
+                    </app-control-line>
+                    <app-control-line name="Background Image">
+                        <div class="file-select-wrapper">
+                            <nz-select [ngModel]="backgroundImageService.activeSource"
+                                       (ngModelChange)="backgroundImageService.setActiveSource($event)">
+                                <nz-option *ngFor="let option of backgroundImageService.sources" [nzValue]="option"
+                                           [nzLabel]="option.name">
+                                </nz-option>
+                            </nz-select>
+                            <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
+                                   (change)="onBackgroundFileUpload()"/>
+                            <button nz-button (click)="backgroundFileInput.click()">
+                                <i nz-icon nzType="upload"></i>
+                            </button>
+                        </div>
+                    </app-control-line>
+                    <app-control-line name="Mode">
+                        <nz-radio-group [(ngModel)]="audioService.mode">
+                            <label *ngFor="let option of modeOptions" nz-radio-button
+                                   [nzValue]="option.value">{{option.name}}</label>
+                        </nz-radio-group>
+                    </app-control-line>
+                    <app-control-line name="Decibel Range">
+                        <div class="slider-wrapper">
+                            <span>{{decibelRange[0]}}</span>
+                            <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
+                                       (ngModelChange)="onDecibelChanged()"></nz-slider>
+                            <span>{{decibelRange[1]}}</span>
+                        </div>
+                    </app-control-line>
+                </nz-collapse-panel>
+            </nz-collapse>
         </div>
-        <nz-collapse>
-            <nz-collapse-panel  class="control-group" nzHeader="Options">
-                <app-control-line name="Song">
-                    <div class="file-select-wrapper">
-                        <nz-select [(ngModel)]="selectedAudioConfig"
-                                   (ngModelChange)="audioService.setActiveConfig(selectedAudioConfig)">
-                            <nz-option *ngFor="let option of audioService.audioConfigs" [nzValue]="option"
-                                       [nzLabel]="getAudioName(option)">
-                            </nz-option>
-                        </nz-select>
-                        <input #fileInput type="file" id="file" hidden accept="audio/*" multiple
-                               (change)="onFileChange()"/>
-                        <button nz-button (click)="fileInput.click()">
-                            <i nz-icon nzType="upload"></i>
-                        </button>
-                    </div>
-                </app-control-line>
-                <app-control-line name="Mode">
-                    <nz-radio-group [(ngModel)]="audioService.mode">
-                        <label *ngFor="let option of modeOptions" nz-radio-button
-                               [nzValue]="option.value">{{option.name}}</label>
-                    </nz-radio-group>
-                </app-control-line>
-                <app-control-line name="Decibel Range">
-                    <div class="slider-wrapper">
-                        <span>{{decibelRange[0]}}</span>
-                        <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
-                                   (ngModelChange)="onDecibelChanged()"></nz-slider>
-                        <span>{{decibelRange[1]}}</span>
-                    </div>
-                </app-control-line>
-            </nz-collapse-panel>
-        </nz-collapse>
+
+        <app-controller-wrapper type="entity"
+                                [configs]="entityService.entities"
+                                [activeConfig]="entityService.activeEntity"
+                                [addOptions]="addEntityOptions"
+                                (configSelect)="onEntitySelected($event)"
+                                (add)="onAddEntity($event)"
+                                (remove)="onRemoveEntity($event)" >
+        </app-controller-wrapper>
+
+        <app-controller-wrapper type="emitter"
+                                [configs]="entityEmitterService.emitters"
+                                [activeConfig]="entityEmitterService.activeEmitter"
+                                [addOptions]="addEmitterOptions"
+                                (configSelect)="onEmitterSelected($event)"
+                                (add)="onAddEmitter($event)"
+                                (remove)="onRemoveEmitter($event)" >
+        </app-controller-wrapper>
     </div>
-
-    <app-controller-wrapper type="entity"
-                            [configs]="entityService.entities"
-                            [activeConfig]="entityService.activeEntity"
-                            [addOptions]="addEntityOptions"
-                            (configSelect)="onEntitySelected($event)"
-                            (add)="onAddEntity($event)"
-                            (remove)="onRemoveEntity($event)" >
-    </app-controller-wrapper>
-
-    <app-controller-wrapper type="emitter"
-                            [configs]="entityEmitterService.emitters"
-                            [activeConfig]="entityEmitterService.activeEmitter"
-                            [addOptions]="addEmitterOptions"
-                            (configSelect)="onEmitterSelected($event)"
-                            (add)="onAddEmitter($event)"
-                            (remove)="onRemoveEmitter($event)" >
-    </app-controller-wrapper>
 </div>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { IImageConfig, IImageSource } from '../../entity/image-entity/image-entity.types';
+import { IImageConfig } from '../../entity/image-entity/image-entity.types';
 import { ImageService } from '../../entity/image-entity/image.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -16,19 +16,8 @@ export class ImageControllerComponent {
     constructor(public imageService: ImageService, private _messageService: NzMessageService) {
     }
 
-    getImageName(imageSrc: IImageSource): string {
-        if (imageSrc.file) {
-            return imageSrc.file.name.split('.').shift();
-
-        } else {
-            return (imageSrc.src as string).split('/').pop().split('.').shift();
-        }
-    }
-
     onFileChange() {
         const files: FileList = this.fileInputElement.nativeElement.files;
-        if (this.imageService.uploadImageFiles(files)) {
-            this._messageService.success('Upload successful')
-        }
+        this.imageService.uploadFiles(files, true);
     }
 }

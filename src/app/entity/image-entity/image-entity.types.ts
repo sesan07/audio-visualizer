@@ -5,8 +5,3 @@ export interface IImageConfig {
     scale: number,
     opacity: number
 }
-
-export interface IImageSource {
-    src?: string | SafeUrl;
-    file?: File;
-}

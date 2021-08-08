@@ -3,8 +3,8 @@
         <app-control-line name="Image">
             <div class="file-select-wrapper">
                 <nz-select [(ngModel)]="config.src">
-                    <nz-option *ngFor="let option of imageService.imageSources" [nzValue]="option.src"
-                               [nzLabel]="getImageName(option)">
+                    <nz-option *ngFor="let option of imageService.sources" [nzValue]="option.src"
+                               [nzLabel]="option.name">
                     </nz-option>
                 </nz-select>
                 <input #fileInput type="file" id="file" hidden accept="image/*" multiple

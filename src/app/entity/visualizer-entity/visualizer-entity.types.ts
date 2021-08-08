@@ -15,7 +15,7 @@ export interface IBaseVisualizerConfig {
     scale: number;
     shadowBlur?: number;
     randomizeColors: boolean;
-    disableShadowEdit?: boolean;
+    disableShadow?: boolean;
 }
 
 export interface IBarVisualizerConfig extends IBaseVisualizerConfig {

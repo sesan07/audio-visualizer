@@ -1,86 +1,37 @@
 import { Injectable, NgZone } from '@angular/core';
-import { IAudioConfig, AnalyserMode } from './audio.service.types';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Observable, Subject } from 'rxjs';
+import { AnalyserMode } from './audio.service.types';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FileService } from '../file-service/file.service';
+import { IFileSource } from '../file-service/file.service.types';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AudioService {
-    audioConfigs: IAudioConfig[] = [
-        {
-            src: 'assets/audio/dont_stop_me_now.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/dance_till_dead.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/takin_it_back.mp3',
-            isAsset: true,
-        },
-        {
-            src: 'assets/audio/happy_troll.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/epic_sax_guy.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/shooting_stars.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/what_is_love.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/bohemian_rhapsody.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/fireflies.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/never_gonna.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/astronomia.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/seventh_element.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/eye_of_the_tiger.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/mas_queso.mp3',
-            isAsset: true
-        },
-        {
-            src: 'assets/audio/darude_sandstorm.mp3',
-            isAsset: true
-        }
+export class AudioService extends FileService {
+
+    sources: IFileSource[] = [
+        { name: 'Star Eater', src: 'assets/audio/star_eater.mp3' },
+        { name: 'Don\'t Stop Me Now', src: 'assets/audio/dont_stop_me_now.mp3' },
+        { name: 'Dance Till Dead', src: 'assets/audio/dance_till_dead.mp3' },
+        { name: 'Takin\' It Back', src: 'assets/audio/takin_it_back.mp3' },
+        { name: 'Happy Troll', src: 'assets/audio/happy_troll.mp3' },
+        { name: 'Epic Sax Guy', src: 'assets/audio/epic_sax_guy.mp3' },
+        { name: 'Shooting Stars', src: 'assets/audio/shooting_stars.mp3' },
+        { name: 'What Is Love', src: 'assets/audio/what_is_love.mp3' },
+        { name: 'Bohemian Rhapsody', src: 'assets/audio/bohemian_rhapsody.mp3' },
+        { name: 'Fireflies', src: 'assets/audio/fireflies.mp3' },
+        { name: 'Never Gonna', src: 'assets/audio/never_gonna.mp3' },
+        { name: 'Astronomia', src: 'assets/audio/astronomia.mp3' },
+        { name: 'Seventh Element', src: 'assets/audio/seventh_element.mp3' },
+        { name: 'Eye Of The Tiger', src: 'assets/audio/eye_of_the_tiger.mp3' },
+        { name: 'Mas Queso', src: 'assets/audio/mas_queso.mp3' },
+        { name: 'Darude Sandstorm', src: 'assets/audio/darude_sandstorm.mp3' }
     ];
-    get activeSrc(): string | SafeUrl {
-        return this._activeConfig?.src;
-    }
-    get activeConfigChange$(): Observable<IAudioConfig> {
-        return this._activeConfigSubject$.asObservable();
-    }
 
     mode: AnalyserMode = 'frequency';
     oomphAmplitudes: Uint8Array;
 
-    private _activeConfig: IAudioConfig;
-    private _activeConfigSubject$: Subject<IAudioConfig> = new Subject();
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
@@ -90,7 +41,8 @@ export class AudioService {
     private readonly _showLowerData: boolean = false;
     private readonly _smoothingTimeConstant: number = 0.7;
 
-    constructor(private _ngZone: NgZone, private _sanitizer: DomSanitizer) {
+    constructor(private _ngZone: NgZone, sanitizer: DomSanitizer, messageService: NzMessageService) {
+        super(sanitizer, messageService);
     }
 
     get sampleCounts(): number[] {
@@ -117,17 +69,17 @@ export class AudioService {
     }
 
     playPreviousSong(): void {
-        const currIndex: number = this.audioConfigs.indexOf(this._activeConfig);
+        const currIndex: number = this.sources.indexOf(this.activeSource);
         if (currIndex - 1 >= 0) {
-            this.setActiveConfig(this.audioConfigs[currIndex - 1])
+            this.setActiveSource(this.sources[currIndex - 1])
             setTimeout(() => this.play());
         }
     }
 
     playNextSong(): void {
-        const currIndex: number = this.audioConfigs.indexOf(this._activeConfig);
-        if (currIndex + 1 < this.audioConfigs.length) {
-            this.setActiveConfig(this.audioConfigs[currIndex + 1])
+        const currIndex: number = this.sources.indexOf(this.activeSource);
+        if (currIndex + 1 < this.sources.length) {
+            this.setActiveSource(this.sources[currIndex + 1])
             setTimeout(() => this.play());
         }
     }
@@ -169,24 +121,6 @@ export class AudioService {
         this.oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[0]);
     }
 
-    uploadAudioFiles (files: FileList): boolean {
-        let addedNewFiles: boolean = false;
-        const existingFileNames: string[] = this.audioConfigs.map(config => config.file?.name).filter(name => !!name)
-        Array.from(files).forEach(file => {
-            // Check if file already exists
-            const index: number = existingFileNames.indexOf(file.name);
-            if (index < 0) {
-                this.audioConfigs.push({
-                    file,
-                    isAsset: false
-                })
-                addedNewFiles = true;
-            }
-        })
-
-        return addedNewFiles;
-    }
-
     private _updateAmplitudes(): void {
         this._ngZone.runOutsideAngular(() => {
             this._amplitudesMap.forEach((amplitudes, sampleCount) => {
@@ -200,19 +134,5 @@ export class AudioService {
 
             requestAnimationFrame(() => this._updateAmplitudes())
         })
-    }
-
-    setActiveConfig(config: IAudioConfig) {
-        if (!this._activeConfig?.isAsset && !!this._activeConfig?.objectUrl) {
-            URL.revokeObjectURL(this._activeConfig.objectUrl)
-        }
-
-        this._activeConfig = config;
-        if (!this._activeConfig.isAsset && !!this._activeConfig.file) {
-            this._activeConfig.objectUrl = URL.createObjectURL(this._activeConfig.file);
-            this._activeConfig.src = this._sanitizer.bypassSecurityTrustUrl(this._activeConfig.objectUrl);
-        }
-
-        this._activeConfigSubject$.next(this._activeConfig)
     }
 }

@@ -36,5 +36,8 @@ export class VisualizerControllerComponent {
 
     onVisualizerTypeChange(): void {
         Object.assign(this.config, this._visualizerService.getDefaultContent(this.config.type))
+        if (this.config.disableShadow) {
+            this.config.shadowBlur = 0;
+        }
     }
 }

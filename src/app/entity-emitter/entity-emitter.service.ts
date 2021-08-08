@@ -37,7 +37,7 @@ export class EntityEmitterService {
             case EntityType.VISUALIZER:
                 entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
                 entityContent.shadowBlur = 0;
-                entityContent.disableShadowEdit = true;
+                entityContent.disableShadow = true;
                 break;
             case EntityType.IMAGE:
                 entityContent = this._imageService.getDefaultContent()

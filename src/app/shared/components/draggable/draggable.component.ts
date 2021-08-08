@@ -1,9 +1,11 @@
-import { Component, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 @Component({
     template: '',
 })
 export abstract class DraggableComponent {
+    @Input() viewScale: number;
+
     protected _left: number;
     protected _top: number;
 
@@ -16,9 +18,8 @@ export abstract class DraggableComponent {
 
     @HostListener('mousedown', ['$event'])
     onMouseDown(event: MouseEvent) {
-        const rect: DOMRect = this._elementRef.nativeElement.getBoundingClientRect();
-        this._dragOffsetLeft = rect.left - event.clientX;
-        this._dragOffsetTop = rect.top - event.clientY;
+        this._dragOffsetLeft = this._left - event.clientX / this.viewScale;
+        this._dragOffsetTop = this._top - event.clientY / this.viewScale;
 
         this._stopMouseMoveListener = this._renderer.listen('window', 'mousemove', event => this._drag(event))
         this._stopMouseUpListener = this._renderer.listen('window', 'mouseup', () => this._stopMouseListeners())
@@ -26,10 +27,9 @@ export abstract class DraggableComponent {
 
     @HostListener('touchstart', ['$event'])
     onTouchStart(event: TouchEvent) {
-        const rect: DOMRect = this._elementRef.nativeElement.getBoundingClientRect();
         const firstTouch: Touch = event.touches.item(0);
-        this._dragOffsetLeft = rect.left - firstTouch.clientX;
-        this._dragOffsetTop = rect.top - firstTouch.clientY;
+        this._dragOffsetLeft = this._left - firstTouch.clientX / this.viewScale;
+        this._dragOffsetTop = this._top - firstTouch.clientY / this.viewScale;
 
         this._stopTouchMoveListener = this._renderer.listen('window', 'touchmove', event => this._drag(event.touches.item(0)))
         this._stopTouchEndListener = this._renderer.listen('window', 'touchend', () => this._stopTouchListeners())
@@ -46,8 +46,8 @@ export abstract class DraggableComponent {
     }
 
     private _drag(source: MouseEvent | Touch) {
-        const left = source.clientX + this._dragOffsetLeft + window.pageXOffset
-        const top = source.clientY + this._dragOffsetTop + window.pageYOffset
+        const left = source.clientX / this.viewScale + this._dragOffsetLeft
+        const top = source.clientY / this.viewScale + this._dragOffsetTop
         this._setPosition(left, top);
     }
 
