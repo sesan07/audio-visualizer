@@ -50,7 +50,7 @@ export class EntityEmitterService {
             isEmitted: true,
             animateMovement: true,
             animateRotation: true,
-            animateOomph: true,
+            animateOomphInEntity: type !== EntityType.VISUALIZER,
             movementAngle: 0,
             movementSpeed: 0.5,
             rotation: 0,

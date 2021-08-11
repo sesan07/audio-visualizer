@@ -19,7 +19,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent implement
     private _startAngle: number;
 
     private get _maxRadius(): number {
-        return (this.multiplier * 255 + this.baseRadius + this.sampleRadius) * this.scale;
+        return (this.multiplier * 255 + this.baseRadius + this.sampleRadius) * (this.scale + this.oomphAmount);
     }
 
     constructor(ngZone: NgZone) {
@@ -44,7 +44,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent implement
         for (let i = 0; i < this.amplitudes.length; i++) {
             const amplitude: number = this.amplitudes[i];
 
-            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this.scale;
+            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this._oomphScale;
             const xLeft = this._centerX + radius * Math.cos(currAngle);
             const xRight = this._centerX - radius * Math.cos(currAngle);
             const y = this._centerY + radius * Math.sin(currAngle);
@@ -77,7 +77,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent implement
         this._canvasContext.strokeStyle = '#00000055';
         this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
         this._canvasContext.beginPath();
-        this._canvasContext.arc(x, y, this.sampleRadius * this.scale, 0, 2 * Math.PI);
+        this._canvasContext.arc(x, y, this.sampleRadius * this._oomphScale, 0, 2 * Math.PI);
         this._canvasContext.stroke();
         this._canvasContext.fill();
     }

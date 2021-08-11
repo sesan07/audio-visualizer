@@ -7,6 +7,8 @@ import { convertHexToColor } from '../visualizer.utils';
 })
 export abstract class BaseVisualizerComponent implements OnChanges, AfterViewInit, OnDestroy {
     @Input() amplitudes: Uint8Array;
+    @Input() oomphAmplitudes: Uint8Array;
+    @Input() oomphAmount: number;
     @Input() animationStopTime: number = 0;
     @Input() endColorHex: string;
     @Input() multiplier: number;
@@ -24,16 +26,23 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
     protected readonly _canvasPadding: number = 20; // used to reduce the hard cut off of shadow blur on the sides
     protected _startColor: Color;
     protected _endColor: Color;
+    protected _oomphScale: number; // Scale with oomph applied
 
     private _animationFrameId: number;
+    private _maxAmplitudeTotal: number;
 
     protected constructor(private _ngZone: NgZone) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes.oomphAmplitudes) {
+            this._maxAmplitudeTotal = this.oomphAmplitudes.length * 255;
+        }
+
         if ((changes.scale && !changes.scale.firstChange)
             || (changes.multiplier && !changes.multiplier.firstChange)
-            || (changes.sampleCount && !changes.sampleCount.firstChange)) {
+            || (changes.sampleCount && !changes.sampleCount.firstChange)
+            || (changes.oomphAmount && !changes.oomphAmount.firstChange)) {
 
             this._updateDimensions();
         }
@@ -95,9 +104,17 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
 
     private _baseAnimate(): void {
         this._ngZone.runOutsideAngular(() => {
+            this._updateOomphScale();
             this._animate()
             this._animationFrameId = requestAnimationFrame(() => this._baseAnimate());
         });
+    }
+
+    private _updateOomphScale(): void {
+        this._oomphScale = this.scale;
+        const amplitudeTotal: number = this.oomphAmplitudes.reduce((prev, curr) => prev + curr);
+        const scale: number = (amplitudeTotal / this._maxAmplitudeTotal) * this.oomphAmount;
+        this._oomphScale += scale;
     }
 
     protected abstract _animate(): void;

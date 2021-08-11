@@ -48,7 +48,7 @@ export class EntityService {
             isEmitted: false,
             disableMovementEdit: true,
             animateRotation: false,
-            animateOomph: true,
+            animateOomphInEntity: type !== EntityType.VISUALIZER,
             rotation: 0,
             rotationDirection: 'Right',
             rotationSpeed: 0.5,

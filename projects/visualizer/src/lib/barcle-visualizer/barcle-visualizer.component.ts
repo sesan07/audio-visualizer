@@ -17,7 +17,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
     private _startAngle: number;
 
     private get _maxRadius(): number {
-        return (this.multiplier * 255 + this.baseRadius) * this.scale;
+        return (this.multiplier * 255 + this.baseRadius) * (this.scale + this.oomphAmount);
     }
 
     constructor(ngZone: NgZone) {
@@ -44,7 +44,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
                 continue;
             }
 
-            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this.scale;
+            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this._oomphScale;
             const startAngle = currAngle - this._sampleAngle / 2;
             const endAngle = currAngle + this._sampleAngle / 2;
             const startAngle2 = Math.PI - currAngle - this._sampleAngle / 2;
@@ -80,7 +80,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
         this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
         this._canvasContext.beginPath();
-        this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this.scale, startAngle, endAngle);
+        this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this._oomphScale, startAngle, endAngle);
         this._canvasContext.arc(this._centerX, this._centerY, height, endAngle, startAngle, true);
         this._canvasContext.closePath();
         // this._canvasContext.stroke();
@@ -91,7 +91,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
         this._canvasContext.strokeStyle = '#00000055';
         this._canvasContext.fillStyle = this.startColorHex;
         this._canvasContext.beginPath();
-        this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this.scale, 0, 2 * Math.PI);
+        this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this._oomphScale, 0, 2 * Math.PI);
         // this._canvasContext.stroke();
         this._canvasContext.fill();
     }

@@ -31,6 +31,7 @@ export class AudioService extends FileService {
 
     mode: AnalyserMode = 'frequency';
     oomphAmplitudes: Uint8Array;
+    // TODO make oomph an object, pass by reference, only calculate the average once, when updating amplitudes
 
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
@@ -118,7 +119,7 @@ export class AudioService extends FileService {
         })
 
         this._updateAmplitudes();
-        this.oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[0]);
+        this.oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
     }
 
     private _updateAmplitudes(): void {

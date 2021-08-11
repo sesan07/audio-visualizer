@@ -16,14 +16,24 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
 
     private _amplitudeCaps: Uint8Array;
 
+    private get _maxScaledBarSize(): number {
+        return this.barSize * (this.scale + this.oomphAmount);
+    }
+    private get _maxScaledBarCapSize(): number {
+        return this.barCapSize * (this.scale + this.oomphAmount);
+    }
+    private get _maxScaledBarSpacing(): number {
+        return this.barSpacing * (this.scale + this.oomphAmount);
+    }
+
     private get _scaledBarSize(): number {
-        return this.barSize * this.scale;
+        return this.barSize * this._oomphScale;
     }
     private get _scaledBarCapSize(): number {
-        return this.barCapSize * this.scale;
+        return this.barCapSize * this._oomphScale;
     }
     private get _scaledBarSpacing(): number {
-        return this.barSpacing * this.scale;
+        return this.barSpacing * this._oomphScale;
     }
 
     constructor(ngZone: NgZone) {
@@ -44,10 +54,15 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
     protected _animate(): void {
         this._canvasContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
 
-        let currPos = this._canvasPadding;
+        const originX = this._canvasWidth / 2;
+        const originY = this._canvasHeight / 2;
+        const scaledLeft: number = originX - this.oomphWidth / 2;
+        const scaledTop: number = originY - this.oomphHeight / 2;
+
+        let currPos = scaledLeft;
         this.amplitudes.forEach((amplitude, i) => {
             const originalAmplitude: number = amplitude;
-            amplitude *= this.multiplier * this.scale;
+            amplitude *= this.multiplier * this._oomphScale;
             let cap: number = this._amplitudeCaps[i];
             if (this.looseCaps) {
                 cap = amplitude > cap ? amplitude : cap;
@@ -61,7 +76,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
 
             this._drawBar(
                 currPos,
-                this._canvasHeight - this._canvasPadding - amplitude,
+                scaledTop + this.oomphHeight - amplitude,
                 Math.ceil(this._scaledBarSize),
                 amplitude,
                 gradientColor
@@ -69,7 +84,8 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
 
             this._drawBar(
                 currPos,
-                this._canvasHeight - this._canvasPadding - cap - this._scaledBarCapSize,
+                // scaledTop + scaledHeight - amplitude
+                scaledTop + this.oomphHeight - cap - this._scaledBarCapSize,
                 Math.ceil(this._scaledBarSize),
                 this._scaledBarCapSize,
                 this._startColor
@@ -79,14 +95,22 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
         });
     }
 
+    private get oomphHeight(): number {
+        return this.multiplier * 255 * this._oomphScale + this._scaledBarCapSize;
+    }
+
+    private get oomphWidth(): number {
+        const totalBarSpacing: number = this.sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
+        return this._scaledBarSize * this.sampleCount + totalBarSpacing;
+    }
+
     protected _getCanvasHeight(): number {
-        return this.multiplier * 255 * this.scale + this._scaledBarCapSize;
+        return this.multiplier * 255 * (this.scale + this.oomphAmount) + this._maxScaledBarCapSize;
     }
 
     protected _getCanvasWidth(): number {
-        const sampleCount: number = this.sampleCount;
-        const totalBarSpacing: number = sampleCount * this._scaledBarSpacing - this._scaledBarSpacing
-        return this._scaledBarSize * sampleCount + totalBarSpacing;
+        const totalBarSpacing: number = this.sampleCount * this._maxScaledBarSpacing - this._maxScaledBarSpacing
+        return this._maxScaledBarSize * this.sampleCount + totalBarSpacing;
     }
 
     protected _onDimensionsChanged(): void {

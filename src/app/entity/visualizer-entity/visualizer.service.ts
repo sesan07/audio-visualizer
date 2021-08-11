@@ -30,7 +30,7 @@ export class VisualizerService implements IEntityContentService {
             endColorHex: getRandomColorHex(),
             multiplier: 1,
             opacity: 1,
-            scale: 1,
+            scale: 0.5,
             shadowBlur: 5,
             sampleCount: sampleCount
         }
@@ -50,7 +50,7 @@ export class VisualizerService implements IEntityContentService {
                 visualizer = {
                     ...baseConfig,
                     baseRadius: 80,
-                    scale: 0.5
+                    scale: 0.25
                 };
                 break;
             case VisualizerType.CIRCLE:
@@ -58,7 +58,7 @@ export class VisualizerService implements IEntityContentService {
                     ...baseConfig,
                     baseRadius: 80,
                     sampleRadius: 25,
-                    scale: 0.5
+                    scale: 0.25
                 };
                 break;
             default: throw new Error('Unknown visualizer type');
