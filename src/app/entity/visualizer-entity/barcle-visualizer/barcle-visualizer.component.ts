@@ -1,7 +1,7 @@
 import { Component, Input, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
-import { Color } from '../visualizer.types';
-import { getGradientColor } from '../visualizer.utils';
+import { getGradientColor } from '../visualizer-entity.utils';
+import { RGB } from 'ngx-color';
 
 @Component({
     selector: 'lib-barcle-visualizer',
@@ -52,7 +52,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
             currAngle += this._sampleAngle;
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
+            const gradientColor: RGB = getGradientColor(this._startColor, this._endColor, (amplitude / 255));
 
             this._drawBar(startAngle, endAngle, radius, gradientColor);
             this._drawBar(startAngle2, endAngle2, radius, gradientColor);
@@ -75,24 +75,20 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
         this._centerY = this._canvasHeight / 2;
     }
 
-    private _drawBar(startAngle: number, endAngle: number, height: number, color: Color): void {
-        this._canvasContext.strokeStyle = '#00000055';
-        this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+    private _drawBar(startAngle: number, endAngle: number, height: number, color: RGB): void {
+        this._canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
 
         this._canvasContext.beginPath();
         this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this._oomphScale, startAngle, endAngle);
         this._canvasContext.arc(this._centerX, this._centerY, height, endAngle, startAngle, true);
         this._canvasContext.closePath();
-        // this._canvasContext.stroke();
         this._canvasContext.fill();
     }
 
     private _drawCap(): void {
-        this._canvasContext.strokeStyle = '#00000055';
         this._canvasContext.fillStyle = this.startColorHex;
         this._canvasContext.beginPath();
         this._canvasContext.arc(this._centerX, this._centerY, this.baseRadius * this._oomphScale, 0, 2 * Math.PI);
-        // this._canvasContext.stroke();
         this._canvasContext.fill();
     }
 }

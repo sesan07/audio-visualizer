@@ -3,9 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
-// Local Modules
-import { VisualizerModule } from 'visualizer';
-
 // NGX-Color Modules
 import { ColorSketchModule } from 'ngx-color/sketch';
 
@@ -21,6 +18,9 @@ import { ControllerWrapperComponent } from './shared/components/controller-wrapp
 import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
 import { VisualizerControllerComponent } from './entity-controller/visualizer-controller/visualizer-controller.component';
 import { VisualizerEntityComponent } from './entity/visualizer-entity/visualizer-entity.component';
+import { BarVisualizerComponent } from './entity/visualizer-entity/bar-visualizer/bar-visualizer.component';
+import { CircleVisualizerComponent } from './entity/visualizer-entity/circle-visualizer/circle-visualizer.component';
+import { BarcleVisualizerComponent } from './entity/visualizer-entity/barcle-visualizer/barcle-visualizer.component';
 import { ImageEntityComponent } from './entity/image-entity/image-entity.component';
 import { ImageControllerComponent } from './entity-controller/image-controller/image-controller.component';
 
@@ -60,13 +60,15 @@ registerLocaleData(en);  // NG-Zorro
         ColorPickerComponent,
         VisualizerControllerComponent,
         VisualizerEntityComponent,
+        BarVisualizerComponent,
+        CircleVisualizerComponent,
+        BarcleVisualizerComponent,
         ImageEntityComponent,
         ImageControllerComponent,
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        VisualizerModule,
         FormsModule,
         HttpClientModule,
         ColorSketchModule,

@@ -1,7 +1,7 @@
 import { Component, Input, NgZone, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseVisualizerComponent } from '../base-visualizer/base-visualizer.component';
-import { Color } from '../visualizer.types';
-import { getGradientColor } from '../visualizer.utils';
+import { RGB } from 'ngx-color';
+import { getGradientColor } from '../visualizer-entity.utils';
 
 @Component({
     selector: 'lib-bar-visualizer',
@@ -72,7 +72,7 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
             }
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
-            const gradientColor: Color = getGradientColor(this._startColor, this._endColor, (originalAmplitude / 255));
+            const gradientColor: RGB = getGradientColor(this._startColor, this._endColor, (originalAmplitude / 255));
 
             this._drawBar(
                 currPos,
@@ -117,8 +117,8 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
         this._amplitudeCaps = new Uint8Array(this.sampleCount);
     }
 
-    private _drawBar(startX: number, startY: number, width: number, height: number, color: Color): void {
-        this._canvasContext.fillStyle = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+    private _drawBar(startX: number, startY: number, width: number, height: number, color: RGB): void {
+        this._canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
         this._canvasContext.fillRect(startX, startY, width, height);
     }
 

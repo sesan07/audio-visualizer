@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Color } from '../visualizer.types';
-import { convertHexToColor } from '../visualizer.utils';
+import { convertHexToColor } from '../visualizer-entity.utils';
+import { IOomph } from '../../../shared/audio-service/audio.service.types';
+import { RGB } from 'ngx-color';
 
 @Component({
     template: ''
 })
 export abstract class BaseVisualizerComponent implements OnChanges, AfterViewInit, OnDestroy {
     @Input() amplitudes: Uint8Array;
-    @Input() oomph: { amplitudeTotal: number; maxAmplitudeTotal: number; };
+    @Input() oomph: IOomph;
     @Input() oomphAmount: number;
     @Input() animationStopTime: number = 0;
     @Input() endColorHex: string;
@@ -24,8 +25,8 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
     protected _canvasHeight: number;
     protected _canvasWidth: number;
     protected readonly _canvasPadding: number = 20; // used to reduce the hard cut off of shadow blur on the sides
-    protected _startColor: Color;
-    protected _endColor: Color;
+    protected _startColor: RGB;
+    protected _endColor: RGB;
     protected _oomphScale: number; // Scale with oomph applied
 
     private _animationFrameId: number;
