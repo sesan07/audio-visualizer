@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EntityEmitterType, IEntityEmitterConfig } from '../entity-emitter/entity-emitter.types';
 import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
 
@@ -11,6 +11,7 @@ export class EntityEmitterControllerComponent {
     @Input() config: IEntityEmitterConfig;
 
     emitterTypeOptions: EntityEmitterType[] = Object.values(EntityEmitterType);
+    nameEditPopOverVisible: boolean;
 
     constructor(private _visualizerService: VisualizerService) {
     }

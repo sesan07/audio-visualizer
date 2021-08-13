@@ -14,6 +14,8 @@ export class EntityEmitterService {
     activeEmitter: IEntityEmitterConfig;
     emitters: IEntityEmitterConfig[] = [];
 
+    private _currNameIndex: number = 0;
+
     constructor(private _entityService: EntityService,
                 private _visualizerService: VisualizerService,
                 private _imageService: ImageService) {
@@ -22,7 +24,7 @@ export class EntityEmitterService {
     addEmitter(type: EntityEmitterType): void {
         const config: IEntityEmitterConfig = {
             emitterType: type,
-            name: `Emitter (${this.emitterCount++})`,
+            name: `Emitter ${this._currNameIndex++}`,
             interval: 1,
             lifespan: 5,
             entity: this.getDefaultEmitterEntity(EntityType.VISUALIZER)

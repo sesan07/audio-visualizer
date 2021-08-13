@@ -83,34 +83,30 @@
             <nz-collapse>
                 <nz-collapse-panel  class="control-group" nzHeader="Options">
                     <app-control-line name="Song">
-                        <div class="file-select-wrapper">
-                            <nz-select [ngModel]="audioService.activeSource"
-                                       (ngModelChange)="audioService.setActiveSource($event)">
-                                <nz-option *ngFor="let option of audioService.sources" [nzValue]="option"
-                                           [nzLabel]="option.name">
-                                </nz-option>
-                            </nz-select>
-                            <input #audioFileInput type="file" id="audioFile" hidden accept="audio/*" multiple
-                                   (change)="onAudioFileUpload()"/>
-                            <button nz-button (click)="audioFileInput.click()">
-                                <i nz-icon nzType="upload"></i>
-                            </button>
-                        </div>
+                        <nz-select [ngModel]="audioService.activeSource"
+                                   (ngModelChange)="audioService.setActiveSource($event)">
+                            <nz-option *ngFor="let option of audioService.sources" [nzValue]="option"
+                                       [nzLabel]="option.name">
+                            </nz-option>
+                        </nz-select>
+                        <input #audioFileInput type="file" id="audioFile" hidden accept="audio/*" multiple
+                               (change)="onAudioFileUpload()"/>
+                        <button nz-button (click)="audioFileInput.click()">
+                            <i nz-icon nzType="upload"></i>
+                        </button>
                     </app-control-line>
                     <app-control-line name="Background Image">
-                        <div class="file-select-wrapper">
-                            <nz-select [ngModel]="backgroundImageService.activeSource"
-                                       (ngModelChange)="backgroundImageService.setActiveSource($event)">
-                                <nz-option *ngFor="let option of backgroundImageService.sources" [nzValue]="option"
-                                           [nzLabel]="option.name">
-                                </nz-option>
-                            </nz-select>
-                            <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
-                                   (change)="onBackgroundFileUpload()"/>
-                            <button nz-button (click)="backgroundFileInput.click()">
-                                <i nz-icon nzType="upload"></i>
-                            </button>
-                        </div>
+                        <nz-select [ngModel]="backgroundImageService.activeSource"
+                                   (ngModelChange)="backgroundImageService.setActiveSource($event)">
+                            <nz-option *ngFor="let option of backgroundImageService.sources" [nzValue]="option"
+                                       [nzLabel]="option.name">
+                            </nz-option>
+                        </nz-select>
+                        <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
+                               (change)="onBackgroundFileUpload()"/>
+                        <button nz-button (click)="backgroundFileInput.click()">
+                            <i nz-icon nzType="upload"></i>
+                        </button>
                     </app-control-line>
                     <app-control-line name="Mode">
                         <nz-radio-group [(ngModel)]="audioService.mode">
@@ -119,12 +115,10 @@
                         </nz-radio-group>
                     </app-control-line>
                     <app-control-line name="Decibel Range">
-                        <div class="slider-wrapper">
-                            <span>{{decibelRange[0]}}</span>
-                            <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
-                                       (ngModelChange)="onDecibelChanged()"></nz-slider>
-                            <span>{{decibelRange[1]}}</span>
-                        </div>
+                        <span class="slider-text">{{decibelRange[0]}}</span>
+                        <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
+                                   (ngModelChange)="onDecibelChanged()"></nz-slider>
+                        <span class="slider-text">{{decibelRange[1]}}</span>
                     </app-control-line>
                 </nz-collapse-panel>
             </nz-collapse>

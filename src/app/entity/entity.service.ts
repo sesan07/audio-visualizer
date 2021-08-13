@@ -13,6 +13,8 @@ export class EntityService {
     entities: IEntityConfig[] = [];
     emittedEntities: IEntityConfig[] = [];
 
+    private _currNameIndex: number = 0;
+
     constructor(private _audioService: AudioService,
                 private _visualizerService: VisualizerService,
                 private _imageService: ImageService) {
@@ -33,11 +35,14 @@ export class EntityService {
 
     getDefaultEntity(type: EntityType): IEntityConfig {
         let entityContent: IEntityContentConfig;
+        let name: string;
         switch (type) {
             case EntityType.VISUALIZER:
+                name = `Entity ${this._currNameIndex++} (Visualizer)`
                 entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
                 break;
             case EntityType.IMAGE:
+                name = `Entity ${this._currNameIndex++} (Image)`
                 entityContent = this._imageService.getDefaultContent()
                 break;
             default: throw new Error('Unknown entity type')
@@ -45,6 +50,7 @@ export class EntityService {
 
         return {
             type: type,
+            name: name,
             isEmitted: false,
             disableMovementEdit: true,
             animateRotation: false,

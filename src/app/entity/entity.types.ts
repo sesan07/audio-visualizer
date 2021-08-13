@@ -11,6 +11,7 @@ export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
 
 export interface IEntityConfig {
     type: EntityType;
+    name?: string;
     isEmitted: boolean;
     animateMovement?: boolean;
     animateRotation?: boolean;

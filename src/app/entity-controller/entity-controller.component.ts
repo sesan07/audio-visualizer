@@ -13,6 +13,7 @@ export class EntityControllerComponent {
 
     EntityType = EntityType;
     entityTypeOptions: EntityType[] = Object.values(EntityType);
+    nameEditPopOverVisible: boolean;
 
     constructor(private _entityService: EntityService,
                 private _entityEmitterService: EntityEmitterService,) {

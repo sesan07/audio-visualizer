@@ -5,6 +5,13 @@
 }
 
 .control-name {
-    width: 8rem;
+    min-width: 8rem;
     margin-right: 0.75rem;
+}
+
+.control-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

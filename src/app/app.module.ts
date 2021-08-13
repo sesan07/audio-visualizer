@@ -45,6 +45,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -84,6 +85,7 @@ registerLocaleData(en);  // NG-Zorro
         NzSelectModule,
         NzUploadModule,
         NzCollapseModule,
+        NzInputModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
     bootstrap: [AppComponent]

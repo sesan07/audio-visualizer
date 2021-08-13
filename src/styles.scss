@@ -53,19 +53,21 @@
     }
 }
 
-.slider-wrapper, .file-select-wrapper {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    nz-slider {
+.control-content {
+    nz-slider, .name-edit-text {
         flex-grow: 1;
+    }
+
+    .slider-text {
+        width: 2rem
     }
 }
 
-.slider-wrapper > span {
-    width: 2rem !important;
+.name-edit-popover-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    gap: 8px;
 }
 
 nz-divider {
