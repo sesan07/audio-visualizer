@@ -13,6 +13,7 @@ import {
 import { EntityType, IEntityContentConfig } from './entity.types';
 import { getRadians, getRandomNumber } from '../shared/utils';
 import { DraggableComponent } from '../shared/components/draggable/draggable.component';
+import { IOomph } from '../shared/audio-service/audio.service.types';
 
 @Component({
     selector: 'app-entity',
@@ -21,7 +22,7 @@ import { DraggableComponent } from '../shared/components/draggable/draggable.com
 })
 export class EntityComponent extends DraggableComponent implements OnChanges, OnDestroy {
     @Input() boundaryElement: HTMLElement;
-    @Input() oomphAmplitudes: Uint8Array;
+    @Input() oomph: IOomph;
     @Input() @HostBinding('class.outline') showOutline: boolean;
     @Input() type: EntityType;
     @Input() animateMovement?: boolean;
@@ -51,7 +52,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     private _rotation: number = 0;
     private _rotationSpeed: number;
     private _scale: number = 1;
-    private _maxAmplitudeTotal: number;
 
     constructor(renderer: Renderer2, elementRef: ElementRef<HTMLElement>, private _ngZone: NgZone) {
         super(renderer, elementRef);
@@ -60,9 +60,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     ngOnChanges(changes: SimpleChanges) {
         if (changes.movementAngle) {
             this._movementAngleRadians = getRadians(this.movementAngle);
-        }
-        if (changes.oomphAmplitudes) {
-            this._maxAmplitudeTotal = 255 * this.oomphAmplitudes.length;
         }
         if (changes.rotationDirection || changes.rotationSpeed) {
             this._rotationSpeed = this.rotationDirection.toLowerCase() === 'right' ? this.rotationSpeed : -this.rotationSpeed;
@@ -125,8 +122,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
 
         let scale: number = this._scale;
         if (this.animateOomph) {
-            const amplitudeTotal: number = this.oomphAmplitudes.reduce((prev, curr) => prev + curr)
-            const oomphScale: number = (amplitudeTotal / this._maxAmplitudeTotal) * this.oomphAmount;
+            const oomphScale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.oomphAmount;
             scale = oomphScale + 1;
         }
 

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IVisualizerConfig, VisualizerType } from './visualizer-entity.types';
+import { IOomph } from '../../shared/audio-service/audio.service.types';
 
 @Component({
     selector: 'app-visualizer-entity',
@@ -9,7 +10,7 @@ import { IVisualizerConfig, VisualizerType } from './visualizer-entity.types';
 export class VisualizerEntityComponent {
     @Input() config: IVisualizerConfig;
     @Input() animationStopTime: number;
-    @Input() oomphAmplitudes: Uint8Array;
+    @Input() oomph: IOomph;
     @Input() oomphAmount: number;
 
     // This allows VisualizerType to be used in the HTML file

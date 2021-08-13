@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { AnalyserMode } from './audio.service.types';
+import { AnalyserMode, IOomph } from './audio.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FileService } from '../file-service/file.service';
 import { IFileSource } from '../file-service/file.service.types';
@@ -30,8 +30,7 @@ export class AudioService extends FileService {
     ];
 
     mode: AnalyserMode = 'frequency';
-    oomphAmplitudes: Uint8Array;
-    // TODO make oomph an object, pass by reference, only calculate the average once, when updating amplitudes
+    oomph: IOomph;
 
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
@@ -39,6 +38,7 @@ export class AudioService extends FileService {
     private _analyserNodeMap: Map<number, AnalyserNode> = new Map(); // todo compare performance with Object maybe?
     private _amplitudesMap: Map<number, Uint8Array> = new Map();
     private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
+    private _oomphAmplitudes: Uint8Array;
     private readonly _showLowerData: boolean = false;
     private readonly _smoothingTimeConstant: number = 0.7;
 
@@ -118,8 +118,12 @@ export class AudioService extends FileService {
             this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount))
         })
 
+        this._oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
+        this.oomph = {
+            amplitudeTotal: this._oomphAmplitudes.reduce((prev, curr) => prev + curr),
+            maxAmplitudeTotal: this._oomphAmplitudes.length * 255
+        }
         this._updateAmplitudes();
-        this.oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
     }
 
     private _updateAmplitudes(): void {
@@ -132,6 +136,8 @@ export class AudioService extends FileService {
                     node.getByteTimeDomainData(amplitudes);
                 }
             })
+
+            this.oomph.amplitudeTotal = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
 
             requestAnimationFrame(() => this._updateAmplitudes())
         })

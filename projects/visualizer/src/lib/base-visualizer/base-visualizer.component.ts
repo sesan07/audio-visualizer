@@ -7,7 +7,7 @@ import { convertHexToColor } from '../visualizer.utils';
 })
 export abstract class BaseVisualizerComponent implements OnChanges, AfterViewInit, OnDestroy {
     @Input() amplitudes: Uint8Array;
-    @Input() oomphAmplitudes: Uint8Array;
+    @Input() oomph: { amplitudeTotal: number; maxAmplitudeTotal: number; };
     @Input() oomphAmount: number;
     @Input() animationStopTime: number = 0;
     @Input() endColorHex: string;
@@ -29,16 +29,11 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
     protected _oomphScale: number; // Scale with oomph applied
 
     private _animationFrameId: number;
-    private _maxAmplitudeTotal: number;
 
     protected constructor(private _ngZone: NgZone) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.oomphAmplitudes) {
-            this._maxAmplitudeTotal = this.oomphAmplitudes.length * 255;
-        }
-
         if ((changes.scale && !changes.scale.firstChange)
             || (changes.multiplier && !changes.multiplier.firstChange)
             || (changes.sampleCount && !changes.sampleCount.firstChange)
@@ -112,8 +107,7 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
 
     private _updateOomphScale(): void {
         this._oomphScale = this.scale;
-        const amplitudeTotal: number = this.oomphAmplitudes.reduce((prev, curr) => prev + curr);
-        const scale: number = (amplitudeTotal / this._maxAmplitudeTotal) * this.oomphAmount;
+        const scale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.oomphAmount;
         this._oomphScale += scale;
     }
 
