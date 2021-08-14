@@ -7,10 +7,30 @@
                 </nz-option>
             </nz-select>
             <input #fileInput type="file" id="file" hidden accept="image/*" multiple
-                   (change)="onFileChange()"/>
+                   (change)="onFileUpload()"/>
             <button nz-button (click)="fileInput.click()">
                 <i nz-icon nzType="upload"></i>
             </button>
+            <button nz-button
+                    nz-popover
+                    nzPopoverTitle="Add Image Link"
+                    nzPopoverTrigger="click"
+                    [(nzPopoverVisible)]="addUrlPopOverVisible"
+                    [nzPopoverContent]="addUrlTemplate">
+                <i nz-icon nzType="link"></i>
+            </button>
+            <ng-template #addUrlTemplate>
+                <input #addImageNameInput nz-input placeholder="Name"/>
+                <input #addImageUrlInput nz-input placeholder="link.to.image.png"/>
+                <span class="popover-action-buttons">
+                    <button nz-button nzDanger (click)="addUrlPopOverVisible = false">
+                        <i nz-icon nzType="close"></i>
+                    </button>
+                    <button nz-button nzType="primary" (click)="onAddUrl(addImageUrlInput.value, addImageNameInput.value)">
+                        <i nz-icon nzType="check"></i>
+                    </button>
+                </span>
+            </ng-template>
         </app-control-line>
         <app-control-line name="Scale">
             <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { IEntityConfig, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
 import { AudioService } from './shared/audio-service/audio.service';
@@ -44,6 +44,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     controlViewWidth: number;
     controlViewContentWidth: number;
     entityViewContentScale: number;
+
+    addUrlPopOverVisible: boolean;
 
     private readonly _controlViewWidth: number = 500;
 
@@ -129,12 +131,17 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     onAudioFileUpload(): void {
         const files: FileList = this.audioFileInputElement.nativeElement.files;
-        this.audioService.uploadFiles(files)
+        this.audioService.addFileSources(files)
     }
 
     onBackgroundFileUpload(): void {
         const files: FileList = this.backgroundFileInputElement.nativeElement.files;
-        this.backgroundImageService.uploadFiles(files)
+        this.backgroundImageService.addFileSources(files)
+    }
+
+    onAddUrl(url?: string, name?: string): void {
+        this.backgroundImageService.addUrlSource(url, name);
+        this.addUrlPopOverVisible = false;
     }
 
     toggleControlView(): void {

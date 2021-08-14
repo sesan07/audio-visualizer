@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { IEntityContentService } from '../entity.types';
 import { IImageConfig } from './image-entity.types';
-import { FileService } from '../../shared/file-service/file.service';
-import { IFileSource } from '../../shared/file-service/file.service.types';
+import { SourceService } from '../../shared/source-service/source.service';
+import { ISource } from '../../shared/source-service/source.service.types';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ImageService extends FileService implements IEntityContentService {
+export class ImageService extends SourceService implements IEntityContentService {
 
-    sources: IFileSource[] = [
+    sources: ISource[] = [
         { name: 'Mako', src: 'assets/image/mako.png' },
         { name: 'Rain Drop', src: 'assets/image/rain-drop.png' }
     ];

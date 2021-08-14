@@ -1,16 +1,16 @@
 import { Injectable, NgZone } from '@angular/core';
 import { AnalyserMode, IOomph } from './audio.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
-import { FileService } from '../file-service/file.service';
-import { IFileSource } from '../file-service/file.service.types';
+import { SourceService } from '../source-service/source.service';
+import { ISource } from '../source-service/source.service.types';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AudioService extends FileService {
+export class AudioService extends SourceService {
 
-    sources: IFileSource[] = [
+    sources: ISource[] = [
         { name: 'Star Eater', src: 'assets/audio/star_eater.mp3' },
         { name: 'Don\'t Stop Me Now', src: 'assets/audio/dont_stop_me_now.mp3' },
         { name: 'Dance Till Dead', src: 'assets/audio/dance_till_dead.mp3' },

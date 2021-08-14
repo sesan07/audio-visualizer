@@ -13,11 +13,18 @@ export class ImageControllerComponent {
 
     @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
+    addUrlPopOverVisible: boolean;
+
     constructor(public imageService: ImageService, private _messageService: NzMessageService) {
     }
 
-    onFileChange() {
+    onFileUpload(): void {
         const files: FileList = this.fileInputElement.nativeElement.files;
-        this.imageService.uploadFiles(files, true);
+        this.imageService.addFileSources(files, true);
+    }
+
+    onAddUrl(url?: string, name?: string): void {
+        this.imageService.addUrlSource(url, name);
+        this.addUrlPopOverVisible = false;
     }
 }

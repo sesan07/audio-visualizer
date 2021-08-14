@@ -18,8 +18,8 @@
             </button>
             <ng-template #nameEditTemplate>
                 <input #nameEditInput nz-input placeholder="Entity Name" [ngModel]="config.name"/>
-                <span class="name-edit-popover-buttons">
-                    <button nz-button nzType="danger" (click)="nameEditPopOverVisible = false">
+                <span class="popover-action-buttons">
+                    <button nz-button nzDanger (click)="nameEditPopOverVisible = false">
                         <i nz-icon nzType="close"></i>
                     </button>
                     <button nz-button nzType="primary" (click)="config.name = nameEditInput.value; nameEditPopOverVisible = false">

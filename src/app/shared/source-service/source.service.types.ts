@@ -1,8 +1,9 @@
 import { SafeUrl } from '@angular/platform-browser';
 
-export interface IFileSource {
+export interface ISource {
     name: string;
     src?: string | SafeUrl;
+    url?: string;
     file?: File;
     objectUrl?: string;
 }

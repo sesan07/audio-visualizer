@@ -1,27 +1,46 @@
 import { Injectable } from '@angular/core';
-import { IFileSource } from './file.service.types';
+import { ISource } from './source.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
     providedIn: 'root'
 })
-export abstract class FileService {
-    abstract sources: IFileSource[];
-    activeSource: IFileSource;
+export abstract class SourceService {
+    abstract sources: ISource[];
+    activeSource: ISource;
 
     constructor(private _sanitizer: DomSanitizer,
                 private _messageService: NzMessageService) {
     }
 
-    uploadFiles(files: FileList, loadFile?: boolean) {
+    addUrlSource(url?: string, name?: string) {
+        if (!url) {
+            this._showNotification(false)
+            return;
+        }
+
+        const existingSource: ISource = this.sources.find(source => source.src === url)
+        if (existingSource) {
+            existingSource.name = name || url.split('/').pop()
+        } else {
+            this.sources.push({
+                url,
+                src: url,
+                name: name || url.split('/').pop()
+            })
+        }
+        this._showNotification(true)
+    }
+
+    addFileSources(files: FileList, loadFile?: boolean) {
         const existingFileNames: string[] = this.sources.map(source => source.file?.name)
         let addedNewFiles: boolean;
         Array.from(files).forEach(file => {
             // Check if file already exists
             const index: number = existingFileNames.indexOf(file.name);
             if (index < 0) {
-                const newSource: IFileSource = {
+                const newSource: ISource = {
                     file,
                     name: file.name.split('.').shift()
                 };
@@ -35,20 +54,20 @@ export abstract class FileService {
             }
         })
 
-        addedNewFiles ? this._messageService.success('File(s) added') : this._messageService.info('No file added');
+        this._showNotification(addedNewFiles);
     }
 
-    loadFileSource(source: IFileSource) {
+    loadFileSource(source: ISource) {
         source.objectUrl = URL.createObjectURL(source.file);
         source.src = this._sanitizer.bypassSecurityTrustUrl(source.objectUrl);
     }
 
-    unloadFileSource(source: IFileSource) {
+    unloadFileSource(source: ISource) {
         URL.revokeObjectURL(source.objectUrl)
         source.objectUrl = null;
     }
 
-    setActiveSource(source: IFileSource) {
+    setActiveSource(source: ISource) {
         if (this.activeSource?.objectUrl) {
             this.unloadFileSource(this.activeSource);
         }
@@ -57,5 +76,9 @@ export abstract class FileService {
         if (this.activeSource.file) {
             this.loadFileSource(this.activeSource);
         }
+    }
+
+    private _showNotification(isSuccessful): void {
+        isSuccessful ? this._messageService.success('Source(s) added') : this._messageService.info('No source added');
     }
 }
