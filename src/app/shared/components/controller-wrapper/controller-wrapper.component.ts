@@ -17,6 +17,7 @@ export class ControllerWrapperComponent implements OnInit {
     @Output() add: EventEmitter<EntityType | EntityEmitterType> = new EventEmitter();
     @Output() remove: EventEmitter<number> = new EventEmitter();
     @Output() configSelect: EventEmitter<IEntityConfig | IEntityEmitterConfig> = new EventEmitter();
+    @Output() close: EventEmitter<void> = new EventEmitter();
 
     selectedAddOption: EntityType | EntityEmitterType;
 

@@ -167,7 +167,8 @@
                                 [addOptions]="addEntityOptions"
                                 (configSelect)="onEntitySelected($event)"
                                 (add)="onAddEntity($event)"
-                                (remove)="onRemoveEntity($event)" >
+                                (remove)="onRemoveEntity($event)"
+                                (close)="entityService.activeEntity = null">
         </app-controller-wrapper>
 
         <app-controller-wrapper type="emitter"
@@ -176,7 +177,8 @@
                                 [addOptions]="addEmitterOptions"
                                 (configSelect)="onEmitterSelected($event)"
                                 (add)="onAddEmitter($event)"
-                                (remove)="onRemoveEmitter($event)" >
+                                (remove)="onRemoveEmitter($event)"
+                                (close)="entityEmitterService.activeEmitter = null">
         </app-controller-wrapper>
     </div>
 </div>
