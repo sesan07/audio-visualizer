@@ -48,6 +48,8 @@
         <!-- Todo add height animations based on active -->
         <app-entity-emitter class="entity-emitter"
                             *ngFor="let emitter of entityEmitterService.emitters"
+                            @entityEmitterEnterLeaveTrigger
+                            [ngStyle]="{ 'transform': emitter === entityEmitterService.activeEmitter ? 'scale(1)' : 'scale(0)' }"
                             [config]="emitter"
                             [viewScale]="entityViewContentScale"
                             (click)="onEmitterSelected(emitter, $event)">
