@@ -21,12 +21,10 @@ export class EntityService {
                 private _imageService: ImageService) {
     }
 
-    addEntity(type: EntityType, setActive?: boolean): void {
+    addEntity(type: EntityType): void {
         const entity: IEntityConfig = this.getDefaultEntity(type);
-        this.entities.push(entity)
-        if (setActive) {
-            this.activeEntity = entity;
-        }
+        this.entities.push(entity);
+        this.activeEntity = entity;
     }
 
     addEmittedEntity(entity: IEntityConfig, autoRemoveTime: number): void {
@@ -86,6 +84,7 @@ export class EntityService {
         this.entities.length = 0; // Empty the array
         this.emittedEntities.length = 0;
         this.entities.push(...entities);
+        this._currNameIndex = entities.length;
     }
 
     getCleanPreset(entity: IEntityConfig): IEntityConfig {
@@ -122,5 +121,25 @@ export class EntityService {
         entityClone.entityContentConfig = entityContentClone;
 
         return entityClone;
+    }
+
+    duplicateActive(): void {
+        const entityClone: IEntityConfig = Object.assign({}, this.activeEntity);
+
+        let name: string;
+        switch (entityClone.type) {
+            case EntityType.VISUALIZER:
+                name = `Entity ${this._currNameIndex++} (Visualizer)`
+                break;
+            case EntityType.IMAGE:
+                name = `Entity ${this._currNameIndex++} (Image)`
+                break;
+            default: throw new Error('Unknown entity type')
+        }
+        entityClone.name = name
+
+        entityClone.entityContentConfig =  Object.assign({}, entityClone.entityContentConfig);
+        this.entities.push(entityClone);
+        this.activeEntity = entityClone;
     }
 }

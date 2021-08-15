@@ -42,14 +42,13 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
 
     // TODO add ability to emit more than one at a time
     private _emitEntity(): void {
-        const rect: DOMRect = this._elementRef.nativeElement.getBoundingClientRect();
         const entity: IEntityConfig = Object.assign({}, this.config.entity)
         entity.entityContentConfig = Object.assign({}, this.config.entity.entityContentConfig)
 
         // Randomize start position
         if (this.config.emitterType === EntityEmitterType.POINT) {
-            entity.startX = rect.left + rect.width / 2;
-            entity.startY = rect.top + rect.height / 2;
+            entity.startX = this._left + this._elementRef.nativeElement.clientWidth / 2;
+            entity.startY = this._top + this._elementRef.nativeElement.clientHeight / 2;
         }
 
         // Randomize movement animation

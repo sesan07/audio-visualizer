@@ -43,7 +43,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     private _animationFrameId: number;
     private _isAnimating: boolean;
     private _movementAngleRadians: number;
-    private _rotation: number = 0;
     private _rotationSpeed: number;
     private _scale: number = 1;
 
@@ -56,7 +55,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             this._movementAngleRadians = getRadians(this.movementAngle);
         }
         if (changes.rotation && !changes.rotation.firstChange) {
-            this._setTransform(this.rotation, this._scale);
+            this._setTransform(this._scale);
         }
         if (changes.rotationDirection || changes.rotationSpeed) {
             this._rotationSpeed = this.rotationDirection.toLowerCase() === 'right' ? this.rotationSpeed : -this.rotationSpeed;
@@ -67,7 +66,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             this._updateAnimationState();
 
             if (!this.animateOomph) {
-                this._setTransform(this._rotation, 1);
+                this._setTransform(1);
             }
         }
     }
@@ -88,8 +87,8 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             top = getRandomNumber(0, this.boundaryElement.clientHeight - clientHeight);
         }
         this._setPosition(left, top);
-        this._setTransform(this._rotation, this._scale)
-        this._updateAnimationState();
+        this._setTransform(this._scale)
+        setTimeout(() => this._updateAnimationState())
     }
 
     private _animate(): void {
@@ -112,9 +111,8 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     }
 
     private _animateTransform(): void {
-        let rotation: number = this._rotation;
         if (this.animateRotation) {
-            rotation = (this._rotation + this._rotationSpeed) % 360;
+            this.config.rotation = (this.config.rotation + this._rotationSpeed) % 360;
         }
 
         let scale: number = this._scale;
@@ -123,13 +121,12 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             scale = oomphScale + 1;
         }
 
-        this._setTransform(rotation, scale)
+        this._setTransform(scale)
     }
 
-    protected _setTransform(rotation: number, scale: number) {
-        this._rotation = rotation;
+    protected _setTransform(scale: number) {
         this._scale = scale;
-        this._renderer.setStyle(this._entityTypeElementRef.nativeElement, 'transform', `rotate(${this._rotation}deg)` + ` scale(${scale})`)
+        this._renderer.setStyle(this._entityTypeElementRef.nativeElement, 'transform', `rotate(${this.config.rotation}deg)` + ` scale(${scale})`)
     }
 
     private _stopAnimation(stopTime: number): void {

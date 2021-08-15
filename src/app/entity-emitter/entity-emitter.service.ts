@@ -76,6 +76,7 @@ export class EntityEmitterService {
         this.activeEmitter = null
         this.emitters.length = 0; // Empty the array
         this.emitters.push(...emitters);
+        this._currNameIndex = emitters.length;
     }
 
     getCleanPreset(emitter: IEntityEmitterConfig): IEntityEmitterConfig {
@@ -88,5 +89,14 @@ export class EntityEmitterService {
         const emitterClone: IEntityEmitterConfig = Object.assign({}, emitter);
         emitterClone.entity = this._entityService.updatePreset(emitterClone.entity);
         return emitterClone;
+    }
+
+    duplicateActive(): void {
+        const emitterClone: IEntityEmitterConfig = Object.assign({}, this.activeEmitter);
+        emitterClone.name = `Emitter ${this._currNameIndex++}`;
+        emitterClone.entity = Object.assign({}, emitterClone.entity);
+        emitterClone.entity.entityContentConfig = Object.assign({}, emitterClone.entity.entityContentConfig);
+        this.emitters.push(emitterClone);
+        this.activeEmitter = emitterClone;
     }
 }

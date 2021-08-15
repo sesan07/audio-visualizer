@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onAddEntity(type: EntityType): void {
-        this.entityService.addEntity(type, true)
+        this.entityService.addEntity(type)
     }
 
     onAddEmitter(type: EntityEmitterType): void {

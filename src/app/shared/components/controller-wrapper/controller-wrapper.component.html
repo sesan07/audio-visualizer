@@ -1,5 +1,3 @@
-<!-- TODO add duplicate config feature -->
-<!-- TODO add close button -->
 <div class="card">
     <span class="card-header">
         <span class="card-title">{{name}}</span>
@@ -50,8 +48,12 @@
         </app-entity-emitter-controller>
 
         <span class="action-buttons">
+            <button nz-button (click)="duplicateActive.emit()">
+                <i nz-icon nzType="copy"></i>
+                Duplicate
+            </button>
             <button nz-button nzDanger (click)="close.emit()">
-                    <i nz-icon nzType="close"></i>
+                <i nz-icon nzType="close"></i>
                 Close
             </button>
         </span>
