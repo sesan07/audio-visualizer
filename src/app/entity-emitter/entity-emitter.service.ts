@@ -10,7 +10,6 @@ import { ImageService } from '../entity/image-entity/image.service';
     providedIn: 'root'
 })
 export class EntityEmitterService {
-    emitterCount: number = 0;
     activeEmitter: IEntityEmitterConfig;
     emitters: IEntityEmitterConfig[] = [];
 
@@ -71,5 +70,21 @@ export class EntityEmitterService {
         if (emitter === this.activeEmitter) {
             this.activeEmitter = null;
         }
+    }
+
+    setEmitters(emitters: IEntityEmitterConfig[]): void {
+        this.activeEmitter = null
+        this.emitters.length = 0; // Empty the array
+        this.emitters.push(...emitters);
+    }
+
+    getCleanPreset(emitter: IEntityEmitterConfig): IEntityEmitterConfig {
+        const emitterClone: IEntityEmitterConfig = Object.assign({}, emitter);
+        emitterClone.entity = this._entityService.getCleanPreset(emitterClone.entity);
+        return emitterClone;
+    }
+
+    updatePreset(emitter: IEntityEmitterConfig): void {
+        this._entityService.updatePreset(emitter.entity);
     }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IEntityContentService } from '../entity.types';
 import { IBaseVisualizerConfig, IVisualizerConfig, VisualizerType } from './visualizer-entity.types';
-import { getRandomColorHex } from 'visualizer';
 import { AudioService } from '../../shared/audio-service/audio.service';
+import { getRandomColorHex } from './visualizer-entity.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -65,5 +65,15 @@ export class VisualizerService implements IEntityContentService {
         }
 
         return visualizer;
+    }
+
+    getCleanPreset(config: IVisualizerConfig): IVisualizerConfig {
+        const visualizerClone = Object.assign({}, config);
+        delete visualizerClone.amplitudes;
+        return visualizerClone;
+    }
+
+    updatePreset(config: IVisualizerConfig): void {
+        config.amplitudes = this._audioService.getAmplitudes(config.sampleCount);
     }
 }

@@ -82,6 +82,34 @@
             </div>
             <nz-collapse>
                 <nz-collapse-panel  class="control-group" nzHeader="Options">
+                    <app-control-line name="Preset">
+                        <nz-select [ngModel]="presetService.activePreset"
+                                   (ngModelChange)="presetService.setActivePreset($event)">
+                            <nz-option *ngFor="let option of presetService.presets" [nzValue]="option"
+                                       [nzLabel]="option.name">
+                            </nz-option>
+                        </nz-select>
+                        <button nz-button
+                                nz-popover
+                                nzPopoverTitle="Save Current As Preset"
+                                nzPopoverTrigger="click"
+                                [(nzPopoverVisible)]="savePresetPopOverVisible"
+                                [nzPopoverContent]="savePresetTemplate">
+                            <i nz-icon nzType="save"></i>
+                        </button>
+                        <ng-template #savePresetTemplate>
+                            <input #savePresetNameInput nz-input placeholder="Preset Name"/>
+                            <span class="popover-action-buttons">
+                                <button nz-button nzDanger (click)="savePresetPopOverVisible = false">
+                                    <i nz-icon nzType="close"></i>
+                                </button>
+                                <button nz-button nzType="primary"
+                                        (click)="presetService.saveCurrentAsPreset(savePresetNameInput.value); savePresetPopOverVisible = false">
+                                    <i nz-icon nzType="check"></i>
+                                </button>
+                            </span>
+                        </ng-template>
+                    </app-control-line>
                     <app-control-line name="Song">
                         <nz-select [ngModel]="audioService.activeSource"
                                    (ngModelChange)="audioService.setActiveSource($event)">
@@ -102,11 +130,6 @@
                                        [nzLabel]="option.name">
                             </nz-option>
                         </nz-select>
-                        <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
-                               (change)="onBackgroundFileUpload()"/>
-                        <button nz-button (click)="backgroundFileInput.click()">
-                            <i nz-icon nzType="upload"></i>
-                        </button>
                         <button nz-button
                                 nz-popover
                                 nzPopoverTitle="Add Image Link"
@@ -127,6 +150,11 @@
                                 </button>
                             </span>
                         </ng-template>
+                        <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
+                               (change)="onBackgroundFileUpload()"/>
+                        <button nz-button (click)="backgroundFileInput.click()">
+                            <i nz-icon nzType="upload"></i>
+                        </button>
                     </app-control-line>
                     <app-control-line name="Mode">
                         <nz-radio-group [(ngModel)]="audioService.mode">

@@ -8,9 +8,10 @@ import { ISource } from '../../shared/source-service/source.service.types';
     providedIn: 'root'
 })
 export class ImageService extends SourceService implements IEntityContentService {
+    defaultSource: ISource = { name: 'Mako', src: 'assets/image/mako.png' };
 
     sources: ISource[] = [
-        { name: 'Mako', src: 'assets/image/mako.png' },
+        this.defaultSource,
         { name: 'Rain Drop', src: 'assets/image/rain-drop.png' }
     ];
 
@@ -23,5 +24,15 @@ export class ImageService extends SourceService implements IEntityContentService
             scale: 1,
             opacity: 1
         };
+    }
+
+    getCleanPreset(config: IImageConfig): IImageConfig {
+        const imageClone = Object.assign({}, config);
+        imageClone.src = this.defaultSource.src;
+        return imageClone;
+    }
+
+    updatePreset(config: IImageConfig): void {
+
     }
 }

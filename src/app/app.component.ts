@@ -7,6 +7,7 @@ import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter/entity
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EntityEmitterService } from './entity-emitter/entity-emitter.service';
 import { BackgroundImageService } from './background-image.service';
+import { PresetService } from './shared/preset-service/preset.service';
 
 @Component({
     selector: 'app-root',
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     entityViewContentScale: number;
 
     addUrlPopOverVisible: boolean;
+    savePresetPopOverVisible: boolean;
 
     private readonly _controlViewWidth: number = 500;
 
@@ -57,6 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 public backgroundImageService: BackgroundImageService,
                 public entityService: EntityService,
                 public entityEmitterService: EntityEmitterService,
+                public presetService: PresetService,
                 private _elementRef: ElementRef<HTMLElement>,
                 private _messageService: NzMessageService,
                 private _renderer: Renderer2) {

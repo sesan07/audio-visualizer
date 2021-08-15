@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { EntityType, IEntityConfig, IEntityContentConfig } from './entity.types';
 import { AudioService } from '../shared/audio-service/audio.service';
 import { VisualizerService } from './visualizer-entity/visualizer.service';
-import { VisualizerType } from './visualizer-entity/visualizer-entity.types';
+import { IVisualizerConfig, VisualizerType } from './visualizer-entity/visualizer-entity.types';
 import { ImageService } from './image-entity/image.service';
+import { IImageConfig } from './image-entity/image-entity.types';
 
 @Injectable({
     providedIn: 'root'
@@ -77,6 +78,43 @@ export class EntityService {
         const index: number = this.emittedEntities.indexOf(entity);
         if (index !== -1) {
             this.emittedEntities.splice(index, 1);
+        }
+    }
+
+    setEntities(entities: IEntityConfig[]): void {
+        this.activeEntity = null
+        this.entities.length = 0; // Empty the array
+        this.emittedEntities.length = 0;
+        this.entities.push(...entities);
+    }
+
+    getCleanPreset(entity: IEntityConfig): IEntityConfig {
+        const entityClone: IEntityConfig = Object.assign({}, entity)
+        delete entityClone.animateOomphInEntity;
+
+        let entityContentClone: IEntityContentConfig;
+        switch (entityClone.type) {
+            case EntityType.VISUALIZER:
+                entityContentClone = this._visualizerService.getCleanPreset(entityClone.entityContentConfig as IVisualizerConfig);
+                break;
+            case EntityType.IMAGE:
+                entityContentClone = this._imageService.getCleanPreset(entityClone.entityContentConfig as IImageConfig);
+                break;
+        }
+        entityClone.entityContentConfig = entityContentClone;
+
+        return entityClone;
+    }
+
+    updatePreset(entity: IEntityConfig): void {
+        entity.animateOomphInEntity = entity.type !== EntityType.VISUALIZER
+        switch (entity.type) {
+            case EntityType.VISUALIZER:
+                this._visualizerService.updatePreset(entity.entityContentConfig as IVisualizerConfig)
+                break;
+            case EntityType.IMAGE:
+                this._imageService.updatePreset(entity.entityContentConfig as IImageConfig)
+                break;
         }
     }
 }
