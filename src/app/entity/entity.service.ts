@@ -51,7 +51,6 @@ export class EntityService {
             type: type,
             name: name,
             isEmitted: false,
-            disableMovementEdit: true,
             animateRotation: false,
             animateOomphInEntity: type !== EntityType.VISUALIZER,
             rotation: 0,
@@ -59,7 +58,6 @@ export class EntityService {
             rotationSpeed: 0.5,
             oomphAmount: 0.8,
             fadeTime: 1,
-            disableFadeEdit: true,
             entityContentConfig: entityContent
         }
     }

@@ -5,6 +5,7 @@ export enum VisualizerType {
 }
 
 export interface IBaseVisualizerConfig {
+    isEmitted: boolean;
     type: VisualizerType,
     amplitudes: Uint8Array;
     startColorHex: string;
@@ -15,7 +16,6 @@ export interface IBaseVisualizerConfig {
     scale: number;
     shadowBlur?: number;
     randomizeColors: boolean;
-    disableShadow?: boolean;
 }
 
 export interface IBarVisualizerConfig extends IBaseVisualizerConfig {

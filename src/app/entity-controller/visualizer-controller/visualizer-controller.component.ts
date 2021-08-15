@@ -36,8 +36,9 @@ export class VisualizerControllerComponent {
 
     onVisualizerTypeChange(): void {
         Object.assign(this.config, this._visualizerService.getDefaultContent(this.config.type))
-        if (this.config.disableShadow) {
+        if (this.config.isEmitted) {
             this.config.shadowBlur = 0;
+            this.config.randomizeColors = true;
         }
     }
 }

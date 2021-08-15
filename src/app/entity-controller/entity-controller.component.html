@@ -29,12 +29,12 @@
             </ng-template>
         </app-control-line>
 
-        <app-control-line name="Fade Time" *ngIf="!config.disableFadeEdit">
+        <app-control-line name="Fade Time" *ngIf="config.isEmitted">
             <nz-input-number [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
             <nz-slider [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
         </app-control-line>
 
-        <ng-container *ngIf="!config.disableMovementEdit">
+        <ng-container *ngIf="config.isEmitted">
             <app-control-line name="Animate Movement">
                 <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
             </app-control-line>
