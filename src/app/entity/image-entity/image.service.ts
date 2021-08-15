@@ -21,8 +21,7 @@ export class ImageService extends SourceService implements IEntityContentService
     getDefaultContent(): IImageConfig {
         return {
             src: this.sources[0].src,
-            scale: 1,
-            opacity: 1
+            scale: 1
         };
     }
 

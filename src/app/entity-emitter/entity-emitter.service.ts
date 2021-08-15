@@ -62,6 +62,7 @@ export class EntityEmitterService {
             oomphAmount: 0.8,
             randomizeMovement: true,
             fadeTime: 1,
+            opacity: 1,
             entityContentConfig: entityContent
         }
     }

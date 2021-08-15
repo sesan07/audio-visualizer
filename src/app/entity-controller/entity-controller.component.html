@@ -29,7 +29,12 @@
             </ng-template>
         </app-control-line>
 
-        <app-control-line name="Fade Time" *ngIf="config.isEmitted">
+        <app-control-line name="Opacity">
+            <nz-input-number [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+            <nz-slider [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+        </app-control-line>
+
+        <app-control-line name="Fade In/Out Time" *ngIf="config.isEmitted">
             <nz-input-number [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
             <nz-slider [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
         </app-control-line>

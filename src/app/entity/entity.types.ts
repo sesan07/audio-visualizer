@@ -27,6 +27,7 @@ export interface IEntityConfig {
     startY?: number;
     left?: number;
     top?: number;
+    opacity: number;
     fadeTime: number;
     entityContentConfig: IEntityContentConfig;
 }

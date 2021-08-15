@@ -58,6 +58,7 @@ export class EntityService {
             rotationSpeed: 0.5,
             oomphAmount: 0.8,
             fadeTime: 1,
+            opacity: 1,
             entityContentConfig: entityContent
         }
     }

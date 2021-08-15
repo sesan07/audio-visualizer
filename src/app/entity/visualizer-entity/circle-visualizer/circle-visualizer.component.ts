@@ -74,11 +74,9 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent implement
     }
 
     private _drawPoint(x: number, y: number, color: RGB): void {
-        // this._canvasContext.strokeStyle = '#00000055';
         this._canvasContext.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
         this._canvasContext.beginPath();
         this._canvasContext.arc(x, y, this.sampleRadius * this._oomphScale, 0, 2 * Math.PI);
-        // this._canvasContext.stroke();
         this._canvasContext.fill();
     }
 }

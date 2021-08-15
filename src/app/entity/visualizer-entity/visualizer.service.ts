@@ -30,7 +30,6 @@ export class VisualizerService implements IEntityContentService {
             startColorHex: getRandomColorHex(),
             endColorHex: getRandomColorHex(),
             multiplier: 1,
-            opacity: 1,
             scale: 0.5,
             shadowBlur: 5,
             sampleCount: sampleCount

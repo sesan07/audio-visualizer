@@ -35,7 +35,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
 
     @ViewChild('entityTypeElement') _entityTypeElementRef: ElementRef<HTMLElement>
 
-    // todo: fall down effect (slowly change angle to 90 degrees)
+    // todo: fall down effect (slowly change angle to 90 degrees, or user set target angle (start, finish angles))
 
     // This allows EntityType to be used in the HTML file
     EntityType = EntityType;
