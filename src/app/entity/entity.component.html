@@ -1,13 +1,13 @@
 <!-- Todo set opacity here -->
-<div #entityTypeElement [ngSwitch]="type"
+<div #entityTypeElement [ngSwitch]="config.type"
      [class.outline]="showOutline">
     <app-visualizer-entity *ngSwitchCase="EntityType.VISUALIZER"
-                           [config]="entityContentConfig"
-                           [animationStopTime]="fadeTime * 1000"
+                           [config]="config.entityContentConfig"
+                           [animationStopTime]="config.fadeTime * 1000"
                            [oomph]="oomph"
-                           [oomphAmount]="oomphAmount">
+                           [oomphAmount]="config.oomphAmount">
     </app-visualizer-entity>
     <app-image-entity *ngSwitchCase="EntityType.IMAGE"
-                           [config]="entityContentConfig">
+                           [config]="config.entityContentConfig">
     </app-image-entity>
 </div>

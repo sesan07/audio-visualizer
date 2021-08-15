@@ -35,7 +35,7 @@ export class AudioService extends SourceService {
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
-    private _analyserNodeMap: Map<number, AnalyserNode> = new Map(); // todo compare performance with Object maybe?
+    private _analyserNodeMap: Map<number, AnalyserNode> = new Map();
     private _amplitudesMap: Map<number, Uint8Array> = new Map();
     private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
     private _oomphAmplitudes: Uint8Array;

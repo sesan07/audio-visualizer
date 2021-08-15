@@ -11,4 +11,6 @@ export interface IEntityEmitterConfig {
     name: string;
     interval: number;
     lifespan: number;
+    left?: number;
+    top?: number;
 }

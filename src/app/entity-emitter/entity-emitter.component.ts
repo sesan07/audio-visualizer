@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter.types';
 import { DraggableComponent } from '../shared/components/draggable/draggable.component';
 import { EntityService } from '../entity/entity.service';
@@ -14,7 +14,7 @@ import { IImageConfig } from '../entity/image-entity/image-entity.types';
     templateUrl: './entity-emitter.component.html',
     styleUrls: ['./entity-emitter.component.css']
 })
-export class EntityEmitterComponent extends DraggableComponent implements OnInit {
+export class EntityEmitterComponent extends DraggableComponent implements OnInit, AfterViewInit {
     @Input() config: IEntityEmitterConfig;
 
     private _timeoutRef: ReturnType<typeof setTimeout>;
@@ -32,19 +32,25 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
         this._timeoutRef = setTimeout(() => this._emitEntity(), this.config.interval * 1000);
     }
 
+    ngAfterViewInit(): void {
+        this._setPosition(this.config.left ?? 0, this.config.top ?? 0)
+    }
+
     ngOnDestroy(): void {
         clearInterval(this._timeoutRef);
     }
 
+    // TODO add ability to emit more than one at a time
     private _emitEntity(): void {
         const rect: DOMRect = this._elementRef.nativeElement.getBoundingClientRect();
         const entity: IEntityConfig = Object.assign({}, this.config.entity)
         entity.entityContentConfig = Object.assign({}, this.config.entity.entityContentConfig)
 
-        // Randomize position
-        // Todo move random start pos here
-        entity.startLeft = this.config.emitterType === EntityEmitterType.POINT ? rect.left + rect.width / 2 : undefined;
-        entity.startTop = this.config.emitterType === EntityEmitterType.POINT ? rect.top + rect.height / 2: undefined
+        // Randomize start position
+        if (this.config.emitterType === EntityEmitterType.POINT) {
+            entity.startX = rect.left + rect.width / 2;
+            entity.startY = rect.top + rect.height / 2;
+        }
 
         // Randomize movement animation
         if (entity.animateMovement && entity.randomizeMovement) {

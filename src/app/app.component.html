@@ -17,20 +17,14 @@
                     [oomph]="audioService.oomph"
                     [viewScale]="entityViewContentScale"
                     [showOutline]="entity === entityService.activeEntity"
-                    [type]="entity.type"
-                    [fadeTime]="entity.fadeTime"
+                    [config]="entity"
                     [animateMovement]="entity.animateMovement"
                     [animateRotation]="entity.animateRotation"
                     [animateOomph]="entity.animateOomphInEntity"
                     [movementAngle]="entity.movementAngle"
-                    [movementSpeed]="entity.movementSpeed"
                     [rotation]="entity.rotation"
                     [rotationDirection]="entity.rotationDirection"
                     [rotationSpeed]="entity.rotationSpeed"
-                    [oomphAmount]="entity.oomphAmount"
-                    [startLeft]="entity.startLeft"
-                    [startTop]="entity.startTop"
-                    [entityContentConfig]="entity.entityContentConfig"
                     (click)="onEntitySelected(entity, $event)">
         </app-entity>
 
@@ -39,28 +33,23 @@
                     [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
                     [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
                     [boundaryElement]="entityView"
+                    [config]="entity"
                     [oomph]="audioService.oomph"
                     [viewScale]="entityViewContentScale"
-                    [type]="entity.type"
-                    [fadeTime]="entity.fadeTime"
                     [animateMovement]="entity.animateMovement"
                     [animateRotation]="entity.animateRotation"
                     [animateOomph]="entity.animateOomphInEntity"
                     [movementAngle]="entity.movementAngle"
-                    [movementSpeed]="entity.movementSpeed"
                     [rotation]="entity.rotation"
                     [rotationDirection]="entity.rotationDirection"
-                    [rotationSpeed]="entity.rotationSpeed"
-                    [oomphAmount]="entity.oomphAmount"
-                    [startLeft]="entity.startLeft"
-                    [startTop]="entity.startTop"
-                    [entityContentConfig]="entity.entityContentConfig">
+                    [rotationSpeed]="entity.rotationSpeed">
         </app-entity>
 
         <!-- Todo add height animations based on active -->
         <app-entity-emitter class="entity-emitter"
                             *ngFor="let emitter of entityEmitterService.emitters"
                             [config]="emitter"
+                            [viewScale]="entityViewContentScale"
                             (click)="onEmitterSelected(emitter, $event)">
         </app-entity-emitter>
     </div>

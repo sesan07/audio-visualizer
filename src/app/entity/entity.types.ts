@@ -9,6 +9,7 @@ export enum EntityType {
 export type EntityContentType = VisualizerType;
 export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
 
+// TODO hide/show controls based on isEmitted
 export interface IEntityConfig {
     type: EntityType;
     name?: string;
@@ -23,8 +24,10 @@ export interface IEntityConfig {
     rotationSpeed?: number;
     oomphAmount: number;
     randomizeMovement?: boolean;
-    startLeft?: number;
-    startTop?: number;
+    startX?: number;
+    startY?: number;
+    left?: number;
+    top?: number;
     fadeTime: number;
     disableFadeEdit?: boolean;
     disableMovementEdit?: boolean;

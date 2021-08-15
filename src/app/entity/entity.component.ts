@@ -10,7 +10,7 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import { EntityType, IEntityContentConfig } from './entity.types';
+import { EntityType, IEntityConfig } from './entity.types';
 import { getRadians, getRandomNumber } from '../shared/utils';
 import { DraggableComponent } from '../shared/components/draggable/draggable.component';
 import { IOomph } from '../shared/audio-service/audio.service.types';
@@ -24,21 +24,15 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     @Input() boundaryElement: HTMLElement;
     @Input() oomph: IOomph;
     @Input() @HostBinding('class.outline') showOutline: boolean;
-    @Input() type: EntityType;
+    @Input() config: IEntityConfig;
     @Input() animateMovement?: boolean;
     @Input() animateRotation?: boolean;
     @Input() animateOomph?: boolean;
     @Input() movementAngle?: number;
-    @Input() movementSpeed?: number;
     @Input() rotation: number;
     @Input() rotationDirection: 'Left' | 'Right';
     @Input() rotationSpeed?: number;
-    @Input() oomphAmount?: number;
-    @Input() startLeft?: number;
-    @Input() startTop?: number;
-    @Input() fadeTime?: number;
-    @Input() entityContentConfig: IEntityContentConfig;
-    
+
     @ViewChild('entityTypeElement') _entityTypeElementRef: ElementRef<HTMLElement>
 
     // todo: fall down effect (slowly change angle to 90 degrees)
@@ -61,6 +55,9 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
         if (changes.movementAngle) {
             this._movementAngleRadians = getRadians(this.movementAngle);
         }
+        if (changes.rotation && !changes.rotation.firstChange) {
+            this._setTransform(this.rotation, this._scale);
+        }
         if (changes.rotationDirection || changes.rotationSpeed) {
             this._rotationSpeed = this.rotationDirection.toLowerCase() === 'right' ? this.rotationSpeed : -this.rotationSpeed;
         }
@@ -73,9 +70,6 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
                 this._setTransform(this._rotation, 1);
             }
         }
-        if (changes.rotation && !changes.rotation.firstChange) {
-            this._setTransform(this.rotation, this._scale);
-        }
     }
 
     ngAfterViewInit(): void {
@@ -83,9 +77,12 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
         const clientHeight: number = this._elementRef.nativeElement.clientHeight;
         let left: number;
         let top: number;
-        if (this.startLeft && this.startTop) {
-            left = this.startLeft - clientWidth / 2;
-            top = this.startTop - clientHeight / 2;
+        if (this.config.startX && this.config.startY) {
+            left = this.config.startX - clientWidth / 2;
+            top = this.config.startY - clientHeight / 2;
+        } else if (this.config.left && this.config.top) {
+            left = this.config.left;
+            top = this.config.top;
         } else {
             left = getRandomNumber(0, this.boundaryElement.clientWidth - clientWidth);
             top = getRandomNumber(0, this.boundaryElement.clientHeight - clientHeight);
@@ -109,8 +106,8 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
     }
 
     private _animateMovement(): void {
-        const newLeft: number = this._left + this.movementSpeed * Math.cos(this._movementAngleRadians);
-        const newTop: number = this._top + this.movementSpeed * Math.sin(this._movementAngleRadians);
+        const newLeft: number = this._left + this.config.movementSpeed * Math.cos(this._movementAngleRadians);
+        const newTop: number = this._top + this.config.movementSpeed * Math.sin(this._movementAngleRadians);
         this._setPosition(newLeft, newTop);
     }
 
@@ -122,7 +119,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
 
         let scale: number = this._scale;
         if (this.animateOomph) {
-            const oomphScale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.oomphAmount;
+            const oomphScale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.config.oomphAmount;
             scale = oomphScale + 1;
         }
 
@@ -162,11 +159,11 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
             this._animate();
         } else if (this._isAnimating) {
             this._isAnimating = false;
-            this._stopAnimation(this.fadeTime * 1000)
+            this._stopAnimation(this.config.fadeTime * 1000)
         }
     }
 
     ngOnDestroy(): void {
-        this._stopAnimation(this.fadeTime * 1000);
+        this._stopAnimation(this.config.fadeTime * 1000);
     }
 }

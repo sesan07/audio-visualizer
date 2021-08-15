@@ -6,6 +6,7 @@ import { Component, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 export abstract class DraggableComponent {
     @Input() viewScale: number;
 
+    abstract config: { left?: number, top?: number };
     protected _left: number;
     protected _top: number;
 
@@ -35,12 +36,15 @@ export abstract class DraggableComponent {
         this._stopTouchEndListener = this._renderer.listen('window', 'touchend', () => this._stopTouchListeners())
     }
 
-    protected constructor(protected _renderer: Renderer2, protected _elementRef: ElementRef<HTMLElement>) {
+    protected constructor(protected _renderer: Renderer2,
+                          protected _elementRef: ElementRef<HTMLElement>) {
     }
 
     protected _setPosition(left: number, top: number) {
         this._left = left;
         this._top = top;
+        this.config.left = left;
+        this.config.top = top;
         this._renderer.setStyle(this._elementRef.nativeElement, 'left', left + 'px')
         this._renderer.setStyle(this._elementRef.nativeElement, 'top', top + 'px')
     }
