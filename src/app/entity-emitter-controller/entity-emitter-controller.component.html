@@ -33,6 +33,10 @@
             <nz-input-number [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="config.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
         </app-control-line>
+        <app-control-line name="Amount">
+            <nz-input-number [(ngModel)]="config.amount" [nzStep]="1" [nzMin]="0" [nzMax]="10"></nz-input-number>
+            <nz-slider [(ngModel)]="config.amount" [nzStep]="1" [nzMin]="0" [nzMax]="10"></nz-slider>
+        </app-control-line>
         <app-control-line name="Lifespan">
             <nz-input-number [(ngModel)]="config.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="config.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>

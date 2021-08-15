@@ -24,7 +24,8 @@ export class EntityEmitterService {
         const config: IEntityEmitterConfig = {
             emitterType: type,
             name: `Emitter ${this._currNameIndex++}`,
-            interval: 1,
+            interval: 2,
+            amount: 1,
             lifespan: 5,
             entity: this.getDefaultEmitterEntity(EntityType.VISUALIZER)
         };

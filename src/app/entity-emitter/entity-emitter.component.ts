@@ -28,8 +28,7 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
     }
 
     ngOnInit(): void {
-        // setTimeout instead of setInterval to use updated config interval
-        this._timeoutRef = setTimeout(() => this._emitEntity(), this.config.interval * 1000);
+        this._emitEntities();
     }
 
     ngAfterViewInit(): void {
@@ -37,10 +36,16 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
     }
 
     ngOnDestroy(): void {
-        clearInterval(this._timeoutRef);
+        clearTimeout(this._timeoutRef);
     }
 
-    // TODO add ability to emit more than one at a time
+    private _emitEntities(): void {
+        for (let i = 0; i < this.config.amount; i++) {
+            this._emitEntity();
+        }
+        this._timeoutRef = setTimeout(() => this._emitEntities(), this.config.interval * 1000);
+    }
+
     private _emitEntity(): void {
         const entity: IEntityConfig = Object.assign({}, this.config.entity)
         entity.entityContentConfig = Object.assign({}, this.config.entity.entityContentConfig)
@@ -67,8 +72,6 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
         }
 
         this._entityService.addEmittedEntity(entity, this.config.lifespan * 1000)
-
-        this._timeoutRef = setTimeout(() => this._emitEntity(), this.config.interval * 1000);
     }
 
 }
