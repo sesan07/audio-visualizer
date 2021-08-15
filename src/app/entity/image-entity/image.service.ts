@@ -32,7 +32,7 @@ export class ImageService extends SourceService implements IEntityContentService
         return imageClone;
     }
 
-    updatePreset(config: IImageConfig): void {
-
+    updatePreset(config: IImageConfig): IImageConfig {
+        return Object.assign({}, config);
     }
 }

@@ -106,15 +106,21 @@ export class EntityService {
         return entityClone;
     }
 
-    updatePreset(entity: IEntityConfig): void {
-        entity.animateOomphInEntity = entity.type !== EntityType.VISUALIZER
+    updatePreset(entity: IEntityConfig): IEntityConfig {
+        const entityClone: IEntityConfig = Object.assign({}, entity)
+        entityClone.animateOomphInEntity = entity.type !== EntityType.VISUALIZER
+
+        let entityContentClone: IEntityContentConfig;
         switch (entity.type) {
             case EntityType.VISUALIZER:
-                this._visualizerService.updatePreset(entity.entityContentConfig as IVisualizerConfig)
+                entityContentClone = this._visualizerService.updatePreset(entityClone.entityContentConfig as IVisualizerConfig)
                 break;
             case EntityType.IMAGE:
-                this._imageService.updatePreset(entity.entityContentConfig as IImageConfig)
+                entityContentClone = this._imageService.updatePreset(entityClone.entityContentConfig as IImageConfig)
                 break;
         }
+        entityClone.entityContentConfig = entityContentClone;
+
+        return entityClone;
     }
 }

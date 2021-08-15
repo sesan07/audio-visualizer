@@ -73,7 +73,9 @@ export class VisualizerService implements IEntityContentService {
         return visualizerClone;
     }
 
-    updatePreset(config: IVisualizerConfig): void {
-        config.amplitudes = this._audioService.getAmplitudes(config.sampleCount);
+    updatePreset(config: IVisualizerConfig): IVisualizerConfig {
+        const visualizerClone = Object.assign({}, config);
+        visualizerClone.amplitudes = this._audioService.getAmplitudes(visualizerClone.sampleCount);
+        return visualizerClone;
     }
 }

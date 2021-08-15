@@ -84,7 +84,9 @@ export class EntityEmitterService {
         return emitterClone;
     }
 
-    updatePreset(emitter: IEntityEmitterConfig): void {
-        this._entityService.updatePreset(emitter.entity);
+    updatePreset(emitter: IEntityEmitterConfig): IEntityEmitterConfig {
+        const emitterClone: IEntityEmitterConfig = Object.assign({}, emitter);
+        emitterClone.entity = this._entityService.updatePreset(emitterClone.entity);
+        return emitterClone;
     }
 }
