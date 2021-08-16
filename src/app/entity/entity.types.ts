@@ -34,7 +34,7 @@ export interface IEntityConfig {
 
 export interface IEntityContentService {
     beforeEmit(config: IEntityContentConfig): void;
-    getDefaultContent(contentType?: EntityContentType): IEntityContentConfig;
+    getDefaultContent(contentType?: EntityContentType, isEmitted?: boolean): IEntityContentConfig;
     getCleanPreset(config: IEntityContentConfig): IEntityContentConfig;
     updatePreset(config: IEntityContentConfig): IEntityContentConfig;
 }

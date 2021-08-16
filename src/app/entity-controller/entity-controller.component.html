@@ -76,6 +76,7 @@
             <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
             <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
         </app-control-line>
+<!--        TODO figure how how to separate oomph control-->
         <app-control-line name="Oomph Amount">
             <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>

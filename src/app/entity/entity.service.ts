@@ -38,7 +38,7 @@ export class EntityService {
         switch (type) {
             case EntityType.VISUALIZER:
                 name = `Entity ${this._currNameIndex++} (Visualizer)`
-                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
+                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR, false)
                 break;
             case EntityType.IMAGE:
                 name = `Entity ${this._currNameIndex++} (Image)`

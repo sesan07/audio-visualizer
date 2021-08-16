@@ -37,10 +37,7 @@ export class EntityEmitterService {
         let entityContent: IEntityContentConfig;
         switch (type) {
             case EntityType.VISUALIZER:
-                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR)
-                entityContent.shadowBlur = 0;
-                entityContent.isEmitted = true;
-                entityContent.randomizeColors = true;
+                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR, true);
                 break;
             case EntityType.IMAGE:
                 entityContent = this._imageService.getDefaultContent()

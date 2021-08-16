@@ -20,18 +20,18 @@ export class VisualizerService implements IEntityContentService {
         }
     }
 
-    getDefaultContent(visualizerType: VisualizerType): IVisualizerConfig {
+    getDefaultContent(visualizerType: VisualizerType, isEmitted: boolean): IVisualizerConfig {
         const sampleCount: number = this._audioService.sampleCounts[0];
         const baseConfig: IBaseVisualizerConfig = {
             type: visualizerType,
-            isEmitted: false,
-            randomizeColors: false,
+            isEmitted: isEmitted,
+            randomizeColors: isEmitted,
             amplitudes: this._audioService.getAmplitudes(sampleCount),
             startColorHex: getRandomColorHex(),
             endColorHex: getRandomColorHex(),
             multiplier: 1,
             scale: 0.5,
-            shadowBlur: 5,
+            shadowBlur: isEmitted ? 0 : 5,
             sampleCount: sampleCount
         }
 
