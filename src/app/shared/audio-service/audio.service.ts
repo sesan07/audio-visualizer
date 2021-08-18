@@ -39,6 +39,7 @@ export class AudioService extends SourceService {
     private _amplitudesMap: Map<number, Uint8Array> = new Map();
     private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
     private _oomphAmplitudes: Uint8Array;
+    private _maxOomphAmplitudeTotal: number;
     private readonly _showLowerData: boolean = false;
     private readonly _smoothingTimeConstant: number = 0.7;
 
@@ -119,10 +120,8 @@ export class AudioService extends SourceService {
         })
 
         this._oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
-        this.oomph = {
-            amplitudeTotal: this._oomphAmplitudes.reduce((prev, curr) => prev + curr),
-            maxAmplitudeTotal: this._oomphAmplitudes.length * 255
-        }
+        this._maxOomphAmplitudeTotal = this._oomphAmplitudes.length * 255
+        this.oomph = { value: 0 }
         this._updateAmplitudes();
     }
 
@@ -137,7 +136,9 @@ export class AudioService extends SourceService {
                 }
             })
 
-            this.oomph.amplitudeTotal = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
+            const total: number = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
+            const baseOomphValue: number = total / this._maxOomphAmplitudeTotal;
+            this.oomph.value = Math.min(baseOomphValue * 1.2, 1)
 
             requestAnimationFrame(() => this._updateAmplitudes())
         })

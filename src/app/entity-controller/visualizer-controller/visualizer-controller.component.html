@@ -51,22 +51,22 @@
                     <nz-input-number [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
                     <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
                 </app-control-line>
-                <app-control-line name="Loose Caps">
-                    <nz-switch [(ngModel)]="config.looseCaps"></nz-switch>
-                </app-control-line>
             </ng-container>
 
             <!--  Barcle Controls  -->
             <ng-container *ngSwitchCase="VisualizerType.BARCLE">
-                <app-control-line name="Base Radius">
-                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                <app-control-line name="Center Radius">
+                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200"></nz-slider>
+                </app-control-line>
+                <app-control-line name="Fill Center">
+                    <nz-switch [(ngModel)]="config.fillCenter"></nz-switch>
                 </app-control-line>
             </ng-container>
 
             <!--  Circle Controls  -->
             <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
-                <app-control-line name="Base Radius">
+                <app-control-line name="Center Radius">
                     <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
                     <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
                 </app-control-line>

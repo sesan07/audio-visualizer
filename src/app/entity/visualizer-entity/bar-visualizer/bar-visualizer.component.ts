@@ -12,7 +12,6 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
     @Input() barCapSize: number;
     @Input() barSize: number;
     @Input() barSpacing: number;
-    @Input() looseCaps: boolean;
 
     private _amplitudeCaps: Uint8Array;
 
@@ -60,20 +59,14 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
         const scaledTop: number = originY - this.oomphHeight / 2;
 
         let currPos = scaledLeft;
-        this.amplitudes.forEach((amplitude, i) => {
+        this.amplitudes.forEach(amplitude => {
             const originalAmplitude: number = amplitude;
             amplitude *= this.multiplier * this._oomphScale;
-            let cap: number = this._amplitudeCaps[i];
-            if (this.looseCaps) {
-                cap = amplitude > cap ? amplitude : cap;
-                this._amplitudeCaps[i] = cap;
-            } else {
-                cap = amplitude;
-            }
 
             // const gradientColor: Color = _getGradientColor(this._startColor, this._endColor, (i / this._amplitudes.length));
             const gradientColor: RGB = getGradientColor(this._startColor, this._endColor, (originalAmplitude / 255));
 
+            // Bar
             this._drawBar(
                 currPos,
                 scaledTop + this.oomphHeight - amplitude,
@@ -82,10 +75,10 @@ export class BarVisualizerComponent extends BaseVisualizerComponent implements O
                 gradientColor
             );
 
+            // Bar cap
             this._drawBar(
                 currPos,
-                // scaledTop + scaledHeight - amplitude
-                scaledTop + this.oomphHeight - cap - this._scaledBarCapSize,
+                scaledTop + this.oomphHeight - amplitude - this._scaledBarCapSize,
                 Math.ceil(this._scaledBarSize),
                 this._scaledBarCapSize,
                 this._startColor

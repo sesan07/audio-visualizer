@@ -44,7 +44,7 @@ export class CircleVisualizerComponent extends BaseVisualizerComponent implement
         for (let i = 0; i < this.amplitudes.length; i++) {
             const amplitude: number = this.amplitudes[i];
 
-            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this._oomphScale;
+            const radius: number = (this.baseRadius + amplitude * this.multiplier) * this._oomphScale;
             const xLeft = this._centerX + radius * Math.cos(currAngle);
             const xRight = this._centerX - radius * Math.cos(currAngle);
             const y = this._centerY + radius * Math.sin(currAngle);

@@ -103,7 +103,7 @@ export abstract class BaseVisualizerComponent implements OnChanges, AfterViewIni
 
     private _updateOomphScale(): void {
         this._oomphScale = this.scale;
-        const scale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.oomphAmount;
+        const scale: number = (this.oomph.value) * this.oomphAmount;
         this._oomphScale += scale;
     }
 

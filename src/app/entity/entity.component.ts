@@ -117,7 +117,7 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
 
         let scale: number = this._scale;
         if (this.animateOomph) {
-            const oomphScale: number = (this.oomph.amplitudeTotal / this.oomph.maxAmplitudeTotal) * this.config.oomphAmount;
+            const oomphScale: number = (this.oomph.value) * this.config.oomphAmount;
             scale = oomphScale + 1;
         }
 

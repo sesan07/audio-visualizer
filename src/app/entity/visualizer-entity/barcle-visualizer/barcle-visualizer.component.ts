@@ -10,14 +10,16 @@ import { RGB } from 'ngx-color';
 })
 export class BarcleVisualizerComponent extends BaseVisualizerComponent implements OnChanges {
     @Input() baseRadius: number;
+    @Input() fillCenter: boolean;
 
     private _centerX: number;
     private _centerY: number;
     private _sampleAngle: number;
     private _startAngle: number;
+    private readonly _ringSize = 20;
 
     private get _maxRadius(): number {
-        return (this.multiplier * 255 + this.baseRadius) * (this.scale + this.oomphAmount);
+        return (this.multiplier * 255 + this.baseRadius + this._ringSize) * (this.scale + this.oomphAmount);
     }
 
     constructor(ngZone: NgZone) {
@@ -39,12 +41,7 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
         // Reverse to turn visualization upside down
         for (let i = 0; i < this.amplitudes.length; i++) {
             const amplitude: number = this.amplitudes[i];
-            if (amplitude === 0) {
-                currAngle += this._sampleAngle;
-                continue;
-            }
-
-            const radius: number = (this.baseRadius + amplitude) * this.multiplier * this._oomphScale;
+            const radius: number = (this.baseRadius + this._ringSize + amplitude * this.multiplier) * this._oomphScale;
             const startAngle = currAngle - this._sampleAngle / 2;
             const endAngle = currAngle + this._sampleAngle / 2;
             const startAngle2 = Math.PI - currAngle - this._sampleAngle / 2;
@@ -57,7 +54,9 @@ export class BarcleVisualizerComponent extends BaseVisualizerComponent implement
             this._drawBar(startAngle, endAngle, radius, gradientColor);
             this._drawBar(startAngle2, endAngle2, radius, gradientColor);
         }
-        this._drawCap();
+        if (this.fillCenter) {
+            this._drawCap();
+        }
     }
 
     protected _getCanvasHeight(): number {

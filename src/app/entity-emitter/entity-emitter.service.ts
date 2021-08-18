@@ -13,6 +13,9 @@ export class EntityEmitterService {
     activeEmitter: IEntityEmitterConfig;
     emitters: IEntityEmitterConfig[] = [];
 
+    // TODO look into controlling emitted entities in here
+    // TODO look into pooling entities instead of recreating (maybe track by id??)
+
     private _currNameIndex: number = 0;
 
     constructor(private _entityService: EntityService,

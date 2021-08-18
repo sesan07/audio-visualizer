@@ -21,11 +21,11 @@ export interface IBarVisualizerConfig extends IBaseVisualizerConfig {
     barCapSize: number;
     barSize: number;
     barSpacing: number;
-    looseCaps: boolean;
 }
 
 export interface IBarcleVisualizerConfig extends IBaseVisualizerConfig{
     baseRadius: number;
+    fillCenter: boolean;
 }
 
 export interface ICircleVisualizerConfig extends IBaseVisualizerConfig{

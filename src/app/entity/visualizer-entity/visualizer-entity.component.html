@@ -10,7 +10,6 @@
                         [endColorHex]="config.endColorHex"
                         [multiplier]="config.multiplier"
                         [sampleCount]="config.sampleCount"
-                        [looseCaps]="config.looseCaps"
                         [barCapSize]="config.barCapSize"
                         [barSize]="config.barSize"
                         [barSpacing]="config.barSpacing">
@@ -26,7 +25,8 @@
                            [endColorHex]="config.endColorHex"
                            [multiplier]="config.multiplier"
                            [sampleCount]="config.sampleCount"
-                           [baseRadius]="config.baseRadius">
+                           [baseRadius]="config.baseRadius"
+                           [fillCenter]="config.fillCenter">
     </lib-barcle-visualizer>
     <lib-circle-visualizer *ngSwitchCase="VisualizerType.CIRCLE"
                            [amplitudes]="config.amplitudes"

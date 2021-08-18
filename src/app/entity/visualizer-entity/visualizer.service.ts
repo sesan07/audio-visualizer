@@ -43,13 +43,13 @@ export class VisualizerService implements IEntityContentService {
                     barCapSize: 5,
                     barSize: 20,
                     barSpacing: 10,
-                    looseCaps: false
                 };
                 break;
             case VisualizerType.BARCLE:
                 visualizer = {
                     ...baseConfig,
                     baseRadius: 80,
+                    fillCenter: false,
                     scale: 0.25
                 };
                 break;
