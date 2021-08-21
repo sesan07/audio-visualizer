@@ -35,7 +35,7 @@ export class PresetService {
 
     saveCurrentAsPreset(name: string): void {
         const entities: IEntityConfig[] =
-            this._entityService.entities
+            this._entityService.controllableEntities
                 .map(entity => this._entityService.getCleanPreset(entity))
         const entityEmitters: IEntityEmitterConfig[] =
             this._entityEmitterService.emitters

@@ -1,11 +1,11 @@
 <nz-collapse>
     <nz-collapse-panel nzHeader="Visualizer Options">
         <!-- Shared Controls -->
-        <app-control-line name="Visualizer Type">
-            <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onVisualizerTypeChange()">
-                <label *ngFor="let option of visualizerTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
-            </nz-radio-group>
-        </app-control-line>
+<!--        <app-control-line name="Visualizer Type">-->
+<!--            <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onVisualizerTypeChange()">-->
+<!--                <label *ngFor="let option of visualizerTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>-->
+<!--            </nz-radio-group>-->
+<!--        </app-control-line>-->
         <app-control-line *ngIf="config.isEmitted" name="Random Colors">
             <nz-switch [(ngModel)]="config.randomizeColors"></nz-switch>
         </app-control-line>
@@ -22,13 +22,9 @@
                 <nz-option *ngFor="let option of sampleCountOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
             </nz-select>
         </app-control-line>
-        <app-control-line name="Scale">
-            <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="1"></nz-input-number>
-            <nz-slider [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="1"></nz-slider>
-        </app-control-line>
         <app-control-line name="Multiplier">
-            <nz-input-number [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
-            <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
+            <nz-input-number [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
         <app-control-line *ngIf="!config.isEmitted" name="Shadow Blur">
             <nz-input-number [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
@@ -36,28 +32,28 @@
         </app-control-line>
 
         <!-- Specific Controls -->
-        <ng-container [ngSwitch]="config.type">
+        <ng-container [ngSwitch]="entity.type">
             <!--  Bar Controls  -->
-            <ng-container *ngSwitchCase="VisualizerType.BAR">
+            <ng-container *ngSwitchCase="EntityType.BAR_VISUALIZER">
                 <app-control-line name="Bar Cap Size">
-                    <nz-input-number [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.barCapSize" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
                 <app-control-line name="Bar Size">
-                    <nz-input-number [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.barSize" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
                 <app-control-line name="Bar Spacing">
-                    <nz-input-number [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.barSpacing" [nzStep]="1" [nzMin]="0" [nzMax]="50" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
             </ng-container>
 
             <!--  Barcle Controls  -->
-            <ng-container *ngSwitchCase="VisualizerType.BARCLE">
+            <ng-container *ngSwitchCase="EntityType.BARCLE_VISUALIZER">
                 <app-control-line name="Center Radius">
-                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="200" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
                 <app-control-line name="Fill Center">
                     <nz-switch [(ngModel)]="config.fillCenter"></nz-switch>
@@ -65,14 +61,14 @@
             </ng-container>
 
             <!--  Circle Controls  -->
-            <ng-container *ngSwitchCase="VisualizerType.CIRCLE">
+            <ng-container *ngSwitchCase="EntityType.CIRCLE_VISUALIZER">
                 <app-control-line name="Center Radius">
-                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
                 <app-control-line name="Sample Radius">
-                    <nz-input-number [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100"></nz-slider>
+                    <nz-input-number [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+                    <nz-slider [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
                 </app-control-line>
             </ng-container>
         </ng-container>

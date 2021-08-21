@@ -14,7 +14,7 @@ export class VisualizerEntityComponent {
     @Input() oomphAmount: number;
 
     // This allows VisualizerType to be used in the HTML file
-    VisualizerType = VisualizerType;
+    // VisualizerType = VisualizerType;
 
     constructor() {
     }

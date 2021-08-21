@@ -15,7 +15,7 @@ export class ControllerWrapperComponent implements OnInit {
     @Input() activeConfig: IEntityConfig | IEntityEmitterConfig;
     @Input() configs: IEntityConfig[] | IEntityEmitterConfig[];
     @Output() add: EventEmitter<EntityType | EntityEmitterType> = new EventEmitter();
-    @Output() remove: EventEmitter<number> = new EventEmitter();
+    @Output() remove: EventEmitter<IEntityConfig | IEntityEmitterConfig> = new EventEmitter();
     @Output() configSelect: EventEmitter<IEntityConfig | IEntityEmitterConfig> = new EventEmitter();
     @Output() close: EventEmitter<void> = new EventEmitter();
     @Output() duplicateActive: EventEmitter<void> = new EventEmitter();

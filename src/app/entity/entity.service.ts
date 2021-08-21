@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EntityType, IEntityConfig, IEntityContentConfig } from './entity.types';
 import { AudioService } from '../shared/audio-service/audio.service';
 import { VisualizerService } from './visualizer-entity/visualizer.service';
-import { IVisualizerConfig, VisualizerType } from './visualizer-entity/visualizer-entity.types';
+import { IVisualizerConfig } from './visualizer-entity/visualizer-entity.types';
 import { ImageService } from './image-entity/image.service';
 import { IImageConfig } from './image-entity/image-entity.types';
 
@@ -11,7 +11,11 @@ import { IImageConfig } from './image-entity/image-entity.types';
 })
 export class EntityService {
     activeEntity: IEntityConfig;
-    entities: IEntityConfig[] = [];
+    controllableEntities: IEntityConfig[] = [];
+    imageEntities: IEntityConfig<IImageConfig>[] = [];
+
+
+    // entities: IEntityConfig[] = [];
     emittedEntities: IEntityConfig[] = [];
 
     private _currNameIndex: number = 0;
@@ -21,10 +25,34 @@ export class EntityService {
                 private _imageService: ImageService) {
     }
 
-    addEntity(type: EntityType): void {
-        const entity: IEntityConfig = this.getDefaultEntity(type);
-        this.entities.push(entity);
-        this.activeEntity = entity;
+    addEntity(type: EntityType, addControllable: boolean, setActive?: boolean): void {
+        const entityContent: IEntityContentConfig = this.getDefaultEntityContent(type);
+        const entity: IEntityConfig = this.getDefaultEntity(type, entityContent);
+        this.setEntityDimensions(entity);
+        this.setEntityPosition(entity);
+
+        switch (type) {
+            // case EntityType.BAR_VISUALIZER:
+            //     this.barVisualizerEntities.push(entity)
+            //     break;
+            // case EntityType.BARCLE_VISUALIZER:
+            //     this.barcleVisualizerEntities.push(entity)
+            //     break;
+            // case EntityType.CIRCLE_VISUALIZER:
+            //     this.circleVisualizerEntities.push(entity)
+            //     break;
+            case EntityType.IMAGE:
+                this.imageEntities.push(entity as IEntityConfig<IImageConfig>)
+                break;
+        }
+
+        if (addControllable) {
+            this.controllableEntities.push(entity)
+
+            if (setActive) {
+                this.activeEntity = entity;
+            }
+        }
     }
 
     addEmittedEntity(entity: IEntityConfig, autoRemoveTime: number): void {
@@ -32,17 +60,16 @@ export class EntityService {
         setTimeout(() => this.removeEmittedEntity(entity), autoRemoveTime)
     }
 
-    getDefaultEntity(type: EntityType): IEntityConfig {
-        let entityContent: IEntityContentConfig;
+    getDefaultEntity(type: EntityType, content: IEntityContentConfig): IEntityConfig {
         let name: string;
         switch (type) {
-            case EntityType.VISUALIZER:
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
                 name = `Entity ${this._currNameIndex++} (Visualizer)`
-                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR, false)
                 break;
             case EntityType.IMAGE:
                 name = `Entity ${this._currNameIndex++} (Image)`
-                entityContent = this._imageService.getDefaultContent()
                 break;
             default: throw new Error('Unknown entity type')
         }
@@ -52,22 +79,88 @@ export class EntityService {
             name: name,
             isEmitted: false,
             animateRotation: false,
-            animateOomphInEntity: type !== EntityType.VISUALIZER,
+            animateOomphInEntity: false,
             rotation: 0,
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
-            oomphAmount: 0.8,
+            scale: 0.5,
+            oomphAmount: 0,
             fadeTime: 1,
             opacity: 1,
-            entityContentConfig: entityContent
+            left: 0,
+            top: 0,
+            height: 0,
+            width: 0,
+            entityContentConfig: content
         }
     }
 
-    removeEntity(index: number): void {
-        const entity: IEntityConfig = this.entities[index];
-        this.entities.splice(index, 1);
-        if (entity === this.activeEntity) {
-            this.activeEntity = null;
+    getDefaultEntityContent(type: EntityType): IEntityContentConfig {
+        switch (type) {
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER: return this._visualizerService.getDefaultContent(type, false)
+            case EntityType.IMAGE: return this._imageService.getDefaultContent()
+            default: throw new Error('Unknown entity type')
+        }
+    }
+
+    setEntityDimensions(entity: IEntityConfig): void {
+        switch (entity.type) {
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
+                this._visualizerService.setEntityDimensions(entity as IEntityConfig<IVisualizerConfig>);
+                break;
+            case EntityType.IMAGE:
+                this._imageService.setEntityDimensions(entity as IEntityConfig<IImageConfig>);
+                break;
+            default: throw new Error('Unknown entity type')
+        }
+    }
+
+    setEntityPosition(entity: IEntityConfig): void {
+        switch (entity.type) {
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
+                this._visualizerService.setEntityPosition(entity as IEntityConfig<IVisualizerConfig>);
+                break;
+            case EntityType.IMAGE:
+                this._imageService.setEntityPosition(entity as IEntityConfig<IImageConfig>);
+                break;
+            default: throw new Error('Unknown entity type')
+        }
+    }
+
+    removeEntity(entity: IEntityConfig<any>, removeControllable: boolean): void {
+        let index: number;
+        switch (entity.type) {
+            // case EntityType.BAR_VISUALIZER:
+            //     index = this.barVisualizerEntities.indexOf(entity);
+            //     this.barVisualizerEntities.splice(index, 1);
+            //     break;
+            // case EntityType.BARCLE_VISUALIZER:
+            //     index = this.barcleVisualizerEntities.indexOf(entity);
+            //     this.barcleVisualizerEntities.splice(index, 1);
+            //     break;
+            // case EntityType.CIRCLE_VISUALIZER:
+            //     index = this.circleVisualizerEntities.indexOf(entity);
+            //     this.circleVisualizerEntities.splice(index, 1);
+            //     break;
+            case EntityType.IMAGE:
+                index = this.imageEntities.indexOf(entity);
+                this.imageEntities.splice(index, 1);
+                break;
+        }
+
+        if (removeControllable) {
+            index = this.controllableEntities.indexOf(entity);
+            this.controllableEntities.splice(index, 1);
+
+            if (entity === this.activeEntity) {
+                this.activeEntity = null;
+            }
         }
     }
 
@@ -80,9 +173,9 @@ export class EntityService {
 
     setEntities(entities: IEntityConfig[]): void {
         this.activeEntity = null
-        this.entities.length = 0; // Empty the array
+        this.controllableEntities.length = 0; // Empty the array
         this.emittedEntities.length = 0;
-        this.entities.push(...entities);
+        this.controllableEntities.push(...entities);
         this._currNameIndex = entities.length;
     }
 
@@ -92,7 +185,9 @@ export class EntityService {
 
         let entityContentClone: IEntityContentConfig;
         switch (entityClone.type) {
-            case EntityType.VISUALIZER:
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
                 entityContentClone = this._visualizerService.getCleanPreset(entityClone.entityContentConfig as IVisualizerConfig);
                 break;
             case EntityType.IMAGE:
@@ -106,11 +201,13 @@ export class EntityService {
 
     updatePreset(entity: IEntityConfig): IEntityConfig {
         const entityClone: IEntityConfig = Object.assign({}, entity)
-        entityClone.animateOomphInEntity = entity.type !== EntityType.VISUALIZER
+        entityClone.animateOomphInEntity = false
 
         let entityContentClone: IEntityContentConfig;
         switch (entity.type) {
-            case EntityType.VISUALIZER:
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
                 entityContentClone = this._visualizerService.updatePreset(entityClone.entityContentConfig as IVisualizerConfig)
                 break;
             case EntityType.IMAGE:
@@ -127,7 +224,9 @@ export class EntityService {
 
         let name: string;
         switch (entityClone.type) {
-            case EntityType.VISUALIZER:
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
                 name = `Entity ${this._currNameIndex++} (Visualizer)`
                 break;
             case EntityType.IMAGE:
@@ -138,7 +237,7 @@ export class EntityService {
         entityClone.name = name
 
         entityClone.entityContentConfig =  Object.assign({}, entityClone.entityContentConfig);
-        this.entities.push(entityClone);
+        this.controllableEntities.push(entityClone);
         this.activeEntity = entityClone;
     }
 }

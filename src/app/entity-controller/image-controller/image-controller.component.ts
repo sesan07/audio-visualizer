@@ -2,6 +2,8 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { IImageConfig } from '../../entity/image-entity/image-entity.types';
 import { ImageService } from '../../entity/image-entity/image.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ISource } from '../../shared/source-service/source.service.types';
+import { IEntityConfig } from '../../entity/entity.types';
 
 @Component({
     selector: 'app-image-controller',
@@ -9,7 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     styleUrls: ['./image-controller.component.css']
 })
 export class ImageControllerComponent {
-    @Input() config: IImageConfig;
+    @Input() entity: IEntityConfig<IImageConfig>;
 
     @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
@@ -26,5 +28,10 @@ export class ImageControllerComponent {
     onAddUrl(url?: string, name?: string): void {
         this.imageService.addUrlSource(url, name);
         this.addUrlPopOverVisible = false;
+    }
+
+    onSourceChange(source: ISource): void {
+        // this.entity.entityContentConfig.name = source.name;
+        this.entity.entityContentConfig.element = this.imageService.getSourceElement(source);
     }
 }

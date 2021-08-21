@@ -116,10 +116,10 @@ export class EntityComponent extends DraggableComponent implements OnChanges, On
         }
 
         let scale: number = this._scale;
-        if (this.animateOomph) {
-            const oomphScale: number = (this.oomph.value) * this.config.oomphAmount;
-            scale = oomphScale + 1;
-        }
+        // if (this.animateOomph) {
+        //     const oomphScale: number = (this.oomph.value) * this.config.oomphAmount;
+        //     scale = oomphScale + 1;
+        // }
 
         this._setTransform(scale)
     }

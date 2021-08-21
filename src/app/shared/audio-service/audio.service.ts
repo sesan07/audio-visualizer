@@ -32,6 +32,8 @@ export class AudioService extends SourceService {
     mode: AnalyserMode = 'frequency';
     oomph: IOomph;
 
+    protected _idPrefix = 'audio';
+
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
@@ -45,6 +47,8 @@ export class AudioService extends SourceService {
 
     constructor(private _ngZone: NgZone, sanitizer: DomSanitizer, messageService: NzMessageService) {
         super(sanitizer, messageService);
+        this.sources.forEach(source => source.id = `${this._idPrefix}-${this._currIdIndex++}`)
+        this.setUpAmplitudes();
     }
 
     get sampleCounts(): number[] {
@@ -103,6 +107,16 @@ export class AudioService extends SourceService {
         })
     }
 
+    setUpAmplitudes(): void {
+        this._sampleCounts.forEach(sampleCount => {
+            this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount))
+        })
+
+        this._oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
+        this._maxOomphAmplitudeTotal = this._oomphAmplitudes.length * 255
+        this.oomph = { value: 0 }
+    }
+
     setUp(audioElement: HTMLAudioElement): void {
         this._audioElement = audioElement;
         this._sourceNode = this._audioContext.createMediaElementSource(audioElement);
@@ -116,12 +130,8 @@ export class AudioService extends SourceService {
             node.smoothingTimeConstant = this._smoothingTimeConstant;
 
             this._analyserNodeMap.set(sampleCount, node)
-            this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount))
         })
 
-        this._oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
-        this._maxOomphAmplitudeTotal = this._oomphAmplitudes.length * 255
-        this.oomph = { value: 0 }
         this._updateAmplitudes();
     }
 

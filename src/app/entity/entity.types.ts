@@ -2,14 +2,15 @@ import { IVisualizerConfig, VisualizerType } from './visualizer-entity/visualize
 import { IImageConfig } from './image-entity/image-entity.types';
 
 export enum EntityType {
-    VISUALIZER = 'Visualizer',
+    BAR_VISUALIZER = 'Bar',
+    BARCLE_VISUALIZER = 'Barcle',
+    CIRCLE_VISUALIZER = 'Circle',
     IMAGE = 'Image',
 }
 
-export type EntityContentType = VisualizerType;
 export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
 
-export interface IEntityConfig {
+export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentConfig> {
     type: EntityType;
     name?: string;
     isEmitted: boolean;
@@ -21,20 +22,26 @@ export interface IEntityConfig {
     rotation: number;
     rotationDirection: 'Left' | 'Right';
     rotationSpeed?: number;
+    scale: number;
     oomphAmount: number;
     randomizeMovement?: boolean;
     startX?: number;
     startY?: number;
-    left?: number;
-    top?: number;
+    left: number;
+    top: number;
+    height: number,
+    width: number,
     opacity: number;
     fadeTime: number;
-    entityContentConfig: IEntityContentConfig;
+    entityContentConfig: T;
 }
 
 export interface IEntityContentService {
+    entityView: HTMLElement;
     beforeEmit(config: IEntityContentConfig): void;
-    getDefaultContent(contentType?: EntityContentType, isEmitted?: boolean): IEntityContentConfig;
+    setEntityDimensions(entity: IEntityConfig): void;
+    setEntityPosition(entity: IEntityConfig): void;
+    getDefaultContent(type?: EntityType, isEmitted?: boolean): IEntityContentConfig;
     getCleanPreset(config: IEntityContentConfig): IEntityContentConfig;
     updatePreset(config: IEntityContentConfig): IEntityContentConfig;
 }

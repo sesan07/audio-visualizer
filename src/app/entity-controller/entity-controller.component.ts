@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { EntityType, IEntityConfig } from '../entity/entity.types';
+import { EntityType, IEntityConfig, IEntityContentConfig } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
 import { EntityEmitterService } from '../entity-emitter/entity-emitter.service';
+import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
+import { ImageService } from '../entity/image-entity/image.service';
 
 @Component({
     selector: 'app-entity-controller',
@@ -19,11 +21,24 @@ export class EntityControllerComponent {
                 private _entityEmitterService: EntityEmitterService,) {
     }
 
-    onEntityTypeChange(): void {
+    onEntityTypeChange(newType: EntityType): void {
+        this.config.type = newType;
+
+        let entityContent: IEntityContentConfig;
         if (this.config.isEmitted) {
-            Object.assign(this.config, this._entityEmitterService.getDefaultEmitterEntity(this.config.type))
+            entityContent = this._entityEmitterService.getDefaultEntityContent(newType);
+            // this._entityEmitterService.changeEntityType(newType, this.config)
+            // Object.assign(this.config, this._entityEmitterService.getDefaultEmitterEntity(this.config.type))
         } else {
-            Object.assign(this.config, this._entityService.getDefaultEntity(this.config.type))
+            entityContent = this._entityService.getDefaultEntityContent(newType);
+            // this._entityService.changeEntityType(newType, this.config)
         }
+
+        Object.assign(this.config.entityContentConfig, entityContent)
+        this._entityService.setEntityDimensions(this.config)
+    }
+
+    onDimensionsChange(): void {
+        this._entityService.setEntityDimensions(this.config);
     }
 }

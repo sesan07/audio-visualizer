@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IEntityConfig, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
 import { AudioService } from './shared/audio-service/audio.service';
@@ -8,6 +8,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { EntityEmitterService } from './entity-emitter/entity-emitter.service';
 import { BackgroundImageService } from './background-image.service';
 import { PresetService } from './shared/preset-service/preset.service';
+import { VisualizerService } from './entity/visualizer-entity/visualizer.service';
+import { ImageService } from './entity/image-entity/image.service';
 
 @Component({
     selector: 'app-root',
@@ -19,7 +21,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
     @ViewChild('audioFileInput') audioFileInputElement: ElementRef<HTMLInputElement>;
     @ViewChild('backgroundFileInput') backgroundFileInputElement: ElementRef<HTMLInputElement>;
+    @ViewChild('entityView') entityView: ElementRef<HTMLElement>;
     @ViewChild('entityViewContent') entityViewContentElement: ElementRef<HTMLElement>;
+
+    @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
     @HostListener('window:resize')
     onWindowResize(): void {
@@ -60,8 +65,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                 public entityService: EntityService,
                 public entityEmitterService: EntityEmitterService,
                 public presetService: PresetService,
+                public imageService: ImageService,
+                private _visualizerService: VisualizerService,
                 private _elementRef: ElementRef<HTMLElement>,
-                private _messageService: NzMessageService,
                 private _renderer: Renderer2) {
     }
 
@@ -76,6 +82,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.audioService.setUp(this.audioElement.nativeElement)
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
+
+        this._visualizerService.entityView = this.entityViewContentElement.nativeElement;
+        this.imageService.entityView = this.entityViewContentElement.nativeElement;
+
+        this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
+        this.hiddenImages.changes.subscribe(() => {
+            this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
+        })
 
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
         setTimeout(() => this._updateEntityViewContentScale(), 500)
@@ -98,7 +112,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onAddEntity(type: EntityType): void {
-        this.entityService.addEntity(type)
+        this.entityService.addEntity(type, true, true)
     }
 
     onAddEmitter(type: EntityEmitterType): void {
@@ -115,12 +129,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         event?.stopPropagation();
     }
 
-    onRemoveEntity(index: number): void {
-        this.entityService.removeEntity(index)
+    onRemoveEntity(entity: IEntityConfig): void {
+        this.entityService.removeEntity(entity, true)
     }
 
-    onRemoveEmitter(index: number): void {
-        this.entityEmitterService.removeEmitter(index)
+    onRemoveEmitter(entityEmitter: IEntityEmitterConfig): void {
+        this.entityEmitterService.removeEmitter(entityEmitter)
     }
 
     onEntityViewClicked(): void {

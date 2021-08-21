@@ -23,6 +23,7 @@ import { CircleVisualizerComponent } from './entity/visualizer-entity/circle-vis
 import { BarcleVisualizerComponent } from './entity/visualizer-entity/barcle-visualizer/barcle-visualizer.component';
 import { ImageEntityComponent } from './entity/image-entity/image-entity.component';
 import { ImageControllerComponent } from './entity-controller/image-controller/image-controller.component';
+import { VisualizerCanvasComponent } from './entity/visualizer-entity/visualizer-canvas/visualizer-canvas.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -46,6 +47,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { EmitterVisualizerCanvasComponent } from './entity/visualizer-entity/emitter-visualizer-canvas/emitter-visualizer-canvas.component';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -66,6 +68,8 @@ registerLocaleData(en);  // NG-Zorro
         BarcleVisualizerComponent,
         ImageEntityComponent,
         ImageControllerComponent,
+        VisualizerCanvasComponent,
+        EmitterVisualizerCanvasComponent,
     ],
     imports: [
         BrowserModule,

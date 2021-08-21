@@ -1,7 +1,7 @@
 <nz-collapse>
     <nz-collapse-panel nzHeader="Entity Options">
         <app-control-line name="Entity Type">
-            <nz-radio-group [(ngModel)]="config.type" (ngModelChange)="onEntityTypeChange()">
+            <nz-radio-group [ngModel]="config.type" (ngModelChange)="onEntityTypeChange($event)">
                 <label *ngFor="let option of entityTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
             </nz-radio-group>
         </app-control-line>
@@ -32,6 +32,16 @@
         <app-control-line name="Opacity">
             <nz-input-number [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
             <nz-slider [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+        </app-control-line>
+
+        <app-control-line name="Base Scale">
+            <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-slider>
+        </app-control-line>
+
+        <app-control-line name="Oomph Scale">
+            <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
 
         <app-control-line name="Fade In/Out Time" *ngIf="config.isEmitted">
@@ -73,24 +83,17 @@
             </app-control-line>
         </ng-container>
         <app-control-line *ngIf="!config.animateRotation" name="Rotation">
-            <nz-input-number [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+            <nz-input-number [ngModel]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
             <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
-        </app-control-line>
-<!--        TODO figure how how to separate oomph control-->
-        <app-control-line name="Oomph Amount">
-            <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
-            <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
         </app-control-line>
     </nz-collapse-panel>
 </nz-collapse>
 
-<ng-container [ngSwitch]="config.type">
-    <!--  Visualizer Controls  -->
-    <app-visualizer-controller *ngSwitchCase="EntityType.VISUALIZER"
-                               [config]="config.entityContentConfig">
-    </app-visualizer-controller>
-    <!--  Image Controls  -->
-    <app-image-controller *ngSwitchCase="EntityType.IMAGE"
-                               [config]="config.entityContentConfig">
-    </app-image-controller>
-</ng-container>
+<!--  Visualizer Controls  -->
+<app-visualizer-controller *ngIf="config.type === EntityType.BAR_VISUALIZER || config.type === EntityType.BARCLE_VISUALIZER || config.type === EntityType.CIRCLE_VISUALIZER"
+                           [entity]="config">
+</app-visualizer-controller>
+<!--  Image Controls  -->
+<app-image-controller *ngIf="config.type === EntityType.IMAGE"
+                      [entity]="config">
+</app-image-controller>

@@ -1,20 +1,18 @@
-export enum VisualizerType {
-    BAR = 'Bar',
-    BARCLE = 'Barcle',
-    CIRCLE = 'Circle'
-}
+import { EntityType } from '../entity.types';
+import { RGB } from 'ngx-color';
+
+export type VisualizerType = EntityType.BAR_VISUALIZER | EntityType.BARCLE_VISUALIZER | EntityType.CIRCLE_VISUALIZER
 
 export interface IBaseVisualizerConfig {
     isEmitted: boolean;
-    type: VisualizerType,
     amplitudes: Uint8Array;
-    startColorHex: string;
-    endColorHex: string;
+    startColor: RGB;
+    endColor: RGB;
     multiplier: number;
     sampleCount: number;
-    scale: number;
     shadowBlur?: number;
     randomizeColors: boolean;
+    opacity: number;
 }
 
 export interface IBarVisualizerConfig extends IBaseVisualizerConfig {

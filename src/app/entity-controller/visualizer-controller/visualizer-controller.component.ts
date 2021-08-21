@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AudioService } from '../../shared/audio-service/audio.service';
 import { IVisualizerConfig, VisualizerType } from '../../entity/visualizer-entity/visualizer-entity.types';
 import { VisualizerService } from '../../entity/visualizer-entity/visualizer.service';
+import { EntityType, IEntityConfig } from '../../entity/entity.types';
 
 @Component({
     selector: 'app-visualizer-controller',
@@ -9,11 +10,15 @@ import { VisualizerService } from '../../entity/visualizer-entity/visualizer.ser
     styleUrls: ['./visualizer-controller.component.css']
 })
 export class VisualizerControllerComponent {
-    @Input() config: IVisualizerConfig;
+    @Input() entity: IEntityConfig<IVisualizerConfig>;
 
-    VisualizerType = VisualizerType;
+    get config(): IVisualizerConfig {
+        return this.entity.entityContentConfig
+    }
 
-    visualizerTypeOptions: VisualizerType[] = Object.values(VisualizerType);
+    EntityType = EntityType;
+
+    visualizerTypeOptions: VisualizerType[] = [EntityType.BAR_VISUALIZER, EntityType.BARCLE_VISUALIZER, EntityType.CIRCLE_VISUALIZER];
     modeOptions: any[] = [
         {
             name: 'Frequency',
@@ -32,9 +37,14 @@ export class VisualizerControllerComponent {
 
     onSampleCountChanged(): void {
         this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
+        this.onDimensionsChange();
     }
 
-    onVisualizerTypeChange(): void {
-        Object.assign(this.config, this._visualizerService.getDefaultContent(this.config.type, this.config.isEmitted))
+    onDimensionsChange(): void {
+        this._visualizerService.setEntityDimensions(this.entity);
     }
+
+    // onVisualizerTypeChange(): void {
+    //     Object.assign(this.config, this._visualizerService.getDefaultContent(this.config.type, this.config.isEmitted));
+    // }
 }

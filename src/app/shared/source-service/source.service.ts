@@ -7,10 +7,13 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     providedIn: 'root'
 })
 export abstract class SourceService {
-    abstract sources: ISource[];
+    sources: ISource[] = [];
     activeSource: ISource;
 
-    constructor(private _sanitizer: DomSanitizer,
+    protected abstract _idPrefix : string;
+    protected _currIdIndex: number = 0;
+
+    protected constructor(private _sanitizer: DomSanitizer,
                 private _messageService: NzMessageService) {
     }
 
@@ -26,6 +29,7 @@ export abstract class SourceService {
         } else {
             this.sources.push({
                 url,
+                id: `${this._idPrefix}-${this._currIdIndex++}`,
                 src: url,
                 name: name || url.split('/').pop()
             })
@@ -42,6 +46,7 @@ export abstract class SourceService {
             if (index < 0) {
                 const newSource: ISource = {
                     file,
+                    id: `${this._idPrefix}-${this._currIdIndex++}`,
                     name: file.name.split('.').shift()
                 };
 

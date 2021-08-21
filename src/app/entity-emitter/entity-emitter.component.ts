@@ -63,7 +63,9 @@ export class EntityEmitterComponent extends DraggableComponent implements OnInit
         }
 
         switch (entity.type) {
-            case EntityType.VISUALIZER:
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER:
                 this._visualizerService.beforeEmit(entity.entityContentConfig as IVisualizerConfig);
                 break;
             case EntityType.IMAGE:

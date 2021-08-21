@@ -36,10 +36,10 @@ export function convertColorToHex(color: RGB) {
     }).join('')
 }
 
-export function getRandomColorHex(): string {
-    return convertColorToHex({
+export function getRandomColor(): RGB {
+    return {
         r: Math.round(getRandomNumber(0, 255)),
         g: Math.round(getRandomNumber(0, 255)),
         b: Math.round(getRandomNumber(0, 255))
-    });
+    };
 }

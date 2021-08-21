@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter.types';
 import { EntityType, IEntityConfig, IEntityContentConfig } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
-import { VisualizerType } from '../entity/visualizer-entity/visualizer-entity.types';
 import { VisualizerService } from '../entity/visualizer-entity/visualizer.service';
 import { ImageService } from '../entity/image-entity/image.service';
 
@@ -14,7 +13,6 @@ export class EntityEmitterService {
     emitters: IEntityEmitterConfig[] = [];
 
     // TODO look into controlling emitted entities in here
-    // TODO look into pooling entities instead of recreating (maybe track by id??)
 
     private _currNameIndex: number = 0;
 
@@ -24,51 +22,61 @@ export class EntityEmitterService {
     }
 
     addEmitter(type: EntityEmitterType): void {
+        const entityType: EntityType = EntityType.BAR_VISUALIZER;
+        const entityContent: IEntityContentConfig = this.getDefaultEntityContent(entityType);
+        const entity: IEntityConfig = this.getDefaultEmitterEntity(entityType);
+        this._entityService.setEntityDimensions(entity);
+        this._entityService.setEntityPosition(entity);
+
         const config: IEntityEmitterConfig = {
             emitterType: type,
             name: `Emitter ${this._currNameIndex++}`,
             interval: 2,
             amount: 1,
             lifespan: 5,
-            entity: this.getDefaultEmitterEntity(EntityType.VISUALIZER)
+            entity: entity
         };
         this.emitters.push(config);
         this.activeEmitter = config;
     }
 
     getDefaultEmitterEntity(type: EntityType): IEntityConfig {
-        let entityContent: IEntityContentConfig;
-        switch (type) {
-            case EntityType.VISUALIZER:
-                entityContent = this._visualizerService.getDefaultContent(VisualizerType.BAR, true);
-                break;
-            case EntityType.IMAGE:
-                entityContent = this._imageService.getDefaultContent()
-                break;
-            default: throw new Error('Unknown entity type')
-        }
-
         return {
             type: type,
             isEmitted: true,
             animateMovement: true,
             animateRotation: true,
-            animateOomphInEntity: type !== EntityType.VISUALIZER,
+            animateOomphInEntity: false,
             movementAngle: 0,
             movementSpeed: 0.5,
             rotation: 0,
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
-            oomphAmount: 0.8,
+            scale: 0.5,
+            oomphAmount: 0,
             randomizeMovement: true,
             fadeTime: 1,
             opacity: 1,
-            entityContentConfig: entityContent
+            left: 0,
+            top: 0,
+            height: 0,
+            width: 0,
+            entityContentConfig: this.getDefaultEntityContent(type)
         }
     }
 
-    removeEmitter(index: number): void {
-        const emitter: IEntityEmitterConfig = this.emitters[index];
+    getDefaultEntityContent(type: EntityType): IEntityContentConfig {
+        switch (type) {
+            case EntityType.BAR_VISUALIZER:
+            case EntityType.BARCLE_VISUALIZER:
+            case EntityType.CIRCLE_VISUALIZER: return this._visualizerService.getDefaultContent(type, true)
+            case EntityType.IMAGE: return this._imageService.getDefaultContent()
+            default: throw new Error('Unknown entity type')
+        }
+    }
+
+    removeEmitter(emitter: IEntityEmitterConfig): void {
+        const index: number = this.emitters.indexOf(emitter);
         this.emitters.splice(index, 1);
         if (emitter === this.activeEmitter) {
             this.activeEmitter = null;
