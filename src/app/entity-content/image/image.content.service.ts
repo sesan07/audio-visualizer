@@ -19,7 +19,7 @@ export class ImageContentService extends BaseContentService<IImageContentConfig>
 
     getDefaultContent(isEmitted: boolean): IImageContentConfig {
         return {
-            name: this._imageService.sources[0].name,
+            source: this._imageService.sources[0],
             element: this._imageService.getSourceElement(this._imageService.sources[0])
         };
     }

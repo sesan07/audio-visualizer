@@ -1,8 +1,9 @@
 <nz-collapse>
     <nz-collapse-panel nzHeader="Image Options">
         <app-control-line name="Image">
-            <nz-select [(ngModel)]="entity.entityContentConfig.name" (ngModelChange)="onSourceChange($event)">
-                <nz-option *ngFor="let option of imageSourceService.sources" [nzValue]="option.name"
+            <nz-select  [(ngModel)]="entity.entityContentConfig.source" (ngModelChange)="onSourceChange($event)">
+                <nz-option *ngFor="let option of imageSourceService.sources"
+                           [nzValue]="option"
                            [nzLabel]="option.name">
                 </nz-option>
             </nz-select>

@@ -174,6 +174,7 @@ export class EntityService {
         const entityClone: IEntityConfig = Object.assign({}, this.activeEntity);
         entityClone.name = this._getNextName(entityClone.type);
         entityClone.entityContentConfig =  Object.assign({}, entityClone.entityContentConfig);
+        this.setEntityPosition(entityClone);
         this.controllableEntities.push(entityClone);
         this.activeEntity = entityClone;
     }

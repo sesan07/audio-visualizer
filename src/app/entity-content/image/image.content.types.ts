@@ -1,4 +1,6 @@
+import { ISource } from '../../shared/source-services/base.source.service.types';
+
 export interface IImageContentConfig {
-    name: string;
+    source: ISource;
     element: HTMLImageElement;
 }
