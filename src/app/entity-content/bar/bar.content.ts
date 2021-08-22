@@ -1,40 +1,25 @@
 import { IEntityConfig } from '../../entity/entity.types';
 import { BaseContent } from '../base/base.content';
 import { RGB } from 'ngx-color';
-import { getGradientColor, getRadians } from '../../shared/utils';
+import { getGradientColor } from '../../shared/utils';
 import { IBarContentConfig } from './bar.content.types';
 
 export class BarContent extends BaseContent<IBarContentConfig> {
 
-    public _animate(entity: IEntityConfig<IBarContentConfig>): void {
+    protected _animateContent(entity: IEntityConfig<IBarContentConfig>): void {
         const config: IBarContentConfig = entity.entityContentConfig;
 
-        this._setMovement(entity)
-        this._setRotation(entity)
-
-        const scale: number = this._getScale(entity)
-        const scaledWidth: number = entity.width * scale
-        const scaledHeight: number = entity.height * scale
-        const scaledLeft: number = entity.left - (scaledWidth - entity.width) / 2;
-        const scaledTop: number = entity.top - (scaledHeight - entity.height) / 2;
-        const originX = (scaledLeft) + (scaledWidth / 2);
-        const originY = (scaledTop) + (scaledHeight / 2);
-
-        this._canvasContext.translate(originX, originY)
-        this._canvasContext.rotate(getRadians(entity.rotation))
-        this._canvasContext.translate(-originX, -originY)
-
-        let currPos = scaledLeft;
-        config.amplitudes.forEach((amplitude, i) => {
+        let currPos = this._scaledLeft;
+        config.amplitudes.forEach(amplitude => {
             const gradientColor: RGB = getGradientColor(config.startColor, config.endColor, (amplitude / 255));
-            amplitude *= config.multiplier * scale;
+            amplitude *= config.multiplier * this._scale;
 
             // Bar
             this._drawBar(
                 currPos,
-                scaledTop + scaledHeight - amplitude,
+                this._scaledTop + this._scaledHeight - amplitude,
                 amplitude,
-                Math.ceil(config.barSize * scale),
+                Math.ceil(config.barSize * this._scale),
                 gradientColor,
                 config.startColor,
                 entity.opacity
@@ -43,15 +28,15 @@ export class BarContent extends BaseContent<IBarContentConfig> {
             // Bar Cap
             this._drawBar(
                 currPos,
-                scaledTop + scaledHeight - amplitude - config.barCapSize * scale,
-                config.barCapSize * scale,
-                Math.ceil(config.barSize * scale),
+                this._scaledTop + this._scaledHeight - amplitude - config.barCapSize * this._scale,
+                config.barCapSize * this._scale,
+                Math.ceil(config.barSize * this._scale),
                 config.startColor,
                 config.startColor,
                 entity.opacity
             );
 
-            currPos += (config.barSize * scale) + (config.barSpacing * scale);
+            currPos += (config.barSize * this._scale) + (config.barSpacing * this._scale);
         });
     }
 

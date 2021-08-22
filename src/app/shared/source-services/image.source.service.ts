@@ -30,6 +30,5 @@ export class ImageSourceService extends BaseSourceService {
 
     setImageElements(imageElements: HTMLImageElement[]): void {
         this._imageElements = imageElements;
-        console.log(imageElements[0])
     }
 }

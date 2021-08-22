@@ -69,26 +69,26 @@ export class EntityCanvasComponent {
             this.configs.forEach(entity => {
                 switch (entity.type) {
                     case EntityType.BAR:
-                        this.barVisualizer._animate(entity as IEntityConfig<IBarContentConfig>);
+                        this.barVisualizer.animate(entity as IEntityConfig<IBarContentConfig>);
                         break;
                     case EntityType.BARCLE:
-                        this.barcleVisualizer._animate(entity as IEntityConfig<IBarcleContentConfig>);
+                        this.barcleVisualizer.animate(entity as IEntityConfig<IBarcleContentConfig>);
                         break;
                     case EntityType.CIRCLE:
-                        this.circleVisualizer._animate(entity as IEntityConfig<ICircleContentConfig>);
+                        this.circleVisualizer.animate(entity as IEntityConfig<ICircleContentConfig>);
                         break;
                     case EntityType.IMAGE:
-                        this.imageVisualizer._animate(entity as IEntityConfig<IImageContentConfig>);
+                        this.imageVisualizer.animate(entity as IEntityConfig<IImageContentConfig>);
                         break;
                 }
 
                 // TODO use this to highlight entity
-                // this._canvasContext.strokeStyle = 'yellow';
-                // const height: number = entity.height * entity.scale;
-                // const width: number = entity.width * entity.scale;
-                // const left: number = entity.left - (width - entity.width) / 2;
-                // const top: number = entity.top - (height - entity.height) / 2;
-                // this._canvasContext.strokeRect(left, top, width, height);
+                this._canvasContext.strokeStyle = 'yellow';
+                const height: number = entity.height * entity.scale;
+                const width: number = entity.width * entity.scale;
+                const left: number = entity.left - (width - entity.width) / 2;
+                const top: number = entity.top - (height - entity.height) / 2;
+                this._canvasContext.strokeRect(left, top, width, height);
 
                 // Reset transformation matrix to the identity matrix
                 this._canvasContext.setTransform(1, 0, 0, 1, 0, 0);
