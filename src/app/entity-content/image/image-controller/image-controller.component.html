@@ -1,0 +1,36 @@
+<nz-collapse>
+    <nz-collapse-panel nzHeader="Image Options">
+        <app-control-line name="Image">
+            <nz-select [(ngModel)]="entity.entityContentConfig.name" (ngModelChange)="onSourceChange($event)">
+                <nz-option *ngFor="let option of imageSourceService.sources" [nzValue]="option.name"
+                           [nzLabel]="option.name">
+                </nz-option>
+            </nz-select>
+            <button nz-button
+                    nz-popover
+                    nzPopoverTitle="Add Image Link"
+                    nzPopoverTrigger="click"
+                    [(nzPopoverVisible)]="addUrlPopOverVisible"
+                    [nzPopoverContent]="addUrlTemplate">
+                <i nz-icon nzType="link"></i>
+            </button>
+            <ng-template #addUrlTemplate>
+                <input #addImageNameInput nz-input placeholder="Name"/>
+                <input #addImageUrlInput nz-input placeholder="link.to.image.png"/>
+                <span class="popover-action-buttons">
+                    <button nz-button nzDanger (click)="addUrlPopOverVisible = false">
+                        <i nz-icon nzType="close"></i>
+                    </button>
+                    <button nz-button nzType="primary" (click)="onAddUrl(addImageUrlInput.value, addImageNameInput.value)">
+                        <i nz-icon nzType="check"></i>
+                    </button>
+                </span>
+            </ng-template>
+            <input #fileInput type="file" id="file" hidden accept="image/*" multiple
+                   (change)="onFileUpload()"/>
+            <button nz-button (click)="fileInput.click()">
+                <i nz-icon nzType="upload"></i>
+            </button>
+        </app-control-line>
+    </nz-collapse-panel>
+</nz-collapse>

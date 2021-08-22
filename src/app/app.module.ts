@@ -9,21 +9,17 @@ import { ColorSketchModule } from 'ngx-color/sketch';
 // Local Components
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EntityComponent } from './entity/entity.component';
-import { EntityControllerComponent } from './entity-controller/entity-controller.component';
+import { EntityControllerComponent } from './entity/entity-controller/entity-controller.component';
 import { ControlLineComponent } from './shared/components/control-line/control-line.component';
-import { EntityEmitterComponent } from './entity-emitter/entity-emitter.component';
-import { EntityEmitterControllerComponent } from './entity-emitter-controller/entity-emitter-controller.component';
+import { EmitterControllerComponent } from './emitter/emitter-controller/emitter-controller.component';
 import { ControllerWrapperComponent } from './shared/components/controller-wrapper/controller-wrapper.component';
 import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
-import { VisualizerControllerComponent } from './entity-controller/visualizer-controller/visualizer-controller.component';
-import { VisualizerEntityComponent } from './entity/visualizer-entity/visualizer-entity.component';
-import { BarVisualizerComponent } from './entity/visualizer-entity/bar-visualizer/bar-visualizer.component';
-import { CircleVisualizerComponent } from './entity/visualizer-entity/circle-visualizer/circle-visualizer.component';
-import { BarcleVisualizerComponent } from './entity/visualizer-entity/barcle-visualizer/barcle-visualizer.component';
-import { ImageEntityComponent } from './entity/image-entity/image-entity.component';
-import { ImageControllerComponent } from './entity-controller/image-controller/image-controller.component';
-import { VisualizerCanvasComponent } from './entity/visualizer-entity/visualizer-canvas/visualizer-canvas.component';
+import { EntityCanvasComponent } from './entity/entity-canvas/entity-canvas.component';
+import { EmitterCanvasComponent } from './emitter/emitter-canvas/emitter-canvas.component';
+import { BarControllerComponent } from './entity-content/bar/bar-controller/bar-controller.component';
+import { BarcleControllerComponent } from './entity-content/barcle/barcle-controller/barcle-controller.component';
+import { CircleControllerComponent } from './entity-content/circle/circle-controller/circle-controller.component';
+import { ImageControllerComponent } from './entity-content/image/image-controller/image-controller.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -47,29 +43,23 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { EmitterVisualizerCanvasComponent } from './entity/visualizer-entity/emitter-visualizer-canvas/emitter-visualizer-canvas.component';
 
 registerLocaleData(en);  // NG-Zorro
 
 @NgModule({
     declarations: [
         AppComponent,
-        EntityComponent,
         EntityControllerComponent,
         ControlLineComponent,
-        EntityEmitterComponent,
-        EntityEmitterControllerComponent,
+        EmitterControllerComponent,
         ControllerWrapperComponent,
         ColorPickerComponent,
-        VisualizerControllerComponent,
-        VisualizerEntityComponent,
-        BarVisualizerComponent,
-        CircleVisualizerComponent,
-        BarcleVisualizerComponent,
-        ImageEntityComponent,
         ImageControllerComponent,
-        VisualizerCanvasComponent,
-        EmitterVisualizerCanvasComponent,
+        EntityCanvasComponent,
+        EmitterCanvasComponent,
+        BarControllerComponent,
+        BarcleControllerComponent,
+        CircleControllerComponent,
     ],
     imports: [
         BrowserModule,

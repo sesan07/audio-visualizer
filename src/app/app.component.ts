@@ -1,15 +1,17 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IEntityConfig, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
-import { AudioService } from './shared/audio-service/audio.service';
+import { AudioSourceService } from './shared/source-services/audio.source.service';
 import { EntityService } from './entity/entity.service';
-import { EntityEmitterType, IEntityEmitterConfig } from './entity-emitter/entity-emitter.types';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { EntityEmitterService } from './entity-emitter/entity-emitter.service';
-import { BackgroundImageService } from './background-image.service';
+import { EmitterType, IEmitterConfig } from './emitter/emitter.types';
+import { EmitterService } from './emitter/emitter.service';
+import { BackgroundImageSourceService } from './shared/source-services/background-image.source.service';
 import { PresetService } from './shared/preset-service/preset.service';
-import { VisualizerService } from './entity/visualizer-entity/visualizer.service';
-import { ImageService } from './entity/image-entity/image.service';
+import { ImageSourceService } from './shared/source-services/image.source.service';
+import { BarContentService } from './entity-content/bar/bar.content.service';
+import { BarcleContentService } from './entity-content/barcle/barcle.content.service';
+import { CircleContentService } from './entity-content/circle/circle.content.service';
+import { ImageContentService } from './entity-content/image/image.content.service';
 
 @Component({
     selector: 'app-root',
@@ -32,7 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);
-    addEmitterOptions: EntityEmitterType[] = Object.values(EntityEmitterType);
+    addEmitterOptions: EmitterType[] = Object.values(EmitterType);
 
     modeOptions: any[] = [
         {
@@ -60,13 +62,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
     }
 
-    constructor(public audioService: AudioService,
-                public backgroundImageService: BackgroundImageService,
+    constructor(public audioService: AudioSourceService,
+                public backgroundImageService: BackgroundImageSourceService,
                 public entityService: EntityService,
-                public entityEmitterService: EntityEmitterService,
+                public emitterService: EmitterService,
                 public presetService: PresetService,
-                public imageService: ImageService,
-                private _visualizerService: VisualizerService,
+                public imageService: ImageSourceService,
+                private _barContentService: BarContentService,
+                private _barcleContentService: BarcleContentService,
+                private _circleContentService: CircleContentService,
+                private _imageContentService: ImageContentService,
                 private _elementRef: ElementRef<HTMLElement>,
                 private _renderer: Renderer2) {
     }
@@ -83,8 +88,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.audioService.setUp(this.audioElement.nativeElement)
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
 
-        this._visualizerService.entityView = this.entityViewContentElement.nativeElement;
-        this.imageService.entityView = this.entityViewContentElement.nativeElement;
+        this._barContentService.setEntityView(this.entityViewContentElement.nativeElement);
+        this._barcleContentService.setEntityView(this.entityViewContentElement.nativeElement);
+        this._circleContentService.setEntityView(this.entityViewContentElement.nativeElement);
+        this._imageContentService.setEntityView(this.entityViewContentElement.nativeElement);
 
         this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
         this.hiddenImages.changes.subscribe(() => {
@@ -112,11 +119,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onAddEntity(type: EntityType): void {
-        this.entityService.addEntity(type, true, true)
+        this.entityService.addEntity(type)
     }
 
-    onAddEmitter(type: EntityEmitterType): void {
-        this.entityEmitterService.addEmitter(type)
+    onAddEmitter(type: EmitterType): void {
+        this.emitterService.addEmitter(type)
     }
 
     onEntitySelected(config: IEntityConfig, event?: MouseEvent): void {
@@ -124,22 +131,22 @@ export class AppComponent implements OnInit, AfterViewInit {
         event?.stopPropagation();
     }
 
-    onEmitterSelected(config: IEntityEmitterConfig, event?: MouseEvent): void {
-        this.entityEmitterService.activeEmitter = config;
+    onEmitterSelected(config: IEmitterConfig, event?: MouseEvent): void {
+        this.emitterService.activeEmitter = config;
         event?.stopPropagation();
     }
 
     onRemoveEntity(entity: IEntityConfig): void {
-        this.entityService.removeEntity(entity, true)
+        this.entityService.removeEntity(entity)
     }
 
-    onRemoveEmitter(entityEmitter: IEntityEmitterConfig): void {
-        this.entityEmitterService.removeEmitter(entityEmitter)
+    onRemoveEmitter(emitter: IEmitterConfig): void {
+        this.emitterService.removeEmitter(emitter)
     }
 
     onEntityViewClicked(): void {
         this.entityService.activeEntity = null;
-        this.entityEmitterService.activeEmitter = null;
+        this.emitterService.activeEmitter = null;
     }
 
     onDecibelChanged(): void {

@@ -1,14 +1,16 @@
-import { IVisualizerConfig, VisualizerType } from './visualizer-entity/visualizer-entity.types';
-import { IImageConfig } from './image-entity/image-entity.types';
+import { IImageContentConfig } from '../entity-content/image/image.content.types';
+import { IBarContentConfig } from '../entity-content/bar/bar.content.types';
+import { IBarcleContentConfig } from '../entity-content/barcle/barcle.content.types';
+import { ICircleContentConfig } from '../entity-content/circle/circle.content.types';
 
 export enum EntityType {
-    BAR_VISUALIZER = 'Bar',
-    BARCLE_VISUALIZER = 'Barcle',
-    CIRCLE_VISUALIZER = 'Circle',
+    BAR = 'Bar',
+    BARCLE = 'Barcle',
+    CIRCLE = 'Circle',
     IMAGE = 'Image',
 }
 
-export type IEntityContentConfig = IVisualizerConfig | IImageConfig;
+export type IEntityContentConfig = IBarContentConfig | IBarcleContentConfig | ICircleContentConfig | IImageContentConfig;
 
 export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentConfig> {
     type: EntityType;
@@ -34,14 +36,4 @@ export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentCo
     opacity: number;
     fadeTime: number;
     entityContentConfig: T;
-}
-
-export interface IEntityContentService {
-    entityView: HTMLElement;
-    beforeEmit(config: IEntityContentConfig): void;
-    setEntityDimensions(entity: IEntityConfig): void;
-    setEntityPosition(entity: IEntityConfig): void;
-    getDefaultContent(type?: EntityType, isEmitted?: boolean): IEntityContentConfig;
-    getCleanPreset(config: IEntityContentConfig): IEntityContentConfig;
-    updatePreset(config: IEntityContentConfig): IEntityContentConfig;
 }

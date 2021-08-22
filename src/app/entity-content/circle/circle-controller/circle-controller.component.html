@@ -1,0 +1,37 @@
+<nz-collapse>
+    <nz-collapse-panel nzHeader="Circle Options">
+        <app-control-line *ngIf="config.isEmitted" name="Random Colors">
+            <nz-switch [(ngModel)]="config.randomizeColors"></nz-switch>
+        </app-control-line>
+        <ng-container *ngIf="!config.randomizeColors">
+            <app-control-line name="Start Color">
+                <app-color-picker [(color)]="config.startColor"></app-color-picker>
+            </app-control-line>
+            <app-control-line name="End Color">
+                <app-color-picker [(color)]="config.endColor"></app-color-picker>
+            </app-control-line>
+        </ng-container>
+        <app-control-line name="Samples">
+            <nz-select [(ngModel)]="config.sampleCount" (ngModelChange)="onSampleCountChanged()">
+                <nz-option *ngFor="let option of sampleCountOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select>
+        </app-control-line>
+        <app-control-line name="Multiplier">
+            <nz-input-number [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.multiplier" [nzStep]="0.1" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-slider>
+        </app-control-line>
+        <app-control-line *ngIf="!config.isEmitted" name="Shadow Blur">
+            <nz-input-number [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-input-number>
+            <nz-slider [(ngModel)]="config.shadowBlur" [nzStep]="1" [nzMin]="0" [nzMax]="50"></nz-slider>
+        </app-control-line>
+
+        <app-control-line name="Center Radius">
+            <nz-input-number [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.baseRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
+        </app-control-line>
+        <app-control-line name="Sample Radius">
+            <nz-input-number [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="config.sampleRadius" [nzStep]="5" [nzMin]="0" [nzMax]="100" (ngModelChange)="onDimensionsChange()"></nz-slider>
+        </app-control-line>
+    </nz-collapse-panel>
+</nz-collapse>

@@ -1,4 +1,7 @@
 <audio #audio [src]="audioService.activeSource.src" (ended)="onEnded()"></audio>
+<div [style]="{ display: 'none' }">
+    <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
+</div>
 
 <div #entityView class="entity-view"
      (click)="onEntityViewClicked()">
@@ -9,50 +12,13 @@
     </button>
     <div #entityViewContent class="entity-view-content">
         <img class="background-image" [ngStyle]="{ opacity: 0.5 }" [src]="backgroundImageService.activeSource.src" alt="Background Image" draggable="false">
-        <app-entity class="entity"
-                    *ngFor="let entity of entityService.entities"
-                    [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
-                    [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
-                    [boundaryElement]="entityView"
-                    [oomph]="audioService.oomph"
-                    [viewScale]="entityViewContentScale"
-                    [showOutline]="entity === entityService.activeEntity"
-                    [config]="entity"
-                    [animateMovement]="entity.animateMovement"
-                    [animateRotation]="entity.animateRotation"
-                    [animateOomph]="entity.animateOomphInEntity"
-                    [movementAngle]="entity.movementAngle"
-                    [rotation]="entity.rotation"
-                    [rotationDirection]="entity.rotationDirection"
-                    [rotationSpeed]="entity.rotationSpeed"
-                    (click)="onEntitySelected(entity, $event)">
-        </app-entity>
-
-        <app-entity class="emitted-entity"
-                    *ngFor="let entity of entityService.emittedEntities"
-                    [@entityEnterTrigger]="{ value: ':enter', params: { speed: entity.fadeTime } }"
-                    [@entityLeaveTrigger]="{ value: ':leave', params: { speed: entity.fadeTime } }"
-                    [boundaryElement]="entityView"
-                    [config]="entity"
-                    [oomph]="audioService.oomph"
-                    [viewScale]="entityViewContentScale"
-                    [animateMovement]="entity.animateMovement"
-                    [animateRotation]="entity.animateRotation"
-                    [animateOomph]="entity.animateOomphInEntity"
-                    [movementAngle]="entity.movementAngle"
-                    [rotation]="entity.rotation"
-                    [rotationDirection]="entity.rotationDirection"
-                    [rotationSpeed]="entity.rotationSpeed">
-        </app-entity>
-
-        <app-entity-emitter class="entity-emitter"
-                            *ngFor="let emitter of entityEmitterService.emitters"
-                            @entityEmitterEnterLeaveTrigger
-                            [ngStyle]="{ 'transform': emitter === entityEmitterService.activeEmitter ? 'scale(1)' : 'scale(0)' }"
-                            [config]="emitter"
-                            [viewScale]="entityViewContentScale"
-                            (click)="onEmitterSelected(emitter, $event)">
-        </app-entity-emitter>
+        <app-entity-canvas class="entity-canvas"
+                           [configs]="entityService.controllableEntities">
+        </app-entity-canvas>
+        <app-emitter-canvas class="entity-canvas"
+                            *ngFor="let config of emitterService.emitters"
+                            [config]="config">
+        </app-emitter-canvas>
     </div>
 </div>
 
@@ -163,7 +129,7 @@
         </div>
 
         <app-controller-wrapper type="entity"
-                                [configs]="entityService.entities"
+                                [configs]="entityService.controllableEntities"
                                 [activeConfig]="entityService.activeEntity"
                                 [addOptions]="addEntityOptions"
                                 (configSelect)="onEntitySelected($event)"
@@ -174,14 +140,14 @@
         </app-controller-wrapper>
 
         <app-controller-wrapper type="emitter"
-                                [configs]="entityEmitterService.emitters"
-                                [activeConfig]="entityEmitterService.activeEmitter"
+                                [configs]="emitterService.emitters"
+                                [activeConfig]="emitterService.activeEmitter"
                                 [addOptions]="addEmitterOptions"
                                 (configSelect)="onEmitterSelected($event)"
                                 (add)="onAddEmitter($event)"
                                 (remove)="onRemoveEmitter($event)"
-                                (close)="entityEmitterService.activeEmitter = null"
-                                (duplicateActive)="entityEmitterService.duplicateActive()">
+                                (close)="emitterService.activeEmitter = null"
+                                (duplicateActive)="emitterService.duplicateActive()">
         </app-controller-wrapper>
     </div>
 </div>

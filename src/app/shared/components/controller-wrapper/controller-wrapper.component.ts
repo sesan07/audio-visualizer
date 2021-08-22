@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IEntityConfig, EntityType } from '../../../entity/entity.types';
-import { EntityEmitterType, IEntityEmitterConfig } from '../../../entity-emitter/entity-emitter.types';
+import { EmitterType, IEmitterConfig } from '../../../emitter/emitter.types';
 import { animations } from '../../animations';
 
 @Component({
@@ -11,16 +11,16 @@ import { animations } from '../../animations';
 })
 export class ControllerWrapperComponent implements OnInit {
     @Input() type: 'entity' | 'emitter';
-    @Input() addOptions: EntityType[] | EntityEmitterType[];
-    @Input() activeConfig: IEntityConfig | IEntityEmitterConfig;
-    @Input() configs: IEntityConfig[] | IEntityEmitterConfig[];
-    @Output() add: EventEmitter<EntityType | EntityEmitterType> = new EventEmitter();
-    @Output() remove: EventEmitter<IEntityConfig | IEntityEmitterConfig> = new EventEmitter();
-    @Output() configSelect: EventEmitter<IEntityConfig | IEntityEmitterConfig> = new EventEmitter();
+    @Input() addOptions: EntityType[] | EmitterType[];
+    @Input() activeConfig: IEntityConfig | IEmitterConfig;
+    @Input() configs: IEntityConfig[] | IEmitterConfig[];
+    @Output() add: EventEmitter<EntityType | EmitterType> = new EventEmitter();
+    @Output() remove: EventEmitter<IEntityConfig | IEmitterConfig> = new EventEmitter();
+    @Output() configSelect: EventEmitter<IEntityConfig | IEmitterConfig> = new EventEmitter();
     @Output() close: EventEmitter<void> = new EventEmitter();
     @Output() duplicateActive: EventEmitter<void> = new EventEmitter();
 
-    selectedAddOption: EntityType | EntityEmitterType;
+    selectedAddOption: EntityType | EmitterType;
 
     get name(): string {
         return this.type === 'entity' ? 'Entity' : 'Entity Emitter'
@@ -30,7 +30,7 @@ export class ControllerWrapperComponent implements OnInit {
         this.selectedAddOption = this.addOptions[0];
     }
 
-    onConfigSelected(event: MouseEvent, config: IEntityConfig | IEntityEmitterConfig): void {
+    onConfigSelected(event: MouseEvent, config: IEntityConfig | IEmitterConfig): void {
         this.configSelect.emit(config)
         event.stopPropagation();
     }

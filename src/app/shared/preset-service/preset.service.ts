@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { IPreset } from './preset.service.types';
 import { IEntityConfig } from '../../entity/entity.types';
 import { EntityService } from '../../entity/entity.service';
-import { EntityEmitterService } from '../../entity-emitter/entity-emitter.service';
-import { ImageService } from '../../entity/image-entity/image.service';
-import { IEntityEmitterConfig } from '../../entity-emitter/entity-emitter.types';
+import { EmitterService } from '../../emitter/emitter.service';
+import { IEmitterConfig } from '../../emitter/emitter.types';
 
 @Injectable({
     providedIn: 'root'
@@ -21,8 +20,7 @@ export class PresetService {
     private _presets: IPreset[] = [];
 
     constructor(private _entityService: EntityService,
-                private _entityEmitterService: EntityEmitterService,
-                private _imageService: ImageService) {
+                private _emitterService: EmitterService) {
         // TODO add default presets
         // const isFirstLaunch = localStorage.getItem(this._FIRST_LAUNCH_KEY);
         // if (isFirstLaunch === null) {
@@ -37,14 +35,14 @@ export class PresetService {
         const entities: IEntityConfig[] =
             this._entityService.controllableEntities
                 .map(entity => this._entityService.getCleanPreset(entity))
-        const entityEmitters: IEntityEmitterConfig[] =
-            this._entityEmitterService.emitters
-                .map(emitter => this._entityEmitterService.getCleanPreset(emitter))
+        const emitters: IEmitterConfig[] =
+            this._emitterService.emitters
+                .map(emitter => this._emitterService.getCleanPreset(emitter))
 
         const preset: IPreset = {
             name,
             entities: entities,
-            entityEmitters: entityEmitters
+            emitters: emitters
         }
         this._presets.push(preset);
         this.activePreset = preset;
@@ -53,10 +51,10 @@ export class PresetService {
 
     setActivePreset(preset: IPreset): void {
         const entities: IEntityConfig[] = preset.entities.map(entity => this._entityService.updatePreset(entity))
-        const entityEmitters: IEntityEmitterConfig[] = preset.entityEmitters.map(emitter => this._entityEmitterService.updatePreset(emitter))
+        const emitters: IEmitterConfig[] = preset.emitters.map(emitter => this._emitterService.updatePreset(emitter))
 
         this._entityService.setEntities(entities)
-        this._entityEmitterService.setEmitters(entityEmitters)
+        this._emitterService.setEmitters(emitters)
         this.activePreset = preset;
     }
 

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ColorEvent, RGBA, } from 'ngx-color';
 
 @Component({
     selector: 'app-color-picker',
@@ -6,11 +7,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
     styleUrls: ['./color-picker.component.scss']
 })
 export class ColorPickerComponent implements OnInit {
-    @Input() color: string;
-    @Output() colorChange: EventEmitter<string> = new EventEmitter();
+    @Input() color: RGBA;
+    @Output() colorChange: EventEmitter<RGBA> = new EventEmitter();
 
     isOpen: boolean = false;
-    tempColor: string;
+    tempColor: RGBA;
 
     ngOnInit(): void {
         this.tempColor = this.color;
@@ -24,5 +25,9 @@ export class ColorPickerComponent implements OnInit {
             this.tempColor = this.color;
         }
         this.isOpen = false;
+    }
+
+    onColorChange(event: ColorEvent) {
+        this.tempColor = event.color.rgb;
     }
 }
