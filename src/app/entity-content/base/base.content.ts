@@ -12,11 +12,7 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
     protected _centerY: number;
 
     constructor(protected _canvasContext: CanvasRenderingContext2D, protected _oomph: IOomph) {
-        this._canvasContext.globalAlpha = 1;
-        // this._canvasContext.shadowBlur = 10;
-        // this._canvasContext.shadowColor = 'blue';
     }
-    // TODO add opacity to all entity-entity-content/images
 
     public animate(entity: IEntityConfig<T>): void {
         this._animateEntity(entity);

@@ -83,12 +83,12 @@ export class EntityCanvasComponent {
                 }
 
                 // TODO use this to highlight entity
-                this._canvasContext.strokeStyle = 'yellow';
-                const height: number = entity.height * entity.scale;
-                const width: number = entity.width * entity.scale;
-                const left: number = entity.left - (width - entity.width) / 2;
-                const top: number = entity.top - (height - entity.height) / 2;
-                this._canvasContext.strokeRect(left, top, width, height);
+                // this._canvasContext.strokeStyle = 'yellow';
+                // const height: number = entity.height * entity.scale;
+                // const width: number = entity.width * entity.scale;
+                // const left: number = entity.left - (width - entity.width) / 2;
+                // const top: number = entity.top - (height - entity.height) / 2;
+                // this._canvasContext.strokeRect(left, top, width, height);
 
                 // Reset transformation matrix to the identity matrix
                 this._canvasContext.setTransform(1, 0, 0, 1, 0, 0);

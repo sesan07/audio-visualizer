@@ -22,7 +22,8 @@ export class BarContent extends BaseContent<IBarContentConfig> {
                 Math.ceil(config.barSize * this._scale),
                 gradientColor,
                 config.startColor,
-                entity.opacity
+                entity.opacity,
+                config.shadowBlur
             );
 
             // Bar Cap
@@ -33,16 +34,17 @@ export class BarContent extends BaseContent<IBarContentConfig> {
                 Math.ceil(config.barSize * this._scale),
                 config.startColor,
                 config.startColor,
-                entity.opacity
+                entity.opacity,
+                config.shadowBlur
             );
 
             currPos += (config.barSize * this._scale) + (config.barSpacing * this._scale);
         });
     }
 
-    private _drawBar(startX: number, startY: number, height: number, width: number, fillColor: RGB, strokeColor: RGB, opacity: number): void {
-        // this._canvasContext.shadowBlur = shadowBlur
-        // this._canvasContext.shadowColor = shadowColorHex;
+    private _drawBar(startX: number, startY: number, height: number, width: number, fillColor: RGB, strokeColor: RGB, opacity: number, shadowBlur: number): void {
+        this._canvasContext.shadowBlur = shadowBlur
+        this._canvasContext.shadowColor = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`;
         this._canvasContext.fillStyle = `rgba(${fillColor.r}, ${fillColor.g}, ${fillColor.b}, ${opacity})`;
         this._canvasContext.strokeStyle = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`
         this._canvasContext.fillRect(startX, startY, width, height);
