@@ -2,7 +2,7 @@
     <span class="card-header">
         <span class="card-title">{{name}}</span>
         <nz-button-group>
-            <button class="add-btn" nz-button nzType="primary" (click)="add.emit(selectedAddOption)">
+            <button class="add-btn" nz-button nzType="primary" (click)="onAddOptionClicked(selectedAddOption)">
                     <i nz-icon nzType="plus"></i>
                 {{'Add ' + selectedAddOption}}
             </button>
@@ -11,7 +11,7 @@
             </button>
             <nz-dropdown-menu #menu="nzDropdownMenu">
                 <ul nz-menu nzSelectable>
-                    <li *ngFor="let option of addOptions" nz-menu-item (click)="selectedAddOption = option">{{option}}</li>
+                    <li *ngFor="let option of addOptions" nz-menu-item (click)="onAddOptionClicked(option)">{{option}}</li>
                 </ul>
             </nz-dropdown-menu>
         </nz-button-group>

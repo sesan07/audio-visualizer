@@ -34,4 +34,9 @@ export class ControllerWrapperComponent implements OnInit {
         this.configSelect.emit(config)
         event.stopPropagation();
     }
+
+    onAddOptionClicked(option: EntityType | EmitterType) {
+        this.selectedAddOption = option;
+        this.add.emit(option);
+    }
 }
