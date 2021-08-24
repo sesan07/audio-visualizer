@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmitterCanvasComponent } from './emitter-canvas.component';
+import { EmitterComponent } from './emitter.component';
 
-describe('EmitterVisualizerCanvasComponent', () => {
-  let component: EmitterCanvasComponent;
-  let fixture: ComponentFixture<EmitterCanvasComponent>;
+describe('EmitterComponent', () => {
+  let component: EmitterComponent;
+  let fixture: ComponentFixture<EmitterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmitterCanvasComponent ]
+      declarations: [ EmitterComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmitterCanvasComponent);
+    fixture = TestBed.createComponent(EmitterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

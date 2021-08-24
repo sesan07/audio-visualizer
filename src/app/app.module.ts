@@ -15,7 +15,6 @@ import { EmitterControllerComponent } from './emitter/emitter-controller/emitter
 import { ControllerWrapperComponent } from './shared/components/controller-wrapper/controller-wrapper.component';
 import { ColorPickerComponent } from './shared/components/color-picker/color-picker.component';
 import { EntityCanvasComponent } from './entity/entity-canvas/entity-canvas.component';
-import { EmitterCanvasComponent } from './emitter/emitter-canvas/emitter-canvas.component';
 import { BarControllerComponent } from './entity-content/bar/bar-controller/bar-controller.component';
 import { BarcleControllerComponent } from './entity-content/barcle/barcle-controller/barcle-controller.component';
 import { CircleControllerComponent } from './entity-content/circle/circle-controller/circle-controller.component';
@@ -43,6 +42,8 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { EmitterComponent } from './emitter/emitter.component';
+import { DraggableDirective } from './shared/components/draggable/draggable.directive';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -56,10 +57,11 @@ registerLocaleData(en);  // NG-Zorro
         ColorPickerComponent,
         ImageControllerComponent,
         EntityCanvasComponent,
-        EmitterCanvasComponent,
         BarControllerComponent,
         BarcleControllerComponent,
         CircleControllerComponent,
+        EmitterComponent,
+        DraggableDirective,
     ],
     imports: [
         BrowserModule,

@@ -7,9 +7,14 @@ export abstract class BaseContentService<T extends IEntityContentConfig> {
     beforeEmit(config: T): void {
     }
 
-    setEntityPosition(entity: IEntityConfig<T>): void {
-        entity.left = getRandomNumber(0, this._entityView.clientWidth - entity.width);
-        entity.top = getRandomNumber(0, this._entityView.clientHeight - entity.height);
+    setEntityPosition(entity: IEntityConfig<T>, centerX?: number, centerY?: number): void {
+        if (centerX !== undefined && centerY !== undefined) {
+            entity.left = centerX - entity.width / 2
+            entity.top = centerY - entity.height / 2
+        } else {
+            entity.left = getRandomNumber(0, this._entityView.clientWidth - entity.width);
+            entity.top = getRandomNumber(0, this._entityView.clientHeight - entity.height);
+        }
     }
 
     setEntityView(view: HTMLElement): void {

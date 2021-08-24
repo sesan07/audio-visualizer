@@ -11,14 +11,16 @@
         <i nz-icon [ngStyle]="{ transform: isControlViewOpen ? 'rotate(0deg)' : 'rotate(-180deg)' }" [nzType]="'right'"></i>
     </button>
     <div #entityViewContent class="entity-view-content">
+        <!-- TODO make bg opacity configurable -->
         <img class="background-image" [ngStyle]="{ opacity: 0.5 }" [src]="backgroundImageService.activeSource.src" alt="Background Image" draggable="false">
         <app-entity-canvas class="entity-canvas"
                            [configs]="entityService.controllableEntities">
         </app-entity-canvas>
-        <app-emitter-canvas class="entity-canvas"
-                            *ngFor="let config of emitterService.emitters"
-                            [config]="config">
-        </app-emitter-canvas>
+        <app-emitter class="emitter"
+                     *ngFor="let config of emitterService.emitters"
+                     [config]="config"
+                     [viewScale]="entityViewContentScale">
+        </app-emitter>
     </div>
 </div>
 

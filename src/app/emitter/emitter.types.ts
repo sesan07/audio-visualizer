@@ -6,7 +6,7 @@ export enum EmitterType {
 }
 
 export interface IEmitterConfig {
-    emitterType: EmitterType;
+    type: EmitterType;
     entity: IEntityConfig;
     name: string;
     interval: number;

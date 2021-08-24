@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DraggableComponent } from './draggable.component';
+import { DraggableDirective } from './draggable.directive';
 
 describe('DraggableComponent', () => {
-  let component: DraggableComponent;
-  let fixture: ComponentFixture<DraggableComponent>;
+  let component: DraggableDirective;
+  let fixture: ComponentFixture<DraggableDirective>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DraggableComponent ]
+      declarations: [ DraggableDirective ]
     })
     .compileComponents();
   });

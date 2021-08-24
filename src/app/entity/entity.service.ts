@@ -86,19 +86,19 @@ export class EntityService {
         }
     }
 
-    setEntityPosition(entity: IEntityConfig): void {
+    setEntityPosition(entity: IEntityConfig, centerX?: number, centerY?: number): void {
         switch (entity.type) {
             case EntityType.BAR:
-                this._barContentService.setEntityPosition(entity as IEntityConfig<IBarContentConfig>)
+                this._barContentService.setEntityPosition(entity as IEntityConfig<IBarContentConfig>, centerX, centerY)
                 break;
             case EntityType.BARCLE:
-                this._barcleContentService.setEntityPosition(entity as IEntityConfig<IBarcleContentConfig>)
+                this._barcleContentService.setEntityPosition(entity as IEntityConfig<IBarcleContentConfig>, centerX, centerY)
                 break;
             case EntityType.CIRCLE:
-                this._circleContentService.setEntityPosition(entity as IEntityConfig<ICircleContentConfig>)
+                this._circleContentService.setEntityPosition(entity as IEntityConfig<ICircleContentConfig>, centerX, centerY)
                 break;
             case EntityType.IMAGE:
-                this._imageContentService.setEntityPosition(entity as IEntityConfig<IImageContentConfig>)
+                this._imageContentService.setEntityPosition(entity as IEntityConfig<IImageContentConfig>, centerX, centerY)
                 break;
             default: throw new Error('Unknown entity type')
         }

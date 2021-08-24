@@ -22,7 +22,7 @@ export class EmitterService {
         this._entityService.setEntityPosition(entity);
 
         const config: IEmitterConfig = {
-            emitterType: type,
+            type: type,
             name: `Emitter ${this._currNameIndex++}`,
             interval: 2,
             amount: 1,
