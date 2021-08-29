@@ -43,9 +43,9 @@
     flex-grow: 1;
 }
 
-.control-group nz-radio-group {
+nz-radio-group {
     flex-grow: 1;
-    display: flex;
+    display: flex !important;
 
     label {
         flex-grow: 1;
@@ -73,6 +73,7 @@
 }
 
 .popover-action-buttons {
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     gap: 8px;

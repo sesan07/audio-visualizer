@@ -1,7 +1,7 @@
 // Angular modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // NGX-Color Modules
 import { ColorSketchModule } from 'ngx-color/sketch';
@@ -19,6 +19,9 @@ import { BarControllerComponent } from './entity-content/bar/bar-controller/bar-
 import { BarcleControllerComponent } from './entity-content/barcle/barcle-controller/barcle-controller.component';
 import { CircleControllerComponent } from './entity-content/circle/circle-controller/circle-controller.component';
 import { ImageControllerComponent } from './entity-content/image/image-controller/image-controller.component';
+import { EmitterComponent } from './emitter/emitter.component';
+import { DraggableDirective } from './shared/components/draggable/draggable.directive';
+import { SourcePickerComponent } from './shared/components/source-picker/source-picker.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -42,8 +45,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { EmitterComponent } from './emitter/emitter.component';
-import { DraggableDirective } from './shared/components/draggable/draggable.directive';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -62,12 +64,14 @@ registerLocaleData(en);  // NG-Zorro
         CircleControllerComponent,
         EmitterComponent,
         DraggableDirective,
+        SourcePickerComponent,
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
         HttpClientModule,
+        ReactiveFormsModule,
         ColorSketchModule,
         NzButtonModule,
         NzDropDownModule,
@@ -82,6 +86,7 @@ registerLocaleData(en);  // NG-Zorro
         NzUploadModule,
         NzCollapseModule,
         NzInputModule,
+        NzFormModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
     bootstrap: [AppComponent]

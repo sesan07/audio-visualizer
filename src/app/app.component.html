@@ -12,7 +12,11 @@
     </button>
     <div #entityViewContent class="entity-view-content">
         <!-- TODO make bg opacity configurable -->
-        <img class="background-image" [ngStyle]="{ opacity: 0.5 }" [src]="backgroundImageService.activeSource.src" alt="Background Image" draggable="false">
+        <img class="background-image"
+             [ngStyle]="{ opacity: 0.5 }"
+             [src]="backgroundImageService.activeSource.src"
+             alt="Background Image"
+             draggable="false">
         <app-entity-canvas class="entity-canvas"
                            [allowInteraction]="true"
                            [configs]="entityService.controllableEntities"
@@ -56,7 +60,7 @@
                                 nzPopoverTrigger="click"
                                 [(nzPopoverVisible)]="savePresetPopOverVisible"
                                 [nzPopoverContent]="savePresetTemplate">
-                            <i nz-icon nzType="plus"></i>
+                            <i nz-icon nzType="save"></i>
                         </button>
                         <ng-template #savePresetTemplate>
                             <input #savePresetNameInput nz-input placeholder="Preset Name"/>
@@ -72,50 +76,26 @@
                         </ng-template>
                     </app-control-line>
                     <app-control-line name="Song">
-                        <nz-select [ngModel]="audioService.activeSource"
-                                   (ngModelChange)="audioService.setActiveSource($event)">
-                            <nz-option *ngFor="let option of audioService.sources" [nzValue]="option"
-                                       [nzLabel]="option.name">
-                            </nz-option>
-                        </nz-select>
-                        <input #audioFileInput type="file" id="audioFile" hidden accept="audio/*" multiple
-                               (change)="onAudioFileUpload()"/>
-                        <button nz-button (click)="audioFileInput.click()">
-                            <i nz-icon nzType="upload"></i>
-                        </button>
+                        <app-source-picker allowFileAdd="true"
+                                           fileAcceptTypes="audio/*"
+                                           popoverTitle="Add Song"
+                                           [activeSource]="audioService.activeSource"
+                                           [sources]="audioService.sources"
+                                           (activeSourceChanged)="audioService.setActiveSource($event)"
+                                           (addFile)="audioService.addFileSource($event.name, $event.file)">
+                        </app-source-picker>
                     </app-control-line>
                     <app-control-line name="Background Image">
-                        <nz-select [ngModel]="backgroundImageService.activeSource"
-                                   (ngModelChange)="backgroundImageService.setActiveSource($event)">
-                            <nz-option *ngFor="let option of backgroundImageService.sources" [nzValue]="option"
-                                       [nzLabel]="option.name">
-                            </nz-option>
-                        </nz-select>
-                        <button nz-button
-                                nz-popover
-                                nzPopoverTitle="Add Image Link"
-                                nzPopoverTrigger="click"
-                                [(nzPopoverVisible)]="addUrlPopOverVisible"
-                                [nzPopoverContent]="addUrlTemplate">
-                            <i nz-icon nzType="link"></i>
-                        </button>
-                        <ng-template #addUrlTemplate>
-                            <input #addImageNameInput nz-input placeholder="Name"/>
-                            <input #addImageUrlInput nz-input placeholder="link.to.image.png"/>
-                            <span class="popover-action-buttons">
-                                <button nz-button nzDanger (click)="addUrlPopOverVisible = false">
-                                    <i nz-icon nzType="close"></i>
-                                </button>
-                                <button nz-button nzType="primary" (click)="onAddUrl(addImageUrlInput.value, addImageNameInput.value)">
-                                    <i nz-icon nzType="check"></i>
-                                </button>
-                            </span>
-                        </ng-template>
-                        <input #backgroundFileInput type="file" id="backgroundFile" hidden accept="image/*" multiple
-                               (change)="onBackgroundFileUpload()"/>
-                        <button nz-button (click)="backgroundFileInput.click()">
-                            <i nz-icon nzType="upload"></i>
-                        </button>
+                        <app-source-picker allowFileAdd="true"
+                                           allowUrlAdd="true"
+                                           fileAcceptTypes="image/*"
+                                           popoverTitle="Add Background Image"
+                                           [activeSource]="backgroundImageService.activeSource"
+                                           [sources]="backgroundImageService.sources"
+                                           (activeSourceChanged)="backgroundImageService.setActiveSource($event)"
+                                           (addFile)="backgroundImageService.addFileSource($event.name, $event.file)"
+                                           (addUrl)="backgroundImageService.addUrlSource($event.name,$event.url)">
+                        </app-source-picker>
                     </app-control-line>
                     <app-control-line name="Mode">
                         <nz-radio-group [(ngModel)]="audioService.mode">

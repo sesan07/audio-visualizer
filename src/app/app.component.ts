@@ -53,7 +53,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     controlViewContentWidth: number;
     entityViewContentScale: number;
 
-    addUrlPopOverVisible: boolean;
     savePresetPopOverVisible: boolean;
 
     private readonly _controlViewWidth: number = 500;
@@ -109,21 +108,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     onDecibelChanged(): void {
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
-    }
-
-    onAudioFileUpload(): void {
-        const files: FileList = this.audioFileInputElement.nativeElement.files;
-        this.audioService.addFileSources(files)
-    }
-
-    onBackgroundFileUpload(): void {
-        const files: FileList = this.backgroundFileInputElement.nativeElement.files;
-        this.backgroundImageService.addFileSources(files)
-    }
-
-    onAddUrl(url?: string, name?: string): void {
-        this.backgroundImageService.addUrlSource(url, name);
-        this.addUrlPopOverVisible = false;
     }
 
     toggleControlView(): void {

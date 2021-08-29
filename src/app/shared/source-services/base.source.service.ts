@@ -17,7 +17,33 @@ export abstract class BaseSourceService {
                 private _messageService: NzMessageService) {
     }
 
-    addUrlSource(url?: string, name?: string) {
+    addFileSource(name: string, file: File, loadFile?: boolean) {
+        if (!file) {
+            this._showNotification(false);
+            return;
+        }
+
+        // Check if file already exists
+        const existingFileNames: string[] = this.sources.map(source => source.file?.name)
+        const isNewFile: boolean = existingFileNames.indexOf(file.name) < 0;
+        if (isNewFile) {
+            const newSource: ISource = {
+                name,
+                file,
+                id: `${this._idPrefix}-${this._currIdIndex++}`,
+            };
+
+            if (loadFile) {
+                this.loadFileSource(newSource);
+            }
+
+            this.sources.push(newSource)
+        }
+
+        this._showNotification(isNewFile);
+    }
+
+    addUrlSource(name: string, url: string) {
         if (!url) {
             this._showNotification(false)
             return;
@@ -35,31 +61,6 @@ export abstract class BaseSourceService {
             })
         }
         this._showNotification(true)
-    }
-
-    addFileSources(files: FileList, loadFile?: boolean) {
-        const existingFileNames: string[] = this.sources.map(source => source.file?.name)
-        let addedNewFiles: boolean;
-        Array.from(files).forEach(file => {
-            // Check if file already exists
-            const index: number = existingFileNames.indexOf(file.name);
-            if (index < 0) {
-                const newSource: ISource = {
-                    file,
-                    id: `${this._idPrefix}-${this._currIdIndex++}`,
-                    name: file.name.split('.').shift()
-                };
-
-                if (loadFile) {
-                    this.loadFileSource(newSource);
-                }
-
-                this.sources.push(newSource)
-                addedNewFiles = true;
-            }
-        })
-
-        this._showNotification(addedNewFiles);
     }
 
     loadFileSource(source: ISource) {
@@ -84,6 +85,6 @@ export abstract class BaseSourceService {
     }
 
     private _showNotification(isSuccessful): void {
-        isSuccessful ? this._messageService.success('Source(s) added') : this._messageService.info('No source added');
+        isSuccessful ? this._messageService.success('Source added') : this._messageService.info('No source added');
     }
 }
