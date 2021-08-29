@@ -16,6 +16,7 @@ export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentCo
     type: EntityType;
     name?: string;
     isEmitted: boolean;
+    isSelected?: boolean;
     animateMovement?: boolean;
     animateRotation?: boolean;
     animateOomphInEntity: boolean;
@@ -27,8 +28,6 @@ export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentCo
     scale: number;
     oomphAmount: number;
     randomizeMovement?: boolean;
-    startX?: number;
-    startY?: number;
     left: number;
     top: number;
     height: number,

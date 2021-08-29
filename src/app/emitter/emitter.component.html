@@ -1,4 +1,6 @@
 <app-entity-canvas class="entity-canvas"
-                   [configs]="entities">
+                   [allowInteraction]="false"
+                   [configs]="entities"
+                   [viewScale]="viewScale">
 </app-entity-canvas>
 <div #handle class="handle" appDraggable [viewScale]="viewScale"></div>

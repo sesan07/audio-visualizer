@@ -14,7 +14,9 @@
         <!-- TODO make bg opacity configurable -->
         <img class="background-image" [ngStyle]="{ opacity: 0.5 }" [src]="backgroundImageService.activeSource.src" alt="Background Image" draggable="false">
         <app-entity-canvas class="entity-canvas"
-                           [configs]="entityService.controllableEntities">
+                           [allowInteraction]="true"
+                           [configs]="entityService.controllableEntities"
+                           [viewScale]="entityViewContentScale">
         </app-entity-canvas>
         <app-emitter class="emitter"
                      *ngFor="let config of emitterService.emitters"

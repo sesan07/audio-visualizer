@@ -17,6 +17,13 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
     public animate(entity: IEntityConfig<T>): void {
         this._animateEntity(entity);
         this._animateContent(entity);
+
+        if (entity.isSelected) {
+            this._drawSelectionBorder(entity);
+        }
+
+        // Reset transformation matrix to the identity matrix
+        this._canvasContext.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     protected abstract _animateContent(entity: IEntityConfig<T>): void;
@@ -25,6 +32,12 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
         this._move(entity);
         this._updateEntityProperties(entity);
         this._rotate(entity);
+    }
+
+    private _drawSelectionBorder(entity: IEntityConfig<T>): void {
+        this._canvasContext.shadowBlur = 0;
+        this._canvasContext.strokeStyle = 'yellow';
+        this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
     }
 
     private _move(entity: IEntityConfig<T>): void {
