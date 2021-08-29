@@ -36,6 +36,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     addEntityOptions: EntityType[] = Object.values(EntityType);
     addEmitterOptions: EmitterType[] = Object.values(EmitterType);
 
+    backgroundOpacity: number = 0.5;
     modeOptions: any[] = [
         {
             name: 'Frequency',
