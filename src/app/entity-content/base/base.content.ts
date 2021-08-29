@@ -48,10 +48,10 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
     }
 
     private _updateEntityProperties(entity: IEntityConfig<T>): void {
-        const oomphScale: number = this._oomph.value * entity.oomphAmount;
-        this._scale = entity.scale + oomphScale
-        this._scaledWidth = entity.width * this._scale
-        this._scaledHeight = entity.height * this._scale
+        const oomphScale: number = 1 + (this._oomph.value * entity.oomphAmount);
+        this._scale = entity.scale * oomphScale
+        this._scaledWidth = entity.width * oomphScale
+        this._scaledHeight = entity.height * oomphScale
         this._scaledLeft = entity.left - (this._scaledWidth - entity.width) / 2;
         this._scaledTop = entity.top - (this._scaledHeight - entity.height) / 2;
         this._centerX = (this._scaledLeft) + (this._scaledWidth / 2);

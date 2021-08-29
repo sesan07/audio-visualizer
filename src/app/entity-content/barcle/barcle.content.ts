@@ -9,6 +9,11 @@ export class BarcleContent extends BaseContent<IBarcleContentConfig> {
     protected _animateContent(entity: IEntityConfig<IBarcleContentConfig>): void {
         const config: IBarcleContentConfig = entity.entityContentConfig;
 
+        const strokeColor: string = `rgba(${config.startColor.r}, ${config.startColor.g}, ${config.startColor.b}, ${entity.opacity})`;
+        this._canvasContext.shadowBlur = config.shadowBlur
+        this._canvasContext.shadowColor = strokeColor;
+        this._canvasContext.strokeStyle = strokeColor;
+
         const sampleAngle: number = (getRadians(360) / config.sampleCount) / 2;
         let currAngle: number = getRadians(90) + sampleAngle / 2;
         // Reverse to turn visualization upside down
@@ -21,8 +26,8 @@ export class BarcleContent extends BaseContent<IBarcleContentConfig> {
             const endAngle2 = Math.PI - currAngle + sampleAngle / 2;
 
             const gradientColor: RGB = getGradientColor(config.startColor, config.endColor, (amplitude / 255));
-            this._drawBar(startAngle, endAngle, radius, config.baseRadius * this._scale, gradientColor, config.startColor, entity.opacity, config.shadowBlur);
-            this._drawBar(startAngle2, endAngle2, radius, config.baseRadius * this._scale, gradientColor, config.startColor, entity.opacity, config.shadowBlur);
+            this._drawBar(startAngle, endAngle, radius, config.baseRadius * this._scale, gradientColor, entity.opacity);
+            this._drawBar(startAngle2, endAngle2, radius, config.baseRadius * this._scale, gradientColor, entity.opacity);
 
             currAngle += sampleAngle;
         }
@@ -31,11 +36,8 @@ export class BarcleContent extends BaseContent<IBarcleContentConfig> {
         }
     }
 
-    private _drawBar(startAngle: number, endAngle: number, height: number, baseRadius: number, fillColor: RGB, strokeColor: RGB, opacity: number, shadowBlur: number): void {
-        this._canvasContext.shadowBlur = shadowBlur
-        this._canvasContext.shadowColor = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`;
+    private _drawBar(startAngle: number, endAngle: number, height: number, baseRadius: number, fillColor: RGB, opacity: number): void {
         this._canvasContext.fillStyle = `rgba(${fillColor.r}, ${fillColor.g}, ${fillColor.b}, ${opacity})`;
-        this._canvasContext.strokeStyle = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`;
         this._canvasContext.beginPath();
         this._canvasContext.arc(this._centerX, this._centerY, baseRadius, startAngle, endAngle);
         this._canvasContext.arc(this._centerX, this._centerY, height, endAngle, startAngle, true);

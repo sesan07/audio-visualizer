@@ -47,7 +47,8 @@ export class BarcleContentService extends BaseContentService<IBarcleContentConfi
     setEntityDimensions(entity: IEntityConfig<IBarcleContentConfig>): void {
         const config: IBarcleContentConfig = entity.entityContentConfig;
 
-        const diameter: number = (config.multiplier * 255 + config.baseRadius + config.ringSize) * 2;
+        const radius: number = config.multiplier * 255 + config.baseRadius + config.ringSize
+        const diameter: number = radius * 2 * entity.scale;
         entity.height = diameter;
         entity.width = diameter;
     }

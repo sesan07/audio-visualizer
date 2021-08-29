@@ -38,9 +38,9 @@ export class BarContentService extends BaseContentService<IBarContentConfig> {
             multiplier: 1,
             shadowBlur: isEmitted ? 0 : 5,
             sampleCount: sampleCount,
-            barCapSize: 5,
-            barSize: 20,
-            barSpacing: 10,
+            barCapSize: 10,
+            barSize: 60,
+            barSpacing: 20,
         };
     }
 
@@ -49,12 +49,12 @@ export class BarContentService extends BaseContentService<IBarContentConfig> {
 
         const barHeight: number = config.multiplier * 255;
         const barCapHeight: number = config.barCapSize;
-        entity.height = barHeight + barCapHeight;
+        entity.height = (barHeight + barCapHeight) * entity.scale;
 
         const barSpacing: number = config.barSpacing;
         const barSize: number = config.barSize;
         const totalBarSpacing: number = (config.sampleCount - 1) * barSpacing
-        entity.width = config.sampleCount * barSize + totalBarSpacing;
+        entity.width = (config.sampleCount * barSize + totalBarSpacing) * entity.scale;
     }
 
     updatePreset(config: IBarContentConfig): IBarContentConfig {

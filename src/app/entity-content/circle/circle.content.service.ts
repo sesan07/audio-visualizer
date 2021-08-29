@@ -46,7 +46,8 @@ export class CircleContentService extends BaseContentService<ICircleContentConfi
     setEntityDimensions(entity: IEntityConfig<ICircleContentConfig>): void {
         const config: ICircleContentConfig = entity.entityContentConfig;
 
-        const diameter: number = (config.multiplier * 255 + config.baseRadius + config.sampleRadius) * 2;
+        const radius: number = config.multiplier * 255 + config.baseRadius + config.sampleRadius
+        const diameter: number = radius * 2 * entity.scale;
         entity.height = diameter;
         entity.width = diameter;
     }

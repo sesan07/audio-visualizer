@@ -9,6 +9,11 @@ export class BarContent extends BaseContent<IBarContentConfig> {
     protected _animateContent(entity: IEntityConfig<IBarContentConfig>): void {
         const config: IBarContentConfig = entity.entityContentConfig;
 
+        const strokeColor: string = `rgba(${config.startColor.r}, ${config.startColor.g}, ${config.startColor.b}, ${entity.opacity})`;
+        this._canvasContext.shadowBlur = config.shadowBlur
+        this._canvasContext.shadowColor = strokeColor;
+        this._canvasContext.strokeStyle = strokeColor;
+
         let currPos = this._scaledLeft;
         config.amplitudes.forEach(amplitude => {
             const gradientColor: RGB = getGradientColor(config.startColor, config.endColor, (amplitude / 255));
@@ -21,9 +26,7 @@ export class BarContent extends BaseContent<IBarContentConfig> {
                 amplitude,
                 Math.ceil(config.barSize * this._scale),
                 gradientColor,
-                config.startColor,
-                entity.opacity,
-                config.shadowBlur
+                entity.opacity
             );
 
             // Bar Cap
@@ -33,20 +36,15 @@ export class BarContent extends BaseContent<IBarContentConfig> {
                 config.barCapSize * this._scale,
                 Math.ceil(config.barSize * this._scale),
                 config.startColor,
-                config.startColor,
-                entity.opacity,
-                config.shadowBlur
+                entity.opacity
             );
 
             currPos += (config.barSize * this._scale) + (config.barSpacing * this._scale);
         });
     }
 
-    private _drawBar(startX: number, startY: number, height: number, width: number, fillColor: RGB, strokeColor: RGB, opacity: number, shadowBlur: number): void {
-        this._canvasContext.shadowBlur = shadowBlur
-        this._canvasContext.shadowColor = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`;
+    private _drawBar(startX: number, startY: number, height: number, width: number, fillColor: RGB, opacity: number): void {
         this._canvasContext.fillStyle = `rgba(${fillColor.r}, ${fillColor.g}, ${fillColor.b}, ${opacity})`;
-        this._canvasContext.strokeStyle = `rgba(${strokeColor.r}, ${strokeColor.g}, ${strokeColor.b}, ${opacity})`
         this._canvasContext.fillRect(startX, startY, width, height);
         this._canvasContext.strokeRect(startX, startY, width, height);
     }
