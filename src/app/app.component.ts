@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IEntityConfig, EntityType } from './entity/entity.types';
+import { EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
 import { AudioSourceService } from './shared/source-services/audio.source.service';
 import { EntityService } from './entity/entity.service';
-import { EmitterType, IEmitterConfig } from './emitter/emitter.types';
+import { EmitterType } from './emitter/emitter.types';
 import { EmitterService } from './emitter/emitter.service';
 import { BackgroundImageSourceService } from './shared/source-services/background-image.source.service';
 import { PresetService } from './shared/preset-service/preset.service';
@@ -102,50 +102,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         setTimeout(() => this._updateEntityViewContentScale(), 500)
     }
 
-    onPlayPause(): void {
-        this.isPlaying ? this.audioService.pause() : this.audioService.play()
-    }
-
-    onNextSong(): void {
-        this.audioService.playNextSong()
-    }
-
-    onPrevSong(): void {
-        this.audioService.playPreviousSong()
-    }
-
-    onEnded(): void {
-        this.audioService.playNextSong();
-    }
-
-    onAddEntity(type: EntityType): void {
-        this.entityService.addEntity(type)
-    }
-
-    onAddEmitter(type: EmitterType): void {
-        this.emitterService.addEmitter(type)
-    }
-
-    onEntitySelected(config: IEntityConfig, event?: MouseEvent): void {
-        this.entityService.activeEntity = config;
-        event?.stopPropagation();
-    }
-
-    onEmitterSelected(config: IEmitterConfig, event?: MouseEvent): void {
-        this.emitterService.activeEmitter = config;
-        event?.stopPropagation();
-    }
-
-    onRemoveEntity(entity: IEntityConfig): void {
-        this.entityService.removeEntity(entity)
-    }
-
-    onRemoveEmitter(emitter: IEmitterConfig): void {
-        this.emitterService.removeEmitter(emitter)
-    }
-
     onEntityViewClicked(): void {
-        this.entityService.activeEntity = null;
+        this.entityService.setActiveEntity(null)
         this.emitterService.activeEmitter = null;
     }
 

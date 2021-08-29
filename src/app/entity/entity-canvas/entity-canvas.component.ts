@@ -31,6 +31,7 @@ export class EntityCanvasComponent implements AfterViewInit {
     @Input() allowInteraction: boolean;
     @Input() configs: IEntityConfig[];
     @Input() viewScale: number;
+    @Output() entitySelected: EventEmitter<IEntityConfig> = new EventEmitter();
 
     @ViewChild('canvasElement') canvasElement: ElementRef<HTMLCanvasElement>;
 
@@ -48,11 +49,12 @@ export class EntityCanvasComponent implements AfterViewInit {
             return;
         }
 
-        this._selectedConfig = this._getSelectedConfig(event);
+        this._setSelectedConfig(event);
         if (!this._selectedConfig) {
             return;
         }
 
+        event.stopPropagation();
         const point: { x: number, y: number } = this._getScaledPoint(event);
         this._dragOffsetLeft = this._selectedConfig.left - point.x;
         this._dragOffsetTop = this._selectedConfig.top - point.y;
@@ -68,11 +70,12 @@ export class EntityCanvasComponent implements AfterViewInit {
         }
 
         const firstTouch: Touch = event.touches.item(0);
-        this._selectedConfig = this._getSelectedConfig(firstTouch);
+        this._setSelectedConfig(firstTouch);
         if (!this._selectedConfig) {
             return;
         }
 
+        event.stopPropagation();
         const point: { x: number, y: number } = this._getScaledPoint(firstTouch);
         this._dragOffsetLeft = this._selectedConfig.left - point.x;
         this._dragOffsetTop = this._selectedConfig.top - point.y;
@@ -154,23 +157,24 @@ export class EntityCanvasComponent implements AfterViewInit {
         return { x, y }
     }
 
-    private _getSelectedConfig(source: MouseEvent | Touch): IEntityConfig {
+    private _setSelectedConfig(source: MouseEvent | Touch): void {
         const point: { x: number, y: number } = this._getScaledPoint(source);
 
-        let selectedConfig: IEntityConfig;
-        this.configs.forEach(config => {
+        // Reverse search array, bottom elements are drawn over others
+        for (let i = this.configs.length - 1; i >= 0; i--) {
+            const config: IEntityConfig = this.configs[i];
             const isInBoundsX: boolean = point.x > config.left && point.x <= config.left + config.width;
             const isInBoundsY: boolean = point.y > config.top && point.y <= config.top + config.height;
 
-            if (isInBoundsX && isInBoundsY && !selectedConfig) {
-                selectedConfig = config;
-                selectedConfig.isSelected = true
-            } else {
-                config.isSelected = false;
+            if (isInBoundsX && isInBoundsY) {
+                this._selectedConfig = config;
+                break;
             }
-        })
+        }
 
-        return selectedConfig;
+        if (this._selectedConfig) {
+            this.entitySelected.emit(this._selectedConfig)
+        }
     }
 
     private _onDrag(source: MouseEvent | Touch) {

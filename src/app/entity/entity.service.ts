@@ -14,10 +14,13 @@ import { IBarcleContentConfig } from '../entity-content/barcle/barcle.content.ty
     providedIn: 'root'
 })
 export class EntityService {
-    activeEntity: IEntityConfig;
     controllableEntities: IEntityConfig[] = [];
+    get activeEntity(): IEntityConfig {
+        return this._activeEntity;
+    }
 
     private _currNameIndex: number = 0;
+    private _activeEntity: IEntityConfig;
 
     constructor(private _audioService: AudioSourceService,
                 private _barContentService: BarContentService,
@@ -33,7 +36,7 @@ export class EntityService {
         this.setEntityPosition(entity);
 
         this.controllableEntities.push(entity)
-        this.activeEntity = entity;
+        this.setActiveEntity(entity);
     }
 
     getDefaultEntity(type: EntityType, content: IEntityContentConfig): IEntityConfig {
@@ -104,17 +107,31 @@ export class EntityService {
         }
     }
 
-    removeEntity(entity: IEntityConfig<any>): void {
+    removeEntity(entity: IEntityConfig): void {
         const index = this.controllableEntities.indexOf(entity);
         this.controllableEntities.splice(index, 1);
 
-        if (entity === this.activeEntity) {
-            this.activeEntity = null;
+        if (entity === this._activeEntity) {
+            this.setActiveEntity(null)
         }
     }
 
+    setActiveEntity(entity: IEntityConfig | null) {
+        if (entity) {
+            entity.isSelected = true;
+        }
+        this._activeEntity = entity;
+
+        this.controllableEntities.forEach(e => {
+            if (e !== entity) {
+                e.isSelected = false;
+            }
+        })
+
+    }
+
     setEntities(entities: IEntityConfig[]): void {
-        this.activeEntity = null
+        this._activeEntity = null
         this.controllableEntities.length = 0; // Empty the array
         this.controllableEntities.push(...entities);
         this._currNameIndex = entities.length;
@@ -171,12 +188,12 @@ export class EntityService {
     }
 
     duplicateActive(): void {
-        const entityClone: IEntityConfig = Object.assign({}, this.activeEntity);
+        const entityClone: IEntityConfig = Object.assign({}, this._activeEntity);
         entityClone.name = this._getNextName(entityClone.type);
         entityClone.entityContentConfig =  Object.assign({}, entityClone.entityContentConfig);
         this.setEntityPosition(entityClone);
         this.controllableEntities.push(entityClone);
-        this.activeEntity = entityClone;
+        this.setActiveEntity(entityClone);
     }
 
     private _getNextName(type: EntityType): string {

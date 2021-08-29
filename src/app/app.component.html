@@ -1,10 +1,10 @@
-<audio #audio [src]="audioService.activeSource.src" (ended)="onEnded()"></audio>
+<audio #audio [src]="audioService.activeSource.src" (ended)="this.audioService.playNextSong()"></audio>
 <div [style]="{ display: 'none' }">
     <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
 </div>
 
 <div #entityView class="entity-view"
-     (click)="onEntityViewClicked()">
+     (mousedown)="onEntityViewClicked()">
     <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8 }"
             nz-button nzType="primary" title="Toggle"
             (click)="toggleControlView()">
@@ -16,7 +16,8 @@
         <app-entity-canvas class="entity-canvas"
                            [allowInteraction]="true"
                            [configs]="entityService.controllableEntities"
-                           [viewScale]="entityViewContentScale">
+                           [viewScale]="entityViewContentScale"
+                           (entitySelected)="entityService.setActiveEntity($event)">
         </app-entity-canvas>
         <app-emitter class="emitter"
                      *ngFor="let config of emitterService.emitters"
@@ -30,13 +31,13 @@
     <div class="control-view-content" [ngStyle]="{ 'min-width.px': controlViewContentWidth }">
         <div class="card">
             <div class="media-controls">
-                <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="onPrevSong()">
+                <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="audioService.playPreviousSong()">
                     <i nz-icon nzType="step-backward"></i>
                 </button>
-                <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="onPlayPause()">
+                <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="isPlaying ? audioService.pause() : audioService.play()">
                     <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
                 </button>
-                <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="onNextSong()">
+                <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="audioService.playNextSong()">
                     <i nz-icon nzType="step-forward"></i>
                 </button>
             </div>
@@ -133,23 +134,23 @@
         </div>
 
         <app-controller-wrapper type="entity"
-                                [configs]="entityService.controllableEntities"
+                                [configs]="entityService.controllableEntities.slice().reverse()"
                                 [activeConfig]="entityService.activeEntity"
                                 [addOptions]="addEntityOptions"
-                                (configSelect)="onEntitySelected($event)"
-                                (add)="onAddEntity($event)"
-                                (remove)="onRemoveEntity($event)"
-                                (close)="entityService.activeEntity = null"
+                                (configSelect)="entityService.setActiveEntity($event)"
+                                (add)="entityService.addEntity($event)"
+                                (remove)="entityService.removeEntity($event)"
+                                (close)="entityService.setActiveEntity(null)"
                                 (duplicateActive)="entityService.duplicateActive()">
         </app-controller-wrapper>
 
         <app-controller-wrapper type="emitter"
-                                [configs]="emitterService.emitters"
+                                [configs]="emitterService.emitters.slice().reverse()"
                                 [activeConfig]="emitterService.activeEmitter"
                                 [addOptions]="addEmitterOptions"
-                                (configSelect)="onEmitterSelected($event)"
-                                (add)="onAddEmitter($event)"
-                                (remove)="onRemoveEmitter($event)"
+                                (configSelect)="emitterService.activeEmitter = $event"
+                                (add)="emitterService.addEmitter($event)"
+                                (remove)="emitterService.removeEmitter($event)"
                                 (close)="emitterService.activeEmitter = null"
                                 (duplicateActive)="emitterService.duplicateActive()">
         </app-controller-wrapper>
