@@ -14,7 +14,7 @@ export class ImageContentService extends BaseContentService<IImageContentConfig>
     }
 
     getCleanPreset(config: IImageContentConfig): IImageContentConfig {
-        return Object.assign({}, config);
+        return { source: undefined, element: undefined };
     }
 
     getDefaultContent(isEmitted: boolean): IImageContentConfig {
@@ -33,6 +33,6 @@ export class ImageContentService extends BaseContentService<IImageContentConfig>
     }
 
     updatePreset(config: IImageContentConfig): IImageContentConfig {
-        return Object.assign({}, config);
+        return this.getDefaultContent(false);
     }
 }
