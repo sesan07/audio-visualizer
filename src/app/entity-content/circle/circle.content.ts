@@ -9,7 +9,8 @@ export class CircleContent extends BaseContent<ICircleContentConfig> {
     protected _animateContent(entity: IEntityConfig<ICircleContentConfig>): void {
         const config: ICircleContentConfig = entity.entityContentConfig;
 
-        const strokeColor: string = `rgba(${config.startColor.r}, ${config.startColor.g}, ${config.startColor.b}, ${entity.opacity})`;
+        this._canvasContext.globalAlpha = entity.currentOpacity;
+        const strokeColor: string = `rgb(${config.startColor.r}, ${config.startColor.g}, ${config.startColor.b})`;
         this._canvasContext.shadowBlur = config.shadowBlur
         this._canvasContext.shadowColor = strokeColor;
         this._canvasContext.strokeStyle = strokeColor;
@@ -26,13 +27,13 @@ export class CircleContent extends BaseContent<ICircleContentConfig> {
             currAngle += sampleAngle;
 
             const gradientColor: RGB = getGradientColor(config.startColor, config.endColor, (amplitude / 255));
-            this._drawCircle(xLeft, y, gradientColor, config.sampleRadius * this._scale, entity.opacity);
-            this._drawCircle(xRight, y, gradientColor, config.sampleRadius * this._scale, entity.opacity);
+            this._drawCircle(xLeft, y, gradientColor, config.sampleRadius * this._scale);
+            this._drawCircle(xRight, y, gradientColor, config.sampleRadius * this._scale);
         }
     }
 
-    private _drawCircle(centerX: number, centerY: number, fillColor: RGB, sampleRadius: number, opacity: number): void {
-        this._canvasContext.fillStyle = `rgba(${fillColor.r}, ${fillColor.g}, ${fillColor.b}, ${opacity})`;
+    private _drawCircle(centerX: number, centerY: number, fillColor: RGB, sampleRadius: number): void {
+        this._canvasContext.fillStyle = `rgb(${fillColor.r}, ${fillColor.g}, ${fillColor.b})`;
         this._canvasContext.beginPath();
         this._canvasContext.arc(centerX, centerY, sampleRadius, 0, 2 * Math.PI);
         this._canvasContext.fill();

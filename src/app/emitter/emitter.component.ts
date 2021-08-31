@@ -70,6 +70,8 @@ export class EmitterComponent implements AfterViewInit {
             entity.movementSpeed = getRandomNumber(0.5, 2);
         }
 
+        entity.deathTime = Date.now() + this.config.lifespan * 1000;
+
         switch (entity.type) {
             case EntityType.BAR:
                 this._barContentService.beforeEmit(entity.entityContentConfig as IBarContentConfig);
@@ -86,10 +88,6 @@ export class EmitterComponent implements AfterViewInit {
         }
 
         this.entities.push(entity);
-        setTimeout(() => {
-            const index = this.entities.indexOf(entity);
-            this.entities.splice(index, 1);
-        }, this.config.lifespan * 1000);
     }
 
     ngOnDestroy(): void {

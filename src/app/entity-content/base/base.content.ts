@@ -11,12 +11,15 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
     protected _centerX: number;
     protected _centerY: number;
 
+    private readonly opacityChangeSpeed = 0.03;
+
     constructor(protected _canvasContext: CanvasRenderingContext2D, protected _oomph: IOomph) {
     }
 
     public animate(entity: IEntityConfig<T>): void {
         this._animateEntity(entity);
         this._animateContent(entity);
+        this._updateOpacity(entity);
 
         if (entity.isSelected) {
             this._drawSelectionBorder(entity);
@@ -30,11 +33,12 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
 
     private _animateEntity(entity: IEntityConfig<T>): void {
         this._move(entity);
-        this._updateEntityProperties(entity);
+        this._setEntityProperties(entity);
         this._rotate(entity);
     }
 
     private _drawSelectionBorder(entity: IEntityConfig<T>): void {
+        this._canvasContext.globalAlpha = 1
         this._canvasContext.shadowBlur = 0;
         this._canvasContext.strokeStyle = 'yellow';
         this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
@@ -60,7 +64,7 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
         this._canvasContext.translate(-this._centerX, -this._centerY)
     }
 
-    private _updateEntityProperties(entity: IEntityConfig<T>): void {
+    private _setEntityProperties(entity: IEntityConfig<T>): void {
         const oomphScale: number = 1 + (this._oomph.value * entity.oomphAmount);
         this._scale = entity.scale * oomphScale
         this._scaledWidth = entity.width * oomphScale
@@ -69,5 +73,18 @@ export abstract class BaseContent<T extends IEntityContentConfig> {
         this._scaledTop = entity.top - (this._scaledHeight - entity.height) / 2;
         this._centerX = (this._scaledLeft) + (this._scaledWidth / 2);
         this._centerY = (this._scaledTop) + (this._scaledHeight / 2);
+    }
+
+    private _updateOpacity(entity: IEntityConfig) {
+        if (entity.isDying) {
+            entity.currentOpacity -= this.opacityChangeSpeed;
+            return;
+        }
+
+        if (entity.currentOpacity < entity.targetOpacity) {
+            entity.currentOpacity = Math.min(entity.currentOpacity + this.opacityChangeSpeed, entity.targetOpacity);
+        } else if (entity.currentOpacity > entity.targetOpacity) {
+            entity.currentOpacity = Math.max(entity.currentOpacity - this.opacityChangeSpeed, entity.targetOpacity);
+        }
     }
 }

@@ -147,8 +147,7 @@ export class AudioSourceService extends BaseSourceService {
             })
 
             const total: number = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
-            const baseOomphValue: number = total / this._maxOomphAmplitudeTotal;
-            this.oomph.value = Math.min(baseOomphValue * 1.2, 1)
+            this.oomph.value = total / this._maxOomphAmplitudeTotal;
 
             requestAnimationFrame(() => this._updateAmplitudes())
         })

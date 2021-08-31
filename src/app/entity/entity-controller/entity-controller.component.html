@@ -30,8 +30,8 @@
         </app-control-line>
 
         <app-control-line name="Opacity">
-            <nz-input-number [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
-            <nz-slider [(ngModel)]="config.opacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+            <nz-input-number [(ngModel)]="config.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+            <nz-slider [(ngModel)]="config.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
         </app-control-line>
 
         <app-control-line name="Base Scale">
@@ -42,11 +42,6 @@
         <app-control-line name="Oomph Scale">
             <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-input-number>
             <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-slider>
-        </app-control-line>
-
-        <app-control-line name="Fade In/Out Time" *ngIf="config.isEmitted">
-            <nz-input-number [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-input-number>
-            <nz-slider [(ngModel)]="config.fadeTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="5"></nz-slider>
         </app-control-line>
 
         <ng-container *ngIf="config.isEmitted">

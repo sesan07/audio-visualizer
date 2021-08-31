@@ -32,7 +32,9 @@ export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentCo
     top: number;
     height: number,
     width: number,
-    opacity: number;
-    fadeTime: number;
+    currentOpacity: number;
+    targetOpacity: number;
+    isDying?: boolean;
+    deathTime?: number;
     entityContentConfig: T;
 }

@@ -103,6 +103,7 @@ export class EntityCanvasComponent implements AfterViewInit {
     private imageContent: ImageContent;
 
     private _animationFrameId: number;
+    private _deadEntities: IEntityConfig[] = [];
 
     constructor(private _renderer: Renderer2, private _ngZone: NgZone, private _elementRef: ElementRef<HTMLElement>, private _audioService: AudioSourceService) {
     }
@@ -142,8 +143,11 @@ export class EntityCanvasComponent implements AfterViewInit {
                         this.imageContent.animate(entity as IEntityConfig<IImageContentConfig>);
                         break;
                 }
+
+                this._checkDeathStatus(entity);
             });
 
+            this._removeDeadEntities();
             this._animationFrameId = requestAnimationFrame(() => this._animate());
         });
     }
@@ -193,5 +197,20 @@ export class EntityCanvasComponent implements AfterViewInit {
         this._selectedConfig = null;
         this._stopTouchMoveListener();
         this._stopTouchEndListener();
+    }
+
+    private _checkDeathStatus(entity: IEntityConfig): void {
+        entity.isDying = Date.now() >= entity.deathTime;
+        if (entity.isDying && entity.currentOpacity <= 0) {
+            this._deadEntities.push(entity)
+        }
+    }
+
+    private _removeDeadEntities(): void {
+        this._deadEntities.forEach(entity => {
+            const index = this.configs.indexOf(entity);
+            this.configs.splice(index, 1);
+        })
+        this._deadEntities.length = 0;
     }
 }
