@@ -24,24 +24,6 @@ export const animations: AnimationTriggerMetadata[] = [
         //     }))
         // ])
     ]),
-    trigger('emitterEnterLeaveTrigger', [
-        transition(':enter', [
-            style({
-                transform: 'scale(0)'
-            }),
-            animate(100, style({
-                transform: 'scale(1)'
-            }))
-        ]),
-        transition(':leave', [
-            style({
-                transform: 'scale(1)'
-            }),
-            animate(100, style({
-                transform: 'scale(0)'
-            }))
-        ])
-    ]),
     trigger('entityEnterTrigger', [
         transition(':enter', [
             style({ opacity: '0' }),

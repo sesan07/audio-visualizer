@@ -3,4 +3,8 @@
                    [configs]="entities"
                    [viewScale]="viewScale">
 </app-entity-canvas>
-<div #handle class="handle" appDraggable [viewScale]="viewScale"></div>
+<div #handle
+     class="handle"
+     [ngStyle]="{ 'transform': config.isSelected ? 'scale(1)' : 'scale(0)' }"
+     appDraggable
+     [viewScale]="viewScale"></div>

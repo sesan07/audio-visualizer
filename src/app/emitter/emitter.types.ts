@@ -8,6 +8,7 @@ export enum EmitterType {
 export interface IEmitterConfig {
     type: EmitterType;
     entity: IEntityConfig;
+    isSelected: boolean;
     name: string;
     interval: number;
     amount: number;

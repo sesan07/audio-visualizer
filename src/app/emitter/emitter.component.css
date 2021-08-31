@@ -5,4 +5,5 @@
     background: grey;
     height: 50px;
     width: 50px;
+    transition: transform 0.3s;
 }

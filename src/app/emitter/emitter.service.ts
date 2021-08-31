@@ -7,9 +7,12 @@ import { EntityService } from '../entity/entity.service';
     providedIn: 'root'
 })
 export class EmitterService {
-    activeEmitter: IEmitterConfig;
     emitters: IEmitterConfig[] = [];
+    get activeEmitter(): IEmitterConfig {
+        return this._activeEmitter;
+    }
 
+    private _activeEmitter: IEmitterConfig;
     private _currNameIndex: number = 0;
 
     constructor(private _entityService: EntityService) {
@@ -23,6 +26,7 @@ export class EmitterService {
 
         const config: IEmitterConfig = {
             type: type,
+            isSelected: false,
             name: `Emitter ${this._currNameIndex++}`,
             interval: 2,
             amount: 1,
@@ -30,13 +34,14 @@ export class EmitterService {
             entity: entity
         };
         this.emitters.push(config);
-        this.activeEmitter = config;
+        this.setActiveEmitter(config);
     }
 
     getDefaultEmitterEntity(type: EntityType): IEntityConfig {
         return {
             type: type,
             isEmitted: true,
+            isSelected: false,
             animateMovement: true,
             animateRotation: true,
             animateOomphInEntity: false,
@@ -61,13 +66,26 @@ export class EmitterService {
     removeEmitter(emitter: IEmitterConfig): void {
         const index: number = this.emitters.indexOf(emitter);
         this.emitters.splice(index, 1);
-        if (emitter === this.activeEmitter) {
-            this.activeEmitter = null;
+        if (emitter === this._activeEmitter) {
+            this.setActiveEmitter(null)
         }
     }
 
+    setActiveEmitter(emitter: IEmitterConfig | null) {
+        if (emitter) {
+            emitter.isSelected = true;
+        }
+        this._activeEmitter = emitter;
+
+        this.emitters.forEach(e => {
+            if (e !== emitter) {
+                e.isSelected = false;
+            }
+        })
+    }
+
     setEmitters(emitters: IEmitterConfig[]): void {
-        this.activeEmitter = null
+        this.setActiveEmitter(null);
         this.emitters.length = 0; // Empty the array
         this.emitters.push(...emitters);
         this._currNameIndex = emitters.length;
@@ -86,11 +104,11 @@ export class EmitterService {
     }
 
     duplicateActive(): void {
-        const emitterClone: IEmitterConfig = Object.assign({}, this.activeEmitter);
+        const emitterClone: IEmitterConfig = Object.assign({}, this._activeEmitter);
         emitterClone.name = `Emitter ${this._currNameIndex++}`;
         emitterClone.entity = Object.assign({}, emitterClone.entity);
         emitterClone.entity.entityContentConfig = Object.assign({}, emitterClone.entity.entityContentConfig);
         this.emitters.push(emitterClone);
-        this.activeEmitter = emitterClone;
+        this.setActiveEmitter(emitterClone);
     }
 }

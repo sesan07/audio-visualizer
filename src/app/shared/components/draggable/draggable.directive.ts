@@ -24,6 +24,7 @@ export class DraggableDirective implements AfterViewInit {
 
     @HostListener('mousedown', ['$event'])
     onMouseDown(event: MouseEvent) {
+        event.stopPropagation();
         this._dragOffsetLeft = this._left - event.clientX / this.viewScale;
         this._dragOffsetTop = this._top - event.clientY / this.viewScale;
 

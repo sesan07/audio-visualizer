@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     onEntityViewClicked(): void {
         this.entityService.setActiveEntity(null)
-        this.emitterService.activeEmitter = null;
+        this.emitterService.setActiveEmitter(null);
     }
 
     onDecibelChanged(): void {

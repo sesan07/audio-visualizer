@@ -131,10 +131,10 @@
                                 [configs]="emitterService.emitters.slice().reverse()"
                                 [activeConfig]="emitterService.activeEmitter"
                                 [addOptions]="addEmitterOptions"
-                                (configSelect)="emitterService.activeEmitter = $event"
+                                (configSelect)="emitterService.setActiveEmitter($event)"
                                 (add)="emitterService.addEmitter($event)"
                                 (remove)="emitterService.removeEmitter($event)"
-                                (close)="emitterService.activeEmitter = null"
+                                (close)="emitterService.setActiveEmitter(null)"
                                 (duplicateActive)="emitterService.duplicateActive()">
         </app-controller-wrapper>
     </div>

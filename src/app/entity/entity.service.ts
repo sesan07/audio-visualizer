@@ -19,8 +19,8 @@ export class EntityService {
         return this._activeEntity;
     }
 
-    private _currNameIndex: number = 0;
     private _activeEntity: IEntityConfig;
+    private _currNameIndex: number = 0;
 
     constructor(private _audioService: AudioSourceService,
                 private _barContentService: BarContentService,
@@ -44,6 +44,7 @@ export class EntityService {
             type: type,
             name: this._getNextName(type),
             isEmitted: false,
+            isSelected: false,
             animateRotation: false,
             animateOomphInEntity: false,
             rotation: 0,
@@ -127,7 +128,6 @@ export class EntityService {
                 e.isSelected = false;
             }
         })
-
     }
 
     setEntities(entities: IEntityConfig[]): void {
