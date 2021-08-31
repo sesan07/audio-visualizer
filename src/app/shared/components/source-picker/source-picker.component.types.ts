@@ -1,11 +1,11 @@
-interface ISourcePickerData {
+interface SourcePickerData {
     name: string;
 }
 
-export interface ISourcePickerFileData extends ISourcePickerData {
+export interface SourcePickerFileData extends SourcePickerData {
     file: File;
 }
 
-export interface ISourcePickerUrlData extends ISourcePickerData {
+export interface SourcePickerUrlData extends SourcePickerData {
     url: string;
 }

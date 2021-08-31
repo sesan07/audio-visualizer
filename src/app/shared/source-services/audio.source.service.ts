@@ -1,8 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
-import { AnalyserMode, IOomph } from './audio.source.service.types';
+import { AnalyserMode, Oomph } from './audio.source.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BaseSourceService } from './base.source.service';
-import { ISource } from './base.source.service.types';
+import { Source } from './base.source.service.types';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class AudioSourceService extends BaseSourceService {
 
-    sources: ISource[] = [
+    sources: Source[] = [
         { name: 'Star Eater', src: 'assets/audio/star_eater.mp3' },
         { name: 'Don\'t Stop Me Now', src: 'assets/audio/dont_stop_me_now.mp3' },
         { name: 'Dance Till Dead', src: 'assets/audio/dance_till_dead.mp3' },
@@ -30,7 +30,7 @@ export class AudioSourceService extends BaseSourceService {
     ];
 
     mode: AnalyserMode = 'frequency';
-    oomph: IOomph;
+    oomph: Oomph;
 
     protected _idPrefix = 'audio';
 

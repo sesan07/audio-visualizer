@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
-import { EmitterType, IEmitterConfig } from './emitter.types';
-import { EntityType, IEntityConfig } from '../entity/entity.types';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { EmitterType, Emitter } from './emitter.types';
+import { EntityType, Entity } from '../entity/entity.types';
 import { AudioSourceService } from '../shared/source-services/audio.source.service';
 import { EntityService } from '../entity/entity.service';
 import { BarContentService } from '../entity-content/bar/bar.content.service';
@@ -8,10 +8,10 @@ import { BarcleContentService } from '../entity-content/barcle/barcle.content.se
 import { CircleContentService } from '../entity-content/circle/circle.content.service';
 import { ImageContentService } from '../entity-content/image/image.content.service';
 import { getRandomNumber } from '../shared/utils';
-import { IBarContentConfig } from '../entity-content/bar/bar.content.types';
-import { IBarcleContentConfig } from '../entity-content/barcle/barcle.content.types';
-import { ICircleContentConfig } from '../entity-content/circle/circle.content.types';
-import { IImageContentConfig } from '../entity-content/image/image.content.types';
+import { BarContent } from '../entity-content/bar/bar.content.types';
+import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
+import { CircleContent } from '../entity-content/circle/circle.content.types';
+import { ImageContent } from '../entity-content/image/image.content.types';
 import { DraggableDirective } from '../shared/components/draggable/draggable.directive';
 
 @Component({
@@ -19,14 +19,14 @@ import { DraggableDirective } from '../shared/components/draggable/draggable.dir
     templateUrl: './emitter.component.html',
     styleUrls: ['./emitter.component.css']
 })
-export class EmitterComponent implements AfterViewInit {
-    @Input() config: IEmitterConfig;
+export class EmitterComponent implements AfterViewInit, OnDestroy {
+    @Input() emitter: Emitter;
     @Input() viewScale: number;
 
     @ViewChild('handle', { read: ElementRef }) handleElement: ElementRef<HTMLElement>;
     @ViewChild('handle', { read: DraggableDirective }) handleDirective: DraggableDirective;
 
-    entities: IEntityConfig[] = [];
+    entities: Entity[] = [];
 
     private _timeoutRef: ReturnType<typeof setTimeout>;
 
@@ -45,18 +45,18 @@ export class EmitterComponent implements AfterViewInit {
     }
 
     private _emitEntities(): void {
-        for (let i = 0; i < this.config.amount; i++) {
+        for (let i = 0; i < this.emitter.amount; i++) {
             this._emitEntity();
         }
-        this._timeoutRef = setTimeout(() => this._emitEntities(), this.config.interval * 1000);
+        this._timeoutRef = setTimeout(() => this._emitEntities(), this.emitter.interval * 1000);
     }
 
     private _emitEntity(): void {
-        const entity: IEntityConfig = Object.assign({}, this.config.entity);
-        entity.entityContentConfig = Object.assign({}, this.config.entity.entityContentConfig);
+        const entity: Entity = Object.assign({}, this.emitter.entity);
+        entity.entityContent = Object.assign({}, this.emitter.entity.entityContent);
 
         // Set position
-        if (this.config.type === EmitterType.POINT) {
+        if (this.emitter.type === EmitterType.POINT) {
             const centerX = this.handleDirective.left + this.handleElement.nativeElement.clientWidth / 2;
             const centerY = this.handleDirective.top + this.handleElement.nativeElement.clientHeight / 2;
             this._entityService.setEntityPosition(entity, centerX, centerY);
@@ -70,20 +70,20 @@ export class EmitterComponent implements AfterViewInit {
             entity.movementSpeed = getRandomNumber(0.5, 2);
         }
 
-        entity.deathTime = Date.now() + this.config.lifespan * 1000;
+        entity.deathTime = Date.now() + this.emitter.lifespan * 1000;
 
         switch (entity.type) {
             case EntityType.BAR:
-                this._barContentService.beforeEmit(entity.entityContentConfig as IBarContentConfig);
+                this._barContentService.beforeEmit(entity.entityContent as BarContent);
                 break;
             case EntityType.BARCLE:
-                this._barcleContentService.beforeEmit(entity.entityContentConfig as IBarcleContentConfig);
+                this._barcleContentService.beforeEmit(entity.entityContent as BarcleContent);
                 break;
             case EntityType.CIRCLE:
-                this._circleContentService.beforeEmit(entity.entityContentConfig as ICircleContentConfig);
+                this._circleContentService.beforeEmit(entity.entityContent as CircleContent);
                 break;
             case EntityType.IMAGE:
-                this._imageContentService.beforeEmit(entity.entityContentConfig as IImageContentConfig);
+                this._imageContentService.beforeEmit(entity.entityContent as ImageContent);
                 break;
         }
 

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { IEntityConfig } from '../../../entity/entity.types';
+import { Entity } from '../../../entity/entity.types';
 import { AudioSourceService } from '../../../shared/source-services/audio.source.service';
-import { IBarcleContentConfig } from '../barcle.content.types';
+import { BarcleContent } from '../barcle.content.types';
 import { BarcleContentService } from '../barcle.content.service';
 
 @Component({
@@ -9,10 +9,10 @@ import { BarcleContentService } from '../barcle.content.service';
   templateUrl: './barcle-controller.component.html'
 })
 export class BarcleControllerComponent {
-  @Input() entity: IEntityConfig<IBarcleContentConfig>;
+  @Input() entity: Entity<BarcleContent>;
 
-  get config(): IBarcleContentConfig {
-    return this.entity.entityContentConfig
+  get content(): BarcleContent {
+    return this.entity.entityContent
   }
 
   sampleCountOptions: number[];
@@ -22,7 +22,7 @@ export class BarcleControllerComponent {
   }
 
   onSampleCountChanged(): void {
-    this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
+    this.content.amplitudes = this._audioService.getAmplitudes(this.content.sampleCount);
     this.onDimensionsChange();
   }
 

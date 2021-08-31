@@ -1,7 +1,7 @@
-import { IImageContentConfig } from '../entity-content/image/image.content.types';
-import { IBarContentConfig } from '../entity-content/bar/bar.content.types';
-import { IBarcleContentConfig } from '../entity-content/barcle/barcle.content.types';
-import { ICircleContentConfig } from '../entity-content/circle/circle.content.types';
+import { ImageContent } from '../entity-content/image/image.content.types';
+import { BarContent } from '../entity-content/bar/bar.content.types';
+import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
+import { CircleContent } from '../entity-content/circle/circle.content.types';
 
 export enum EntityType {
     BAR = 'Bar',
@@ -10,9 +10,9 @@ export enum EntityType {
     IMAGE = 'Image',
 }
 
-export type IEntityContentConfig = IBarContentConfig | IBarcleContentConfig | ICircleContentConfig | IImageContentConfig;
+export type EntityContent = BarContent | BarcleContent | CircleContent | ImageContent;
 
-export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentConfig> {
+export interface Entity<T extends EntityContent = EntityContent> {
     type: EntityType;
     name?: string;
     isEmitted: boolean;
@@ -36,5 +36,5 @@ export interface IEntityConfig<T extends IEntityContentConfig = IEntityContentCo
     targetOpacity: number;
     isDying?: boolean;
     deathTime?: number;
-    entityContentConfig: T;
+    entityContent: T;
 }

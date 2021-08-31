@@ -128,43 +128,6 @@
           }
         }
       }
-    },
-    "visualizer": {
-      "projectType": "library",
-      "root": "projects/visualizer",
-      "sourceRoot": "projects/visualizer/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/visualizer/tsconfig.lib.json",
-            "project": "projects/visualizer/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/visualizer/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/visualizer/src/test.ts",
-            "tsConfig": "projects/visualizer/tsconfig.spec.json",
-            "karmaConfig": "projects/visualizer/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/visualizer/**/*.ts",
-              "projects/visualizer/**/*.html"
-            ]
-          }
-        }
-      }
     }
   },
   "defaultProject": "audio-visualizer",

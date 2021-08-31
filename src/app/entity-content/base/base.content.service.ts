@@ -1,13 +1,13 @@
-import { IEntityConfig, IEntityContentConfig } from '../../entity/entity.types';
+import { Entity, EntityContent } from '../../entity/entity.types';
 import { getRandomNumber } from '../../shared/utils';
 
-export abstract class BaseContentService<T extends IEntityContentConfig> {
+export abstract class BaseContentService<T extends EntityContent> {
     private _entityView: HTMLElement;
 
-    beforeEmit(config: T): void {
+    beforeEmit(content: T): void {
     }
 
-    setEntityPosition(entity: IEntityConfig<T>, centerX?: number, centerY?: number): void {
+    setEntityPosition(entity: Entity<T>, centerX?: number, centerY?: number): void {
         if (centerX !== undefined && centerY !== undefined) {
             entity.left = centerX - entity.width / 2
             entity.top = centerY - entity.height / 2
@@ -21,11 +21,11 @@ export abstract class BaseContentService<T extends IEntityContentConfig> {
         this._entityView = view;
     }
 
-    abstract setEntityDimensions(entity: IEntityConfig<T>): void;
+    abstract setEntityDimensions(entity: Entity<T>): void;
 
     abstract getDefaultContent(isEmitted: boolean): T;
 
-    abstract getCleanPreset(config: T): T;
+    abstract getCleanPreset(content: T): T;
 
-    abstract updatePreset(config: T): T;
+    abstract updatePreset(content: T): T;
 }

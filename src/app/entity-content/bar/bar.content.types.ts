@@ -1,6 +1,6 @@
 import { RGBA } from 'ngx-color';
 
-export interface IBarContentConfig {
+export interface BarContent {
     isEmitted: boolean;
     amplitudes: Uint8Array;
     startColor: RGBA;

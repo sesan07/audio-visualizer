@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EmitterType, IEmitterConfig } from '../emitter.types';
+import { EmitterType, Emitter } from '../emitter.types';
 
 @Component({
     selector: 'app-entity-emitter-controller',
@@ -7,7 +7,7 @@ import { EmitterType, IEmitterConfig } from '../emitter.types';
     styleUrls: ['./emitter-controller.component.css']
 })
 export class EmitterControllerComponent {
-    @Input() config: IEmitterConfig;
+    @Input() emitter: Emitter;
 
     emitterTypeOptions: EmitterType[] = Object.values(EmitterType);
     nameEditPopOverVisible: boolean;

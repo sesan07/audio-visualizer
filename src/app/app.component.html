@@ -18,13 +18,13 @@
              draggable="false">
         <app-entity-canvas class="entity-canvas"
                            [allowInteraction]="true"
-                           [configs]="entityService.controllableEntities"
+                           [entities]="entityService.controllableEntities"
                            [viewScale]="entityViewContentScale"
                            (entitySelected)="entityService.setActiveEntity($event)">
         </app-entity-canvas>
         <app-emitter class="emitter"
                      *ngFor="let config of emitterService.emitters"
-                     [config]="config"
+                     [emitter]="config"
                      [viewScale]="entityViewContentScale">
         </app-emitter>
     </div>
@@ -123,7 +123,7 @@
                                 (configSelect)="entityService.setActiveEntity($event)"
                                 (add)="entityService.addEntity($event)"
                                 (remove)="entityService.removeEntity($event)"
-                                (close)="entityService.setActiveEntity(null)"
+                                (closeActive)="entityService.setActiveEntity(null)"
                                 (duplicateActive)="entityService.duplicateActive()">
         </app-controller-wrapper>
 
@@ -134,7 +134,7 @@
                                 (configSelect)="emitterService.setActiveEmitter($event)"
                                 (add)="emitterService.addEmitter($event)"
                                 (remove)="emitterService.removeEmitter($event)"
-                                (close)="emitterService.setActiveEmitter(null)"
+                                (closeActive)="emitterService.setActiveEmitter(null)"
                                 (duplicateActive)="emitterService.duplicateActive()">
         </app-controller-wrapper>
     </div>

@@ -2,7 +2,7 @@ import { SafeUrl } from '@angular/platform-browser';
 
 export type SourceType = 'Default' | 'File' | 'Url';
 
-export interface ISource {
+export interface Source {
     name: string;
     id?: string;
     src?: string | SafeUrl;

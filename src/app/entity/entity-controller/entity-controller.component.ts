@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EntityType, IEntityConfig, IEntityContentConfig } from '../entity.types';
+import { EntityType, Entity, EntityContent } from '../entity.types';
 import { EntityService } from '../entity.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { EntityService } from '../entity.service';
     styleUrls: ['./entity-controller.component.css'],
 })
 export class EntityControllerComponent {
-    @Input() config: IEntityConfig;
+    @Input() entity: Entity;
 
     EntityType = EntityType;
     entityTypeOptions: EntityType[] = Object.values(EntityType);
@@ -18,14 +18,14 @@ export class EntityControllerComponent {
     }
 
     onEntityTypeChange(newType: EntityType): void {
-        this.config.type = newType;
+        this.entity.type = newType;
 
-        const entityContent: IEntityContentConfig = this._entityService.getDefaultEntityContent(newType, this.config.isEmitted);
-        Object.assign(this.config.entityContentConfig, entityContent)
-        this._entityService.setEntityDimensions(this.config)
+        const entityContent: EntityContent = this._entityService.getDefaultEntityContent(newType, this.entity.isEmitted);
+        Object.assign(this.entity.entityContent, entityContent)
+        this._entityService.setEntityDimensions(this.entity)
     }
 
     onDimensionsChange(): void {
-        this._entityService.setEntityDimensions(this.config);
+        this._entityService.setEntityDimensions(this.entity);
     }
 }

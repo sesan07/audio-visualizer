@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ISource } from './base.source.service.types';
+import { Source } from './base.source.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -7,8 +7,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     providedIn: 'root'
 })
 export abstract class BaseSourceService {
-    sources: ISource[] = [];
-    activeSource: ISource;
+    sources: Source[] = [];
+    activeSource: Source;
 
     protected abstract _idPrefix : string;
     protected _currIdIndex: number = 0;
@@ -17,7 +17,7 @@ export abstract class BaseSourceService {
                 private _messageService: NzMessageService) {
     }
 
-    addFileSource(name: string, file: File, loadFile?: boolean) {
+    addFileSource(name: string, file: File, loadFile?: boolean): void {
         if (!file) {
             this._showNotification(false);
             return;
@@ -27,7 +27,7 @@ export abstract class BaseSourceService {
         const existingFileNames: string[] = this.sources.map(source => source.file?.name)
         const isNewFile: boolean = existingFileNames.indexOf(file.name) < 0;
         if (isNewFile) {
-            const newSource: ISource = {
+            const newSource: Source = {
                 name,
                 file,
                 id: `${this._idPrefix}-${this._currIdIndex++}`,
@@ -43,13 +43,13 @@ export abstract class BaseSourceService {
         this._showNotification(isNewFile);
     }
 
-    addUrlSource(name: string, url: string) {
+    addUrlSource(name: string, url: string): void {
         if (!url) {
             this._showNotification(false)
             return;
         }
 
-        const existingSource: ISource = this.sources.find(source => source.src === url)
+        const existingSource: Source = this.sources.find(source => source.src === url)
         if (existingSource) {
             existingSource.name = name || url.split('/').pop()
         } else {
@@ -63,17 +63,17 @@ export abstract class BaseSourceService {
         this._showNotification(true)
     }
 
-    loadFileSource(source: ISource) {
+    loadFileSource(source: Source): void {
         source.objectUrl = URL.createObjectURL(source.file);
         source.src = this._sanitizer.bypassSecurityTrustUrl(source.objectUrl);
     }
 
-    unloadFileSource(source: ISource) {
+    unloadFileSource(source: Source): void {
         URL.revokeObjectURL(source.objectUrl)
         source.objectUrl = null;
     }
 
-    setActiveSource(source: ISource) {
+    setActiveSource(source: Source): void {
         if (this.activeSource?.objectUrl) {
             this.unloadFileSource(this.activeSource);
         }

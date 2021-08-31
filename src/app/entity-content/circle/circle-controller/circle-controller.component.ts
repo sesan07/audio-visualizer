@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { IEntityConfig } from '../../../entity/entity.types';
+import { Entity } from '../../../entity/entity.types';
 import { AudioSourceService } from '../../../shared/source-services/audio.source.service';
-import { ICircleContentConfig } from '../circle.content.types';
+import { CircleContent } from '../circle.content.types';
 import { CircleContentService } from '../circle.content.service';
 
 @Component({
@@ -9,10 +9,10 @@ import { CircleContentService } from '../circle.content.service';
     templateUrl: './circle-controller.component.html'
 })
 export class CircleControllerComponent {
-    @Input() entity: IEntityConfig<ICircleContentConfig>;
+    @Input() entity: Entity<CircleContent>;
 
-    get config(): ICircleContentConfig {
-        return this.entity.entityContentConfig;
+    get content(): CircleContent {
+        return this.entity.entityContent;
     }
 
     sampleCountOptions: number[];
@@ -22,7 +22,7 @@ export class CircleControllerComponent {
     }
 
     onSampleCountChanged(): void {
-        this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
+        this.content.amplitudes = this._audioService.getAmplitudes(this.content.sampleCount);
         this.onDimensionsChange();
     }
 

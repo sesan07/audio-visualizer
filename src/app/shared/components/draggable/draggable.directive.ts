@@ -23,7 +23,7 @@ export class DraggableDirective implements AfterViewInit {
     private _stopTouchEndListener: () => void;
 
     @HostListener('mousedown', ['$event'])
-    onMouseDown(event: MouseEvent) {
+    onMouseDown(event: MouseEvent): void {
         event.stopPropagation();
         this._dragOffsetLeft = this._left - event.clientX / this.viewScale;
         this._dragOffsetTop = this._top - event.clientY / this.viewScale;
@@ -33,7 +33,7 @@ export class DraggableDirective implements AfterViewInit {
     }
 
     @HostListener('touchstart', ['$event'])
-    onTouchStart(event: TouchEvent) {
+    onTouchStart(event: TouchEvent): void {
         const firstTouch: Touch = event.touches.item(0);
         this._dragOffsetLeft = this._left - firstTouch.clientX / this.viewScale;
         this._dragOffsetTop = this._top - firstTouch.clientY / this.viewScale;
@@ -51,25 +51,25 @@ export class DraggableDirective implements AfterViewInit {
         this._top = this._elementRef.nativeElement.clientTop;
     }
 
-    private _setPosition(left: number, top: number) {
+    private _setPosition(left: number, top: number): void {
         this._left = left;
         this._top = top;
         this._renderer.setStyle(this._elementRef.nativeElement, 'left', left + 'px')
         this._renderer.setStyle(this._elementRef.nativeElement, 'top', top + 'px')
     }
 
-    private _drag(source: MouseEvent | Touch) {
+    private _drag(source: MouseEvent | Touch): void {
         const left = source.clientX / this.viewScale + this._dragOffsetLeft
         const top = source.clientY / this.viewScale + this._dragOffsetTop
         this._setPosition(left, top);
     }
 
-    private _stopMouseListeners() {
+    private _stopMouseListeners(): void {
         this._stopMouseMoveListener();
         this._stopMouseUpListener();
     }
 
-    private _stopTouchListeners() {
+    private _stopTouchListeners(): void {
         this._stopTouchMoveListener();
         this._stopTouchEndListener();
     }

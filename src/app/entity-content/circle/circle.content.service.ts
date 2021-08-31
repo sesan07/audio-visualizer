@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BaseContentService } from '../base/base.content.service';
-import { IEntityConfig } from '../../entity/entity.types';
+import { Entity } from '../../entity/entity.types';
 import { AudioSourceService } from '../../shared/source-services/audio.source.service';
-import { ICircleContentConfig } from './circle.content.types';
+import { CircleContent } from './circle.content.types';
 import { getRandomColor } from '../../shared/utils';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CircleContentService extends BaseContentService<ICircleContentConfig> {
+export class CircleContentService extends BaseContentService<CircleContent> {
 
     constructor(private _audioService: AudioSourceService) {
         super();
     }
 
-    beforeEmit(config: ICircleContentConfig): void {
-        if (config.randomizeColors) {
-            config.startColor = getRandomColor();
-            config.endColor = getRandomColor();
+    beforeEmit(content: CircleContent): void {
+        if (content.randomizeColors) {
+            content.startColor = getRandomColor();
+            content.endColor = getRandomColor();
         }
     }
 
-    getCleanPreset(config: ICircleContentConfig): ICircleContentConfig {
-        const configClone = Object.assign({}, config);
-        delete configClone.amplitudes;
-        return configClone;
+    getCleanPreset(content: CircleContent): CircleContent {
+        const contentClone = Object.assign({}, content);
+        delete contentClone.amplitudes;
+        return contentClone;
     }
 
-    getDefaultContent(isEmitted: boolean): ICircleContentConfig {
+    getDefaultContent(isEmitted: boolean): CircleContent {
         const sampleCount: number = this._audioService.sampleCounts[0];
         return {
             isEmitted: isEmitted,
@@ -43,18 +43,18 @@ export class CircleContentService extends BaseContentService<ICircleContentConfi
         };
     }
 
-    setEntityDimensions(entity: IEntityConfig<ICircleContentConfig>): void {
-        const config: ICircleContentConfig = entity.entityContentConfig;
+    setEntityDimensions(entity: Entity<CircleContent>): void {
+        const content: CircleContent = entity.entityContent;
 
-        const radius: number = config.multiplier * 255 + config.baseRadius + config.sampleRadius
+        const radius: number = content.multiplier * 255 + content.baseRadius + content.sampleRadius
         const diameter: number = radius * 2 * entity.scale;
         entity.height = diameter;
         entity.width = diameter;
     }
 
-    updatePreset(config: ICircleContentConfig): ICircleContentConfig {
-        const configClone = Object.assign({}, config);
-        configClone.amplitudes = this._audioService.getAmplitudes(configClone.sampleCount);
-        return configClone;
+    updatePreset(content: CircleContent): CircleContent {
+        const contentClone = Object.assign({}, content);
+        contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
+        return contentClone;
     }
 }

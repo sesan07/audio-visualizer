@@ -5,7 +5,7 @@
                                allowUrlAdd="true"
                                fileAcceptTypes="image/*"
                                popoverTitle="Add Image"
-                               [activeSource]="entity.entityContentConfig.source"
+                               [activeSource]="entity.entityContent.source"
                                [sources]="imageSourceService.sources"
                                (activeSourceChanged)="onSourceChange($event)"
                                (addFile)="imageSourceService.addFileSource($event.name, $event.file, true)"

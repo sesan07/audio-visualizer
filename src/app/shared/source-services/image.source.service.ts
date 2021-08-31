@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseSourceService } from './base.source.service';
-import { ISource } from './base.source.service.types';
+import { Source } from './base.source.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -9,8 +9,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class ImageSourceService extends BaseSourceService {
 
-    defaultSource: ISource = { name: 'Mako', src: 'assets/image/mako.png' };
-    sources: ISource[] = [
+    defaultSource: Source = { name: 'Mako', src: 'assets/image/mako.png' };
+    sources: Source[] = [
         this.defaultSource,
         { name: 'Rain Drop', src: 'assets/image/rain-drop.png' }
     ];
@@ -24,7 +24,7 @@ export class ImageSourceService extends BaseSourceService {
         this.sources.forEach(source => source.id = `${this._idPrefix}-${this._currIdIndex++}`);
     }
 
-    getSourceElement(source: ISource): HTMLImageElement {
+    getSourceElement(source: Source): HTMLImageElement {
         return  this._imageElements.find(element => element.id === source.id)
     }
 

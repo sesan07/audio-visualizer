@@ -27,7 +27,7 @@ export class ColorPickerComponent implements OnInit {
         this.isOpen = false;
     }
 
-    onColorChange(event: ColorEvent) {
+    onColorChange(event: ColorEvent): void {
         this.tempColor = event.color.rgb;
     }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IEntityConfig, EntityType } from '../../../entity/entity.types';
-import { EmitterType, IEmitterConfig } from '../../../emitter/emitter.types';
+import { Entity, EntityType } from '../../../entity/entity.types';
+import { EmitterType, Emitter } from '../../../emitter/emitter.types';
 import { animations } from '../../animations';
 
 @Component({
@@ -12,12 +12,12 @@ import { animations } from '../../animations';
 export class ControllerWrapperComponent implements OnInit {
     @Input() type: 'entity' | 'emitter';
     @Input() addOptions: EntityType[] | EmitterType[];
-    @Input() activeConfig: IEntityConfig | IEmitterConfig;
-    @Input() configs: IEntityConfig[] | IEmitterConfig[];
+    @Input() activeConfig: Entity | Emitter;
+    @Input() configs: Entity[] | Emitter[];
     @Output() add: EventEmitter<EntityType | EmitterType> = new EventEmitter();
-    @Output() remove: EventEmitter<IEntityConfig | IEmitterConfig> = new EventEmitter();
-    @Output() configSelect: EventEmitter<IEntityConfig | IEmitterConfig> = new EventEmitter();
-    @Output() close: EventEmitter<void> = new EventEmitter();
+    @Output() remove: EventEmitter<Entity | Emitter> = new EventEmitter();
+    @Output() configSelect: EventEmitter<Entity | Emitter> = new EventEmitter();
+    @Output() closeActive: EventEmitter<void> = new EventEmitter();
     @Output() duplicateActive: EventEmitter<void> = new EventEmitter();
 
     selectedAddOption: EntityType | EmitterType;
@@ -30,12 +30,12 @@ export class ControllerWrapperComponent implements OnInit {
         this.selectedAddOption = this.addOptions[0];
     }
 
-    onConfigSelected(event: MouseEvent, config: IEntityConfig | IEmitterConfig): void {
+    onConfigSelected(event: MouseEvent, config: Entity | Emitter): void {
         this.configSelect.emit(config)
         event.stopPropagation();
     }
 
-    onAddOptionClicked(option: EntityType | EmitterType) {
+    onAddOptionClicked(option: EntityType | EmitterType): void {
         this.selectedAddOption = option;
         this.add.emit(option);
     }

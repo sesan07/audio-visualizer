@@ -1,23 +1,23 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ISourcePickerFileData, ISourcePickerUrlData } from './source-picker.component.types';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { SourcePickerFileData, SourcePickerUrlData } from './source-picker.component.types';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ISource, SourceType } from '../../source-services/base.source.service.types';
+import { Source, SourceType } from '../../source-services/base.source.service.types';
 
 @Component({
     selector: 'app-source-picker',
     templateUrl: './source-picker.component.html',
     styleUrls: ['./source-picker.component.css']
 })
-export class SourcePickerComponent {
-    @Input() activeSource: ISource;
+export class SourcePickerComponent implements OnInit {
+    @Input() activeSource: Source;
     @Input() allowFileAdd: boolean;
     @Input() allowUrlAdd: boolean;
     @Input() fileAcceptTypes: string;
     @Input() popoverTitle: string;
-    @Input() sources: ISource[];
-    @Output() activeSourceChanged: EventEmitter<ISource> = new EventEmitter();
-    @Output() addFile: EventEmitter<ISourcePickerFileData> = new EventEmitter();
-    @Output() addUrl: EventEmitter<ISourcePickerUrlData> = new EventEmitter();
+    @Input() sources: Source[];
+    @Output() activeSourceChanged: EventEmitter<Source> = new EventEmitter();
+    @Output() addFile: EventEmitter<SourcePickerFileData> = new EventEmitter();
+    @Output() addUrl: EventEmitter<SourcePickerUrlData> = new EventEmitter();
 
     @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
@@ -54,17 +54,17 @@ export class SourcePickerComponent {
         return this.fileInputElement?.nativeElement.files.item(0)?.name.split('/').shift();
     }
 
-    onPopoverSubmit() {
+    onPopoverSubmit(): void {
         switch (this.sourceType) {
             case 'File':
-                const fileData: ISourcePickerFileData = {
+                const fileData: SourcePickerFileData = {
                     name: this.form.value.name,
                     file: this.fileInputElement.nativeElement.files.item(0)
                 }
                 this.addFile.emit(fileData)
                 break;
             case 'Url':
-                const urlData: ISourcePickerUrlData = {
+                const urlData: SourcePickerUrlData = {
                     name: this.form.value.name,
                     url: this.form.value.url
                 }

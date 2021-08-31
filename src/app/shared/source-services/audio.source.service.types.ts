@@ -1,5 +1,5 @@
 export type AnalyserMode = 'frequency' | 'timeDomain';
 
-export interface IOomph {
+export interface Oomph {
     value: number;
 }

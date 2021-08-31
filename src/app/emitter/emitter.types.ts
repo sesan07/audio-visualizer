@@ -1,13 +1,13 @@
-import { IEntityConfig } from '../entity/entity.types';
+import { Entity } from '../entity/entity.types';
 
 export enum EmitterType {
     PAGE = 'Page',
     POINT = 'Point'
 }
 
-export interface IEmitterConfig {
+export interface Emitter {
     type: EmitterType;
-    entity: IEntityConfig;
+    entity: Entity;
     isSelected: boolean;
     name: string;
     interval: number;

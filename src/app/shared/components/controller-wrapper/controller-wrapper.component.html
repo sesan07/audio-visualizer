@@ -40,11 +40,11 @@
     <ng-container *ngIf="activeConfig">
         <app-entity-controller class="control-group" *ngIf="type === 'entity'"
                                @controllerEnterLeaveTrigger
-                               [config]="activeConfig">
+                               [entity]="activeConfig">
         </app-entity-controller>
         <app-entity-emitter-controller class="control-group" *ngIf="type === 'emitter'"
                                        @controllerEnterLeaveTrigger
-                                       [config]="activeConfig">
+                                       [emitter]="activeConfig">
         </app-entity-emitter-controller>
 
         <span class="action-buttons">
@@ -52,7 +52,7 @@
                 <i nz-icon nzType="copy"></i>
                 Duplicate
             </button>
-            <button nz-button nzDanger (click)="close.emit()">
+            <button nz-button nzDanger (click)="closeActive.emit()">
                 <i nz-icon nzType="close"></i>
                 Close
             </button>

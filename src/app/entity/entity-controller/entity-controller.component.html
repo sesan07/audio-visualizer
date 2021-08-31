@@ -1,13 +1,13 @@
 <nz-collapse>
     <nz-collapse-panel nzHeader="Entity Options">
         <app-control-line name="Entity Type">
-            <nz-radio-group [ngModel]="config.type" (ngModelChange)="onEntityTypeChange($event)">
+            <nz-radio-group [ngModel]="entity.type" (ngModelChange)="onEntityTypeChange($event)">
                 <label *ngFor="let option of entityTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
             </nz-radio-group>
         </app-control-line>
 
-        <app-control-line name="Name" *ngIf="!config.isEmitted">
-            <span class="name-edit-text">{{config.name}}</span>
+        <app-control-line name="Name" *ngIf="!entity.isEmitted">
+            <span class="name-edit-text">{{entity.name}}</span>
             <button nz-button
                     nz-popover
                     nzPopoverTitle="Edit Name"
@@ -17,12 +17,12 @@
                 <i nz-icon nzType="edit"></i>
             </button>
             <ng-template #nameEditTemplate>
-                <input #nameEditInput nz-input placeholder="Entity Name" [ngModel]="config.name"/>
+                <input #nameEditInput nz-input placeholder="Entity Name" [ngModel]="entity.name"/>
                 <span class="popover-action-buttons">
                     <button nz-button nzDanger (click)="nameEditPopOverVisible = false">
                         <i nz-icon nzType="close"></i>
                     </button>
-                    <button nz-button nzType="primary" (click)="config.name = nameEditInput.value; nameEditPopOverVisible = false">
+                    <button nz-button nzType="primary" (click)="entity.name = nameEditInput.value; nameEditPopOverVisible = false">
                         <i nz-icon nzType="check"></i>
                     </button>
                 </span>
@@ -30,63 +30,63 @@
         </app-control-line>
 
         <app-control-line name="Opacity">
-            <nz-input-number [(ngModel)]="config.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
-            <nz-slider [(ngModel)]="config.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+            <nz-input-number [(ngModel)]="entity.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
+            <nz-slider [(ngModel)]="entity.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
         </app-control-line>
 
         <app-control-line name="Base Scale">
-            <nz-input-number [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-input-number>
-            <nz-slider [(ngModel)]="config.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-slider>
+            <nz-input-number [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
 
         <app-control-line name="Oomph Scale">
-            <nz-input-number [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-input-number>
-            <nz-slider [(ngModel)]="config.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-slider>
+            <nz-input-number [(ngModel)]="entity.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="entity.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
 
-        <ng-container *ngIf="config.isEmitted">
+        <ng-container *ngIf="entity.isEmitted">
             <app-control-line name="Animate Movement">
-                <nz-switch [(ngModel)]="config.animateMovement"></nz-switch>
+                <nz-switch [(ngModel)]="entity.animateMovement"></nz-switch>
             </app-control-line>
-            <app-control-line *ngIf="config.animateMovement" name="Random Movement">
-                <nz-switch [(ngModel)]="config.randomizeMovement"></nz-switch>
+            <app-control-line *ngIf="entity.animateMovement" name="Random Movement">
+                <nz-switch [(ngModel)]="entity.randomizeMovement"></nz-switch>
             </app-control-line>
-            <ng-container *ngIf="config.animateMovement && !config.randomizeMovement">
+            <ng-container *ngIf="entity.animateMovement && !entity.randomizeMovement">
                 <app-control-line name="Movement Angle">
-                    <nz-input-number [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+                    <nz-input-number [(ngModel)]="entity.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+                    <nz-slider [(ngModel)]="entity.movementAngle" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
                 </app-control-line>
                 <app-control-line name="Movement Speed">
-                    <nz-input-number [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
-                    <nz-slider [(ngModel)]="config.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
+                    <nz-input-number [(ngModel)]="entity.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
+                    <nz-slider [(ngModel)]="entity.movementSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
                 </app-control-line>
             </ng-container>
         </ng-container>
 
         <app-control-line name="Animate Rotation">
-            <nz-switch [(ngModel)]="config.animateRotation"></nz-switch>
+            <nz-switch [(ngModel)]="entity.animateRotation"></nz-switch>
         </app-control-line>
-        <ng-container *ngIf="config.animateRotation">
+        <ng-container *ngIf="entity.animateRotation">
             <app-control-line name="Rotation Direction">
-                <nz-radio-group [(ngModel)]="config.rotationDirection">
+                <nz-radio-group [(ngModel)]="entity.rotationDirection">
                     <label *ngFor="let option of ['Left', 'Right']" nz-radio-button [nzValue]="option">{{option}}</label>
                 </nz-radio-group>
             </app-control-line>
             <app-control-line name="Rotation Speed">
-                <nz-input-number [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
-                <nz-slider [(ngModel)]="config.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
+                <nz-input-number [(ngModel)]="entity.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-input-number>
+                <nz-slider [(ngModel)]="entity.rotationSpeed" [nzStep]="0.1" [nzMin]="0.1" [nzMax]="5"></nz-slider>
             </app-control-line>
         </ng-container>
-        <app-control-line *ngIf="!config.animateRotation" name="Rotation">
-            <nz-input-number [ngModel]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
-            <nz-slider [(ngModel)]="config.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
+        <app-control-line *ngIf="!entity.animateRotation" name="Rotation">
+            <nz-input-number [ngModel]="entity.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+            <nz-slider [(ngModel)]="entity.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
         </app-control-line>
     </nz-collapse-panel>
 </nz-collapse>
 
-<ng-container [ngSwitch]="config.type">
-    <app-bar-controller *ngSwitchCase="EntityType.BAR" [entity]="config"></app-bar-controller>
-    <app-barcle-controller *ngSwitchCase="EntityType.BARCLE" [entity]="config"></app-barcle-controller>
-    <app-circle-controller *ngSwitchCase="EntityType.CIRCLE" [entity]="config"></app-circle-controller>
-    <app-image-controller *ngSwitchCase="EntityType.IMAGE" [entity]="config"></app-image-controller>
+<ng-container [ngSwitch]="entity.type">
+    <app-bar-controller *ngSwitchCase="EntityType.BAR" [entity]="entity"></app-bar-controller>
+    <app-barcle-controller *ngSwitchCase="EntityType.BARCLE" [entity]="entity"></app-barcle-controller>
+    <app-circle-controller *ngSwitchCase="EntityType.CIRCLE" [entity]="entity"></app-circle-controller>
+    <app-image-controller *ngSwitchCase="EntityType.IMAGE" [entity]="entity"></app-image-controller>
 </ng-container>

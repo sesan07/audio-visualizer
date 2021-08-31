@@ -1,8 +1,8 @@
-import { IEntityConfig } from '../../entity/entity.types';
-import { IEmitterConfig } from '../../emitter/emitter.types';
+import { Entity } from '../../entity/entity.types';
+import { Emitter } from '../../emitter/emitter.types';
 
-export interface IPreset {
+export interface Preset {
     name: string;
-    entities: IEntityConfig[];
-    emitters: IEmitterConfig[];
+    entities: Entity[];
+    emitters: Emitter[];
 }

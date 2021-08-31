@@ -1,6 +1,6 @@
 import { RGBA } from 'ngx-color';
 
-export interface ICircleContentConfig {
+export interface CircleContent {
     isEmitted: boolean;
     amplitudes: Uint8Array;
     startColor: RGBA;

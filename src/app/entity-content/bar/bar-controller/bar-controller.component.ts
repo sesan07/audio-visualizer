@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AudioSourceService } from '../../../shared/source-services/audio.source.service';
-import { IEntityConfig } from '../../../entity/entity.types';
-import { IBarContentConfig } from '../bar.content.types';
+import { Entity } from '../../../entity/entity.types';
+import { BarContent } from '../bar.content.types';
 import { BarContentService } from '../bar.content.service';
 
 @Component({
@@ -9,10 +9,10 @@ import { BarContentService } from '../bar.content.service';
     templateUrl: './bar-controller.component.html'
 })
 export class BarControllerComponent {
-    @Input() entity: IEntityConfig<IBarContentConfig>;
+    @Input() entity: Entity<BarContent>;
 
-    get config(): IBarContentConfig {
-        return this.entity.entityContentConfig
+    get content(): BarContent {
+        return this.entity.entityContent
     }
 
     sampleCountOptions: number[];
@@ -22,7 +22,7 @@ export class BarControllerComponent {
     }
 
     onSampleCountChanged(): void {
-        this.config.amplitudes = this._audioService.getAmplitudes(this.config.sampleCount);
+        this.content.amplitudes = this._audioService.getAmplitudes(this.content.sampleCount);
         this.onDimensionsChange();
     }
 

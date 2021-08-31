@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseSourceService } from './base.source.service';
-import { ISource } from './base.source.service.types';
+import { Source } from './base.source.service.types';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -10,7 +10,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class BackgroundImageSourceService extends BaseSourceService {
     protected _idPrefix: string = 'bg';
 
-    sources: ISource[] = [
+    sources: Source[] = [
         { name: 'Ryuko and Satsuki', src: 'assets/background-image/1.png' },
     ];
 

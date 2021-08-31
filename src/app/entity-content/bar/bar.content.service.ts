@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BaseContentService } from '../base/base.content.service';
-import { IBarContentConfig } from './bar.content.types';
-import { IEntityConfig } from '../../entity/entity.types';
+import { BarContent } from './bar.content.types';
+import { Entity } from '../../entity/entity.types';
 import { AudioSourceService } from '../../shared/source-services/audio.source.service';
 import { getRandomColor } from '../../shared/utils';
 
 @Injectable({
     providedIn: 'root'
 })
-export class BarContentService extends BaseContentService<IBarContentConfig> {
+export class BarContentService extends BaseContentService<BarContent> {
 
     constructor(private _audioService: AudioSourceService) {
         super();
     }
 
-    beforeEmit(config: IBarContentConfig): void {
+    beforeEmit(config: BarContent): void {
         if (config.randomizeColors) {
             config.startColor = getRandomColor();
             config.endColor = getRandomColor();
         }
     }
 
-    getCleanPreset(config: IBarContentConfig): IBarContentConfig {
+    getCleanPreset(config: BarContent): BarContent {
         const configClone = Object.assign({}, config);
         delete configClone.amplitudes;
         return configClone;
     }
 
-    getDefaultContent(isEmitted: boolean): IBarContentConfig {
+    getDefaultContent(isEmitted: boolean): BarContent {
         const sampleCount: number = this._audioService.sampleCounts[0];
         return {
             isEmitted: isEmitted,
@@ -44,8 +44,8 @@ export class BarContentService extends BaseContentService<IBarContentConfig> {
         };
     }
 
-    setEntityDimensions(entity: IEntityConfig<IBarContentConfig>): void {
-        const config: IBarContentConfig = entity.entityContentConfig;
+    setEntityDimensions(entity: Entity<BarContent>): void {
+        const config: BarContent = entity.entityContent;
 
         const barHeight: number = config.multiplier * 255;
         const barCapHeight: number = config.barCapSize;
@@ -57,7 +57,7 @@ export class BarContentService extends BaseContentService<IBarContentConfig> {
         entity.width = (config.sampleCount * barSize + totalBarSpacing) * entity.scale;
     }
 
-    updatePreset(config: IBarContentConfig): IBarContentConfig {
+    updatePreset(config: BarContent): BarContent {
         const configClone = Object.assign({}, config);
         configClone.amplitudes = this._audioService.getAmplitudes(configClone.sampleCount);
         return configClone;
