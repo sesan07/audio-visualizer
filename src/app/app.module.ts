@@ -46,6 +46,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 registerLocaleData(en);  // NG-Zorro
 
@@ -87,6 +88,7 @@ registerLocaleData(en);  // NG-Zorro
         NzCollapseModule,
         NzInputModule,
         NzFormModule,
+        NzToolTipModule,
     ],
     providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
     bootstrap: [AppComponent]

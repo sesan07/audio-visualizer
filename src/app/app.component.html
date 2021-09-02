@@ -16,17 +16,17 @@
              [src]="backgroundImageService.activeSource.src"
              alt="Background Image"
              draggable="false">
+        <app-emitter class="emitter"
+                     *ngFor="let config of emitterService.emitters"
+                     [emitter]="config"
+                     [viewScale]="entityViewContentScale">
+        </app-emitter>
         <app-entity-canvas class="entity-canvas"
                            [allowInteraction]="true"
                            [entities]="entityService.controllableEntities"
                            [viewScale]="entityViewContentScale"
                            (entitySelected)="entityService.setActiveEntity($event)">
         </app-entity-canvas>
-        <app-emitter class="emitter"
-                     *ngFor="let config of emitterService.emitters"
-                     [emitter]="config"
-                     [viewScale]="entityViewContentScale">
-        </app-emitter>
     </div>
 </div>
 
@@ -100,13 +100,13 @@
                         <nz-input-number [(ngModel)]="backgroundOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
                         <nz-slider [(ngModel)]="backgroundOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
                     </app-control-line>
-                    <app-control-line name="Mode">
+                    <app-control-line name="Mode" description="Set the audio analysis mode">
                         <nz-radio-group [(ngModel)]="audioService.mode">
                             <label *ngFor="let option of modeOptions" nz-radio-button
                                    [nzValue]="option.value">{{option.name}}</label>
                         </nz-radio-group>
                     </app-control-line>
-                    <app-control-line name="Decibel Range">
+                    <app-control-line name="Decibel Range" description="Set the decibel range to use for audio analysis">
                         <span class="slider-text">{{decibelRange[0]}}</span>
                         <nz-slider nzRange [(ngModel)]="decibelRange" [nzMin]="-100" [nzMax]="0"
                                    (ngModelChange)="onDecibelChanged()"></nz-slider>

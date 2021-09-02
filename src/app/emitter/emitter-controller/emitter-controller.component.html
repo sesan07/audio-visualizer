@@ -29,15 +29,15 @@
             </ng-template>
         </app-control-line>
 
-        <app-control-line name="Interval">
+        <app-control-line name="Interval" description="Time between emissions (seconds)">
             <nz-input-number [(ngModel)]="emitter.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="emitter.interval" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
         </app-control-line>
-        <app-control-line name="Amount">
+        <app-control-line name="Amount" description="The number of entities emitted at a time">
             <nz-input-number [(ngModel)]="emitter.amount" [nzStep]="1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="emitter.amount" [nzStep]="1" [nzMin]="0" [nzMax]="10"></nz-slider>
         </app-control-line>
-        <app-control-line name="Lifespan">
+        <app-control-line name="Lifespan" description="How long emitted entities last">
             <nz-input-number [(ngModel)]="emitter.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-input-number>
             <nz-slider [(ngModel)]="emitter.lifespan" [nzStep]="0.1" [nzMin]="0" [nzMax]="10"></nz-slider>
         </app-control-line>

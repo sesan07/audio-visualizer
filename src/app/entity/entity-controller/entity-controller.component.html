@@ -34,12 +34,12 @@
             <nz-slider [(ngModel)]="entity.targetOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
         </app-control-line>
 
-        <app-control-line name="Base Scale">
+        <app-control-line name="Scale">
             <nz-input-number [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-input-number>
             <nz-slider [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
 
-        <app-control-line name="Oomph Scale">
+        <app-control-line name="Oomph" description="Adds an extra scaling effect based on audio activity">
             <nz-input-number [(ngModel)]="entity.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-input-number>
             <nz-slider [(ngModel)]="entity.oomphAmount" [nzStep]="0.1" [nzMin]="0" [nzMax]="10" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
