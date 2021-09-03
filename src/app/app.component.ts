@@ -16,7 +16,7 @@ import { ImageContentService } from './entity-content/image/image.content.servic
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    styleUrls: [ './app.component.scss' ],
     animations: animations
 })
 export class AppComponent implements OnInit, AfterViewInit {
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             value: 'timeDomain'
         },
     ];
-    decibelRange: [number, number] = [-80, -20];
+    decibelRange: [ number, number ] = [ -80, -20 ];
 
     isControlViewOpen: boolean = true;
     controlViewWidth: number;
@@ -78,15 +78,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.audioService.setActiveSource(this.audioService.sources[0]);
-        this.backgroundImageService.setActiveSource(this.backgroundImageService.sources[0])
+        this.backgroundImageService.setActiveSource(this.backgroundImageService.sources[0]);
 
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this.controlViewContentWidth = this._controlViewWidth;
     }
 
     ngAfterViewInit(): void {
-        this.audioService.setUp(this.audioElement.nativeElement)
-        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
+        this.audioService.setUp(this.audioElement.nativeElement);
+        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1]);
 
         this._barContentService.setEntityView(this.entityViewContentElement.nativeElement);
         this._barcleContentService.setEntityView(this.entityViewContentElement.nativeElement);
@@ -96,19 +96,19 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
         this.hiddenImages.changes.subscribe(() => {
             this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
-        })
+        });
 
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
-        setTimeout(() => this._updateEntityViewContentScale(), 500)
+        setTimeout(() => this._updateEntityViewContentScale(), 500);
     }
 
     onEntityViewClicked(): void {
-        this.entityService.setActiveEntity(null)
+        this.entityService.setActiveEntity(null);
         this.emitterService.setActiveEmitter(null);
     }
 
     onDecibelChanged(): void {
-        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1])
+        this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1]);
     }
 
     toggleControlView(): void {
@@ -120,7 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     private _updateEntityViewContentScale(): void {
         const entityViewWidth: number = this.entityViewContentElement.nativeElement.clientWidth;
-        this.entityViewContentScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth
-        this._renderer.setStyle(this.entityViewContentElement.nativeElement, 'transform', `scale(${this.entityViewContentScale})`)
+        this.entityViewContentScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
+        this._renderer.setStyle(this.entityViewContentElement.nativeElement, 'transform', `scale(${this.entityViewContentScale})`);
     }
 }

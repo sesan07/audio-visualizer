@@ -10,11 +10,11 @@ export abstract class BaseSourceService {
     sources: Source[] = [];
     activeSource: Source;
 
-    protected abstract _idPrefix : string;
+    protected abstract _idPrefix: string;
     protected _currIdIndex: number = 0;
 
     protected constructor(private _sanitizer: DomSanitizer,
-                private _messageService: NzMessageService) {
+                          private _messageService: NzMessageService) {
     }
 
     addFileSource(name: string, file: File, loadFile?: boolean): void {
@@ -24,7 +24,7 @@ export abstract class BaseSourceService {
         }
 
         // Check if file already exists
-        const existingFileNames: string[] = this.sources.map(source => source.file?.name)
+        const existingFileNames: string[] = this.sources.map(source => source.file?.name);
         const isNewFile: boolean = existingFileNames.indexOf(file.name) < 0;
         if (isNewFile) {
             const newSource: Source = {
@@ -37,7 +37,7 @@ export abstract class BaseSourceService {
                 this.loadFileSource(newSource);
             }
 
-            this.sources.push(newSource)
+            this.sources.push(newSource);
         }
 
         this._showNotification(isNewFile);
@@ -45,22 +45,22 @@ export abstract class BaseSourceService {
 
     addUrlSource(name: string, url: string): void {
         if (!url) {
-            this._showNotification(false)
+            this._showNotification(false);
             return;
         }
 
-        const existingSource: Source = this.sources.find(source => source.src === url)
+        const existingSource: Source = this.sources.find(source => source.src === url);
         if (existingSource) {
-            existingSource.name = name || url.split('/').pop()
+            existingSource.name = name || url.split('/').pop();
         } else {
             this.sources.push({
                 url,
                 id: `${this._idPrefix}-${this._currIdIndex++}`,
                 src: url,
                 name: name || url.split('/').pop()
-            })
+            });
         }
-        this._showNotification(true)
+        this._showNotification(true);
     }
 
     loadFileSource(source: Source): void {
@@ -69,7 +69,7 @@ export abstract class BaseSourceService {
     }
 
     unloadFileSource(source: Source): void {
-        URL.revokeObjectURL(source.objectUrl)
+        URL.revokeObjectURL(source.objectUrl);
         source.objectUrl = null;
     }
 

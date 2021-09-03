@@ -90,8 +90,8 @@ registerLocaleData(en);  // NG-Zorro
         NzFormModule,
         NzToolTipModule,
     ],
-    providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
-    bootstrap: [AppComponent]
+    providers: [ { provide: NZ_I18N, useValue: en_US }, NzMessageService ],
+    bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

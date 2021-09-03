@@ -17,7 +17,7 @@ import { DraggableDirective } from '../shared/components/draggable/draggable.dir
 @Component({
     selector: 'app-emitter',
     templateUrl: './emitter.component.html',
-    styleUrls: ['./emitter.component.css']
+    styleUrls: [ './emitter.component.css' ]
 })
 export class EmitterComponent implements AfterViewInit, OnDestroy {
     @Input() emitter: Emitter;

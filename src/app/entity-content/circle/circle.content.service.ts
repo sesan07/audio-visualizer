@@ -46,7 +46,7 @@ export class CircleContentService extends BaseContentService<CircleContent> {
     setEntityDimensions(entity: Entity<CircleContent>): void {
         const content: CircleContent = entity.entityContent;
 
-        const radius: number = content.multiplier * 255 + content.baseRadius + content.sampleRadius
+        const radius: number = content.multiplier * 255 + content.baseRadius + content.sampleRadius;
         const diameter: number = radius * 2 * entity.scale;
         entity.height = diameter;
         entity.width = diameter;

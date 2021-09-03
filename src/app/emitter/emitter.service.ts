@@ -8,6 +8,7 @@ import { EntityService } from '../entity/entity.service';
 })
 export class EmitterService {
     emitters: Emitter[] = [];
+
     get activeEmitter(): Emitter {
         return this._activeEmitter;
     }
@@ -60,14 +61,14 @@ export class EmitterService {
             height: 0,
             width: 0,
             entityContent: this._entityService.getDefaultEntityContent(type, true)
-        }
+        };
     }
 
     removeEmitter(emitter: Emitter): void {
         const index: number = this.emitters.indexOf(emitter);
         this.emitters.splice(index, 1);
         if (emitter === this._activeEmitter) {
-            this.setActiveEmitter(null)
+            this.setActiveEmitter(null);
         }
     }
 
@@ -81,7 +82,7 @@ export class EmitterService {
             if (e !== emitter) {
                 e.isSelected = false;
             }
-        })
+        });
     }
 
     setEmitters(emitters: Emitter[]): void {

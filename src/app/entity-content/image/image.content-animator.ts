@@ -9,7 +9,7 @@ export class ImageContentAnimator extends BaseContentAnimator<ImageContent> {
 
         this._canvasContext.globalAlpha = entity.currentOpacity;
         this._canvasContext.shadowBlur = 0;
-        this._canvasContext.drawImage(content.element, this._scaledLeft, this._scaledTop, this._scaledWidth, this._scaledHeight)
+        this._canvasContext.drawImage(content.element, this._scaledLeft, this._scaledTop, this._scaledWidth, this._scaledHeight);
     }
 
 }

@@ -12,7 +12,7 @@ export class BarControllerComponent {
     @Input() entity: Entity<BarContent>;
 
     get content(): BarContent {
-        return this.entity.entityContent
+        return this.entity.entityContent;
     }
 
     sampleCountOptions: number[];

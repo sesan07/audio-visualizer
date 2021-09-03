@@ -25,7 +25,7 @@ import { ImageContent } from '../../entity-content/image/image.content.types';
 @Component({
     selector: 'app-entity-canvas',
     templateUrl: './entity-canvas.component.html',
-    styleUrls: ['./entity-canvas.component.css']
+    styleUrls: [ './entity-canvas.component.css' ]
 })
 export class EntityCanvasComponent implements AfterViewInit {
     @Input() allowInteraction: boolean;
@@ -43,7 +43,7 @@ export class EntityCanvasComponent implements AfterViewInit {
         this.canvasElement.nativeElement.width = this._width;
     }
 
-    @HostListener('mousedown', ['$event'])
+    @HostListener('mousedown', [ '$event' ])
     onMouseDown(event: MouseEvent): void {
         if (!this.allowInteraction) {
             return;
@@ -63,7 +63,7 @@ export class EntityCanvasComponent implements AfterViewInit {
         this._stopMouseUpListener = this._renderer.listen('window', 'mouseup', () => this._onMouseUp());
     }
 
-    @HostListener('touchstart', ['$event'])
+    @HostListener('touchstart', [ '$event' ])
     onTouchStart(event: TouchEvent): void {
         if (!this.allowInteraction) {
             return;
@@ -158,7 +158,7 @@ export class EntityCanvasComponent implements AfterViewInit {
         const centerOffset: number = windowCenter - source.clientY;
         const y: number = windowCenter - (centerOffset / this.viewScale);
 
-        return { x, y }
+        return { x, y };
     }
 
     private _setSelectedEntity(source: MouseEvent | Touch): void {
@@ -177,7 +177,7 @@ export class EntityCanvasComponent implements AfterViewInit {
         }
 
         if (this._selectedEntity) {
-            this.entitySelected.emit(this._selectedEntity)
+            this.entitySelected.emit(this._selectedEntity);
         }
     }
 
@@ -202,7 +202,7 @@ export class EntityCanvasComponent implements AfterViewInit {
     private _checkDeathStatus(entity: Entity): void {
         entity.isDying = Date.now() >= entity.deathTime;
         if (entity.isDying && entity.currentOpacity <= 0) {
-            this._deadEntities.push(entity)
+            this._deadEntities.push(entity);
         }
     }
 
@@ -210,7 +210,7 @@ export class EntityCanvasComponent implements AfterViewInit {
         this._deadEntities.forEach(entity => {
             const index = this.entities.indexOf(entity);
             this.entities.splice(index, 1);
-        })
+        });
         this._deadEntities.length = 0;
     }
 }

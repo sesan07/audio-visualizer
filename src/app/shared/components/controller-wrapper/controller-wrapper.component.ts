@@ -6,7 +6,7 @@ import { animations } from '../../animations';
 @Component({
     selector: 'app-controller-wrapper',
     templateUrl: './controller-wrapper.component.html',
-    styleUrls: ['./controller-wrapper.component.scss'],
+    styleUrls: [ './controller-wrapper.component.scss' ],
     animations: animations
 })
 export class ControllerWrapperComponent implements OnInit {
@@ -23,7 +23,7 @@ export class ControllerWrapperComponent implements OnInit {
     selectedAddOption: EntityType | EmitterType;
 
     get name(): string {
-        return this.type === 'entity' ? 'Entity' : 'Entity Emitter'
+        return this.type === 'entity' ? 'Entity' : 'Entity Emitter';
     }
 
     ngOnInit(): void {
@@ -31,7 +31,7 @@ export class ControllerWrapperComponent implements OnInit {
     }
 
     onConfigSelected(event: MouseEvent, config: Entity | Emitter): void {
-        this.configSelect.emit(config)
+        this.configSelect.emit(config);
         event.stopPropagation();
     }
 

@@ -53,7 +53,7 @@ export class BarContentService extends BaseContentService<BarContent> {
 
         const barSpacing: number = config.barSpacing;
         const barSize: number = config.barSize;
-        const totalBarSpacing: number = (config.sampleCount - 1) * barSpacing
+        const totalBarSpacing: number = (config.sampleCount - 1) * barSpacing;
         entity.width = (config.sampleCount * barSize + totalBarSpacing) * entity.scale;
     }
 

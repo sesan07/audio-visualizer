@@ -15,6 +15,7 @@ import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
 })
 export class EntityService {
     controllableEntities: Entity[] = [];
+
     get activeEntity(): Entity {
         return this._activeEntity;
     }
@@ -35,7 +36,7 @@ export class EntityService {
         this.setEntityDimensions(entity);
         this.setEntityPosition(entity);
 
-        this.controllableEntities.push(entity)
+        this.controllableEntities.push(entity);
         this.setActiveEntity(entity);
     }
 
@@ -59,16 +60,21 @@ export class EntityService {
             height: 0,
             width: 0,
             entityContent: content
-        }
+        };
     }
 
     getDefaultEntityContent(type: EntityType, isEmitted: boolean): EntityContent {
         switch (type) {
-            case EntityType.BAR: return this._barContentService.getDefaultContent(isEmitted)
-            case EntityType.BARCLE: return this._barcleContentService.getDefaultContent(isEmitted)
-            case EntityType.CIRCLE: return this._circleContentService.getDefaultContent(isEmitted)
-            case EntityType.IMAGE: return this._imageContentService.getDefaultContent(isEmitted)
-            default: throw new Error('Unknown entity type')
+            case EntityType.BAR:
+                return this._barContentService.getDefaultContent(isEmitted);
+            case EntityType.BARCLE:
+                return this._barcleContentService.getDefaultContent(isEmitted);
+            case EntityType.CIRCLE:
+                return this._circleContentService.getDefaultContent(isEmitted);
+            case EntityType.IMAGE:
+                return this._imageContentService.getDefaultContent(isEmitted);
+            default:
+                throw new Error('Unknown entity type');
         }
     }
 
@@ -86,25 +92,27 @@ export class EntityService {
             case EntityType.IMAGE:
                 this._imageContentService.setEntityDimensions(entity as Entity<ImageContent>);
                 break;
-            default: throw new Error('Unknown entity type')
+            default:
+                throw new Error('Unknown entity type');
         }
     }
 
     setEntityPosition(entity: Entity, centerX?: number, centerY?: number): void {
         switch (entity.type) {
             case EntityType.BAR:
-                this._barContentService.setEntityPosition(entity as Entity<BarContent>, centerX, centerY)
+                this._barContentService.setEntityPosition(entity as Entity<BarContent>, centerX, centerY);
                 break;
             case EntityType.BARCLE:
-                this._barcleContentService.setEntityPosition(entity as Entity<BarcleContent>, centerX, centerY)
+                this._barcleContentService.setEntityPosition(entity as Entity<BarcleContent>, centerX, centerY);
                 break;
             case EntityType.CIRCLE:
-                this._circleContentService.setEntityPosition(entity as Entity<CircleContent>, centerX, centerY)
+                this._circleContentService.setEntityPosition(entity as Entity<CircleContent>, centerX, centerY);
                 break;
             case EntityType.IMAGE:
-                this._imageContentService.setEntityPosition(entity as Entity<ImageContent>, centerX, centerY)
+                this._imageContentService.setEntityPosition(entity as Entity<ImageContent>, centerX, centerY);
                 break;
-            default: throw new Error('Unknown entity type')
+            default:
+                throw new Error('Unknown entity type');
         }
     }
 
@@ -113,7 +121,7 @@ export class EntityService {
         this.controllableEntities.splice(index, 1);
 
         if (entity === this._activeEntity) {
-            this.setActiveEntity(null)
+            this.setActiveEntity(null);
         }
     }
 
@@ -127,35 +135,36 @@ export class EntityService {
             if (e !== entity) {
                 e.isSelected = false;
             }
-        })
+        });
     }
 
     setEntities(entities: Entity[]): void {
-        this._activeEntity = null
+        this._activeEntity = null;
         this.controllableEntities.length = 0; // Empty the array
         this.controllableEntities.push(...entities);
         this._currNameIndex = entities.length;
     }
 
     getCleanPreset(entity: Entity): Entity {
-        const entityClone: Entity = Object.assign({}, entity)
+        const entityClone: Entity = Object.assign({}, entity);
         delete entityClone.animateOomphInEntity;
 
         let entityContentClone: EntityContent;
         switch (entityClone.type) {
             case EntityType.BAR:
-                entityContentClone = this._barContentService.getCleanPreset(entityClone.entityContent as BarContent)
+                entityContentClone = this._barContentService.getCleanPreset(entityClone.entityContent as BarContent);
                 break;
             case EntityType.BARCLE:
-                entityContentClone = this._barcleContentService.getCleanPreset(entityClone.entityContent as BarcleContent)
+                entityContentClone = this._barcleContentService.getCleanPreset(entityClone.entityContent as BarcleContent);
                 break;
             case EntityType.CIRCLE:
-                entityContentClone = this._circleContentService.getCleanPreset(entityClone.entityContent as CircleContent)
+                entityContentClone = this._circleContentService.getCleanPreset(entityClone.entityContent as CircleContent);
                 break;
             case EntityType.IMAGE:
-                entityContentClone = this._imageContentService.getCleanPreset(entityClone.entityContent as ImageContent)
+                entityContentClone = this._imageContentService.getCleanPreset(entityClone.entityContent as ImageContent);
                 break;
-            default: throw new Error('Unknown entity type')
+            default:
+                throw new Error('Unknown entity type');
         }
         entityClone.entityContent = entityContentClone;
 
@@ -163,24 +172,25 @@ export class EntityService {
     }
 
     updatePreset(entity: Entity): Entity {
-        const entityClone: Entity = Object.assign({}, entity)
-        entityClone.animateOomphInEntity = false
+        const entityClone: Entity = Object.assign({}, entity);
+        entityClone.animateOomphInEntity = false;
 
         let entityContentClone: EntityContent;
         switch (entityClone.type) {
             case EntityType.BAR:
-                entityContentClone = this._barContentService.updatePreset(entityClone.entityContent as BarContent)
+                entityContentClone = this._barContentService.updatePreset(entityClone.entityContent as BarContent);
                 break;
             case EntityType.BARCLE:
-                entityContentClone = this._barcleContentService.updatePreset(entityClone.entityContent as BarcleContent)
+                entityContentClone = this._barcleContentService.updatePreset(entityClone.entityContent as BarcleContent);
                 break;
             case EntityType.CIRCLE:
-                entityContentClone = this._circleContentService.updatePreset(entityClone.entityContent as CircleContent)
+                entityContentClone = this._circleContentService.updatePreset(entityClone.entityContent as CircleContent);
                 break;
             case EntityType.IMAGE:
-                entityContentClone = this._imageContentService.updatePreset(entityClone.entityContent as ImageContent)
+                entityContentClone = this._imageContentService.updatePreset(entityClone.entityContent as ImageContent);
                 break;
-            default: throw new Error('Unknown entity type')
+            default:
+                throw new Error('Unknown entity type');
         }
         entityClone.entityContent = entityContentClone;
 
@@ -190,13 +200,13 @@ export class EntityService {
     duplicateActive(): void {
         const entityClone: Entity = Object.assign({}, this._activeEntity);
         entityClone.name = this._getNextName(entityClone.type);
-        entityClone.entityContent =  Object.assign({}, entityClone.entityContent);
+        entityClone.entityContent = Object.assign({}, entityClone.entityContent);
         this.setEntityPosition(entityClone);
         this.controllableEntities.push(entityClone);
         this.setActiveEntity(entityClone);
     }
 
     private _getNextName(type: EntityType): string {
-        return `Entity ${this._currNameIndex++} (${type})`
+        return `Entity ${this._currNameIndex++} (${type})`;
     }
 }

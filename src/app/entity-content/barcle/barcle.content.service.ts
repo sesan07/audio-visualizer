@@ -47,7 +47,7 @@ export class BarcleContentService extends BaseContentService<BarcleContent> {
     setEntityDimensions(entity: Entity<BarcleContent>): void {
         const content: BarcleContent = entity.entityContent;
 
-        const radius: number = content.multiplier * 255 + content.baseRadius + content.ringSize
+        const radius: number = content.multiplier * 255 + content.baseRadius + content.ringSize;
         const diameter: number = radius * 2 * entity.scale;
         entity.height = diameter;
         entity.width = diameter;

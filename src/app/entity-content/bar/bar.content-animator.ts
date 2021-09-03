@@ -11,7 +11,7 @@ export class BarContentAnimator extends BaseContentAnimator<BarContent> {
 
         this._canvasContext.globalAlpha = entity.currentOpacity;
         const strokeColor: string = `rgb(${content.startColor.r}, ${content.startColor.g}, ${content.startColor.b})`;
-        this._canvasContext.shadowBlur = content.shadowBlur
+        this._canvasContext.shadowBlur = content.shadowBlur;
         this._canvasContext.shadowColor = strokeColor;
         this._canvasContext.strokeStyle = strokeColor;
 

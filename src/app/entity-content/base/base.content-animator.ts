@@ -38,7 +38,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
     }
 
     private _drawSelectionBorder(entity: Entity<T>): void {
-        this._canvasContext.globalAlpha = 1
+        this._canvasContext.globalAlpha = 1;
         this._canvasContext.shadowBlur = 0;
         this._canvasContext.strokeStyle = 'yellow';
         this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
@@ -59,16 +59,16 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
             entity.rotation = (entity.rotation - entity.rotationSpeed) % 360;
         }
 
-        this._canvasContext.translate(this._centerX, this._centerY)
-        this._canvasContext.rotate(getRadians(entity.rotation))
-        this._canvasContext.translate(-this._centerX, -this._centerY)
+        this._canvasContext.translate(this._centerX, this._centerY);
+        this._canvasContext.rotate(getRadians(entity.rotation));
+        this._canvasContext.translate(-this._centerX, -this._centerY);
     }
 
     private _setEntityProperties(entity: Entity<T>): void {
         const oomphScale: number = 1 + (this._oomph.value * entity.oomphAmount);
-        this._scale = entity.scale * oomphScale
-        this._scaledWidth = entity.width * oomphScale
-        this._scaledHeight = entity.height * oomphScale
+        this._scale = entity.scale * oomphScale;
+        this._scaledWidth = entity.width * oomphScale;
+        this._scaledHeight = entity.height * oomphScale;
         this._scaledLeft = entity.left - (this._scaledWidth - entity.width) / 2;
         this._scaledTop = entity.top - (this._scaledHeight - entity.height) / 2;
         this._centerX = (this._scaledLeft) + (this._scaledWidth / 2);

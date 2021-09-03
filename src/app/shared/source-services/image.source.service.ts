@@ -25,7 +25,7 @@ export class ImageSourceService extends BaseSourceService {
     }
 
     getSourceElement(source: Source): HTMLImageElement {
-        return  this._imageElements.find(element => element.id === source.id)
+        return this._imageElements.find(element => element.id === source.id);
     }
 
     setImageElements(imageElements: HTMLImageElement[]): void {

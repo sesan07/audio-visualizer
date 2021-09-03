@@ -1,6 +1,6 @@
 import { RGBA } from 'ngx-color';
 
-export function getRandomNumber(min: number, max: number) : number {
+export function getRandomNumber(min: number, max: number): number {
     const diff: number = max - min;
     return Math.random() * diff + min;
 }
@@ -23,7 +23,7 @@ export function getGradientColor(startColor: RGBA, endColor: RGBA, fadePercent):
         g: Math.floor(diffGreen),
         b: Math.floor(diffBlue),
         a: 1,
-    }
+    };
 }
 
 export function getRandomColor(): RGBA {
