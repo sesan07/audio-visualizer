@@ -19,7 +19,6 @@ export interface Entity<T extends EntityContent = EntityContent> {
     isSelected: boolean;
     animateMovement?: boolean;
     animateRotation?: boolean;
-    animateOomphInEntity: boolean;
     movementAngle?: number;
     movementSpeed?: number;
     rotation: number;

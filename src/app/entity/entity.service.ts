@@ -32,7 +32,7 @@ export class EntityService {
 
     addEntity(type: EntityType): void {
         const entityContent: EntityContent = this.getDefaultEntityContent(type, false);
-        const entity: Entity = this.getDefaultEntity(type, entityContent);
+        const entity: Entity = this.getDefaultEntity(type, entityContent, false);
         this.setEntityDimensions(entity);
         this.setEntityPosition(entity);
 
@@ -40,14 +40,17 @@ export class EntityService {
         this.setActiveEntity(entity);
     }
 
-    getDefaultEntity(type: EntityType, content: EntityContent): Entity {
+    getDefaultEntity(type: EntityType, content: EntityContent, isEmitted: boolean): Entity {
         return {
             type: type,
-            name: this._getNextName(type),
-            isEmitted: false,
+            isEmitted: isEmitted,
+            name: isEmitted ? undefined : this._getNextName(type),
             isSelected: false,
-            animateRotation: false,
-            animateOomphInEntity: false,
+            animateMovement: isEmitted,
+            randomizeMovement: isEmitted,
+            movementAngle: 0,
+            movementSpeed: 0.5,
+            animateRotation: isEmitted,
             rotation: 0,
             rotationDirection: 'Right',
             rotationSpeed: 0.5,
@@ -59,7 +62,7 @@ export class EntityService {
             top: 0,
             height: 0,
             width: 0,
-            entityContent: content
+            entityContent: content,
         };
     }
 
@@ -147,7 +150,6 @@ export class EntityService {
 
     getCleanPreset(entity: Entity): Entity {
         const entityClone: Entity = Object.assign({}, entity);
-        delete entityClone.animateOomphInEntity;
 
         let entityContentClone: EntityContent;
         switch (entityClone.type) {
@@ -173,7 +175,6 @@ export class EntityService {
 
     updatePreset(entity: Entity): Entity {
         const entityClone: Entity = Object.assign({}, entity);
-        entityClone.animateOomphInEntity = false;
 
         let entityContentClone: EntityContent;
         switch (entityClone.type) {

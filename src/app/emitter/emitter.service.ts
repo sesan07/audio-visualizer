@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmitterType, Emitter } from './emitter.types';
-import { EntityType, Entity } from '../entity/entity.types';
+import { EntityType, Entity, EntityContent } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
 
 @Injectable({
@@ -21,7 +21,8 @@ export class EmitterService {
 
     addEmitter(type: EmitterType): void {
         const entityType: EntityType = EntityType.BAR;
-        const entity: Entity = this.getDefaultEmitterEntity(entityType);
+        const entityContent: EntityContent = this._entityService.getDefaultEntityContent(entityType, true);
+        const entity: Entity = this._entityService.getDefaultEntity(entityType, entityContent, true);
         this._entityService.setEntityDimensions(entity);
         this._entityService.setEntityPosition(entity);
 
@@ -36,32 +37,6 @@ export class EmitterService {
         };
         this.emitters.push(emitter);
         this.setActiveEmitter(emitter);
-    }
-
-    getDefaultEmitterEntity(type: EntityType): Entity {
-        return {
-            type: type,
-            isEmitted: true,
-            isSelected: false,
-            animateMovement: true,
-            animateRotation: true,
-            animateOomphInEntity: false,
-            movementAngle: 0,
-            movementSpeed: 0.5,
-            rotation: 0,
-            rotationDirection: 'Right',
-            rotationSpeed: 0.5,
-            scale: 0.5,
-            oomphAmount: 0,
-            randomizeMovement: true,
-            currentOpacity: 0,
-            targetOpacity: 1,
-            left: 0,
-            top: 0,
-            height: 0,
-            width: 0,
-            entityContent: this._entityService.getDefaultEntityContent(type, true)
-        };
     }
 
     removeEmitter(emitter: Emitter): void {
