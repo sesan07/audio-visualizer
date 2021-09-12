@@ -21,12 +21,6 @@ export class BarContentService extends BaseContentService<BarContent> {
         }
     }
 
-    getCleanPreset(config: BarContent): BarContent {
-        const configClone = Object.assign({}, config);
-        delete configClone.amplitudes;
-        return configClone;
-    }
-
     getDefaultContent(isEmitted: boolean): BarContent {
         const sampleCount: number = this._audioService.sampleCounts[0];
         return {
@@ -57,7 +51,13 @@ export class BarContentService extends BaseContentService<BarContent> {
         entity.width = (config.sampleCount * barSize + totalBarSpacing) * entity.scale;
     }
 
-    updatePreset(config: BarContent): BarContent {
+    protected _getAddPreset(config: BarContent): BarContent {
+        const configClone = Object.assign({}, config);
+        delete configClone.amplitudes;
+        return configClone;
+    }
+
+    protected _getLoadPreset(config: BarContent): BarContent {
         const configClone = Object.assign({}, config);
         configClone.amplitudes = this._audioService.getAmplitudes(configClone.sampleCount);
         return configClone;

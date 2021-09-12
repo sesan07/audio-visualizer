@@ -21,12 +21,6 @@ export class BarcleContentService extends BaseContentService<BarcleContent> {
         }
     }
 
-    getCleanPreset(content: BarcleContent): BarcleContent {
-        const contentClone = Object.assign({}, content);
-        delete contentClone.amplitudes;
-        return contentClone;
-    }
-
     getDefaultContent(isEmitted: boolean): BarcleContent {
         const sampleCount: number = this._audioService.sampleCounts[0];
         return {
@@ -53,7 +47,13 @@ export class BarcleContentService extends BaseContentService<BarcleContent> {
         entity.width = diameter;
     }
 
-    updatePreset(content: BarcleContent): BarcleContent {
+    protected _getAddPreset(content: BarcleContent): BarcleContent {
+        const contentClone = Object.assign({}, content);
+        delete contentClone.amplitudes;
+        return contentClone;
+    }
+
+    protected _getLoadPreset(content: BarcleContent): BarcleContent {
         const contentClone = Object.assign({}, content);
         contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
         return contentClone;

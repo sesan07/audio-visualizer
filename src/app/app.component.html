@@ -3,14 +3,14 @@
     <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
 </div>
 
-<div #entityView class="entity-view"
+<div class="entity-view-container"
      (mousedown)="onEntityViewClicked()">
     <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8 }"
             nz-button nzType="primary" title="Toggle"
             (click)="toggleControlView()">
         <i nz-icon [ngStyle]="{ transform: isControlViewOpen ? 'rotate(0deg)' : 'rotate(-180deg)' }" [nzType]="'right'"></i>
     </button>
-    <div #entityViewContent class="entity-view-content">
+    <div #entityView class="entity-view">
         <img class="background-image"
              [ngStyle]="{ opacity: backgroundOpacity }"
              [src]="backgroundImageService.activeSource.src"
@@ -19,12 +19,12 @@
         <app-emitter class="emitter"
                      *ngFor="let config of emitterService.emitters"
                      [emitter]="config"
-                     [viewScale]="entityViewContentScale">
+                     [viewScale]="entityViewScale">
         </app-emitter>
         <app-entity-canvas class="entity-canvas"
                            [allowInteraction]="true"
                            [entities]="entityService.controllableEntities"
-                           [viewScale]="entityViewContentScale"
+                           [viewScale]="entityViewScale"
                            (entitySelected)="entityService.setActiveEntity($event)">
         </app-entity-canvas>
     </div>

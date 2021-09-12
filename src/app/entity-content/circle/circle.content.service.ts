@@ -21,12 +21,6 @@ export class CircleContentService extends BaseContentService<CircleContent> {
         }
     }
 
-    getCleanPreset(content: CircleContent): CircleContent {
-        const contentClone = Object.assign({}, content);
-        delete contentClone.amplitudes;
-        return contentClone;
-    }
-
     getDefaultContent(isEmitted: boolean): CircleContent {
         const sampleCount: number = this._audioService.sampleCounts[0];
         return {
@@ -52,7 +46,13 @@ export class CircleContentService extends BaseContentService<CircleContent> {
         entity.width = diameter;
     }
 
-    updatePreset(content: CircleContent): CircleContent {
+    protected _getAddPreset(content: CircleContent): CircleContent {
+        const contentClone = Object.assign({}, content);
+        delete contentClone.amplitudes;
+        return contentClone;
+    }
+
+    protected _getLoadPreset(content: CircleContent): CircleContent {
         const contentClone = Object.assign({}, content);
         contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
         return contentClone;

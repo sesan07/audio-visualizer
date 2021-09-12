@@ -13,10 +13,6 @@ export class ImageContentService extends BaseContentService<ImageContent> {
         super();
     }
 
-    getCleanPreset(content: ImageContent): ImageContent {
-        return { source: undefined, element: undefined };
-    }
-
     getDefaultContent(isEmitted: boolean): ImageContent {
         return {
             source: this._imageService.sources[0],
@@ -32,7 +28,11 @@ export class ImageContentService extends BaseContentService<ImageContent> {
         entity.width = content.element.width * heightRatio;
     }
 
-    updatePreset(content: ImageContent): ImageContent {
+    protected _getAddPreset(content: ImageContent): ImageContent {
+        return { source: undefined, element: undefined };
+    }
+
+    protected _getLoadPreset(content: ImageContent): ImageContent {
         return this.getDefaultContent(false);
     }
 }

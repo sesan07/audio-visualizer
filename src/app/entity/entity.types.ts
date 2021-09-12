@@ -36,4 +36,6 @@ export interface Entity<T extends EntityContent = EntityContent> {
     isDying?: boolean;
     deathTime?: number;
     entityContent: T;
+    presetX?: number;
+    presetY?: number;
 }

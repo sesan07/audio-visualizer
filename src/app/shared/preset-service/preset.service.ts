@@ -34,7 +34,7 @@ export class PresetService {
     saveCurrentAsPreset(name: string): void {
         const entities: Entity[] =
             this._entityService.controllableEntities
-                .map(entity => this._entityService.getCleanPreset(entity));
+                .map(entity => this._entityService.getAddPreset(entity));
         const emitters: Emitter[] =
             this._emitterService.emitters
                 .map(emitter => this._emitterService.getCleanPreset(emitter));
@@ -50,7 +50,7 @@ export class PresetService {
     }
 
     setActivePreset(preset: Preset): void {
-        const entities: Entity[] = preset.entities.map(entity => this._entityService.updatePreset(entity));
+        const entities: Entity[] = preset.entities.map(entity => this._entityService.getLoadPreset(entity));
         const emitters: Emitter[] = preset.emitters.map(emitter => this._emitterService.updatePreset(emitter));
 
         this._entityService.setEntities(entities);

@@ -61,21 +61,21 @@ export class EmitterService {
     }
 
     setEmitters(emitters: Emitter[]): void {
-        this.setActiveEmitter(null);
         this.emitters.length = 0; // Empty the array
         this.emitters.push(...emitters);
         this._currNameIndex = emitters.length;
+        this.setActiveEmitter(null);
     }
 
     getCleanPreset(emitter: Emitter): Emitter {
         const emitterClone: Emitter = Object.assign({}, emitter);
-        emitterClone.entity = this._entityService.getCleanPreset(emitterClone.entity);
+        emitterClone.entity = this._entityService.getAddPreset(emitterClone.entity);
         return emitterClone;
     }
 
     updatePreset(emitter: Emitter): Emitter {
         const emitterClone: Emitter = Object.assign({}, emitter);
-        emitterClone.entity = this._entityService.updatePreset(emitterClone.entity);
+        emitterClone.entity = this._entityService.getLoadPreset(emitterClone.entity);
         return emitterClone;
     }
 

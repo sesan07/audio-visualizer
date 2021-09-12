@@ -23,14 +23,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
     @ViewChild('audioFileInput') audioFileInputElement: ElementRef<HTMLInputElement>;
     @ViewChild('backgroundFileInput') backgroundFileInputElement: ElementRef<HTMLInputElement>;
-    @ViewChild('entityView') entityView: ElementRef<HTMLElement>;
-    @ViewChild('entityViewContent') entityViewContentElement: ElementRef<HTMLElement>;
+    @ViewChild('entityView') entityViewElement: ElementRef<HTMLElement>;
 
     @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
     @HostListener('window:resize')
     onWindowResize(): void {
-        this._updateEntityViewContentScale();
+        this._updateEntityViewScale();
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);
@@ -52,7 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     isControlViewOpen: boolean = true;
     controlViewWidth: number;
     controlViewContentWidth: number;
-    entityViewContentScale: number;
+    entityViewScale: number;
 
     savePresetPopOverVisible: boolean;
 
@@ -88,10 +87,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.audioService.setUp(this.audioElement.nativeElement);
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1]);
 
-        this._barContentService.setEntityView(this.entityViewContentElement.nativeElement);
-        this._barcleContentService.setEntityView(this.entityViewContentElement.nativeElement);
-        this._circleContentService.setEntityView(this.entityViewContentElement.nativeElement);
-        this._imageContentService.setEntityView(this.entityViewContentElement.nativeElement);
+        this._barContentService.setEntityView(this.entityViewElement.nativeElement);
+        this._barcleContentService.setEntityView(this.entityViewElement.nativeElement);
+        this._circleContentService.setEntityView(this.entityViewElement.nativeElement);
+        this._imageContentService.setEntityView(this.entityViewElement.nativeElement);
 
         this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
         this.hiddenImages.changes.subscribe(() => {
@@ -99,7 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
 
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
-        setTimeout(() => this._updateEntityViewContentScale(), 500);
+        setTimeout(() => this._updateEntityViewScale(), 500);
     }
 
     onEntityViewClicked(): void {
@@ -115,12 +114,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isControlViewOpen = !this.isControlViewOpen;
 
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
-        this._updateEntityViewContentScale();
+        this._updateEntityViewScale();
     }
 
-    private _updateEntityViewContentScale(): void {
-        const entityViewWidth: number = this.entityViewContentElement.nativeElement.clientWidth;
-        this.entityViewContentScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
-        this._renderer.setStyle(this.entityViewContentElement.nativeElement, 'transform', `scale(${this.entityViewContentScale})`);
+    private _updateEntityViewScale(): void {
+        const entityViewWidth: number = this.entityViewElement.nativeElement.clientWidth;
+        this.entityViewScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
+        this._renderer.setStyle(this.entityViewElement.nativeElement, 'transform', `scale(${this.entityViewScale})`);
     }
 }

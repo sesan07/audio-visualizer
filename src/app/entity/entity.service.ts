@@ -142,58 +142,54 @@ export class EntityService {
     }
 
     setEntities(entities: Entity[]): void {
-        this._activeEntity = null;
         this.controllableEntities.length = 0; // Empty the array
         this.controllableEntities.push(...entities);
         this._currNameIndex = entities.length;
+        this.setActiveEntity(null)
     }
 
-    getCleanPreset(entity: Entity): Entity {
+    getAddPreset(entity: Entity): Entity {
         const entityClone: Entity = Object.assign({}, entity);
 
-        let entityContentClone: EntityContent;
         switch (entityClone.type) {
             case EntityType.BAR:
-                entityContentClone = this._barContentService.getCleanPreset(entityClone.entityContent as BarContent);
+                this._barContentService.setAddPreset(entityClone as Entity<BarContent>);
                 break;
             case EntityType.BARCLE:
-                entityContentClone = this._barcleContentService.getCleanPreset(entityClone.entityContent as BarcleContent);
+                this._barcleContentService.setAddPreset(entityClone as Entity<BarcleContent>);
                 break;
             case EntityType.CIRCLE:
-                entityContentClone = this._circleContentService.getCleanPreset(entityClone.entityContent as CircleContent);
+                this._circleContentService.setAddPreset(entityClone as Entity<CircleContent>);
                 break;
             case EntityType.IMAGE:
-                entityContentClone = this._imageContentService.getCleanPreset(entityClone.entityContent as ImageContent);
+                this._imageContentService.setAddPreset(entityClone as Entity<ImageContent>);
                 break;
             default:
                 throw new Error('Unknown entity type');
         }
-        entityClone.entityContent = entityContentClone;
 
         return entityClone;
     }
 
-    updatePreset(entity: Entity): Entity {
+    getLoadPreset(entity: Entity): Entity {
         const entityClone: Entity = Object.assign({}, entity);
 
-        let entityContentClone: EntityContent;
         switch (entityClone.type) {
             case EntityType.BAR:
-                entityContentClone = this._barContentService.updatePreset(entityClone.entityContent as BarContent);
+                this._barContentService.setLoadPreset(entityClone as Entity<BarContent>);
                 break;
             case EntityType.BARCLE:
-                entityContentClone = this._barcleContentService.updatePreset(entityClone.entityContent as BarcleContent);
+                this._barcleContentService.setLoadPreset(entityClone as Entity<BarcleContent>);
                 break;
             case EntityType.CIRCLE:
-                entityContentClone = this._circleContentService.updatePreset(entityClone.entityContent as CircleContent);
+                this._circleContentService.setLoadPreset(entityClone as Entity<CircleContent>);
                 break;
             case EntityType.IMAGE:
-                entityContentClone = this._imageContentService.updatePreset(entityClone.entityContent as ImageContent);
+                this._imageContentService.setLoadPreset(entityClone as Entity<ImageContent>);
                 break;
             default:
                 throw new Error('Unknown entity type');
         }
-        entityClone.entityContent = entityContentClone;
 
         return entityClone;
     }
