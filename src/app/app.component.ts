@@ -12,6 +12,7 @@ import { BarContentService } from './entity-content/bar/bar.content.service';
 import { BarcleContentService } from './entity-content/barcle/barcle.content.service';
 import { CircleContentService } from './entity-content/circle/circle.content.service';
 import { ImageContentService } from './entity-content/image/image.content.service';
+import { Source } from './shared/source-services/base.source.service.types';
 
 @Component({
     selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     addEntityOptions: EntityType[] = Object.values(EntityType);
     addEmitterOptions: EmitterType[] = Object.values(EmitterType);
 
+    currentAudioTime: number = 0;
     backgroundOpacity: number = 0.5;
     modeOptions: any[] = [
         {
@@ -101,6 +103,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         setTimeout(() => this._updateEntityViewScale(), 500);
     }
 
+    formatTime(seconds: number): string {
+        seconds = isNaN(seconds) ? 0 : seconds;
+        const hasHours: boolean = Math.floor(seconds / 3600) > 0;
+        return new Date(1000 * seconds).toISOString().substr(hasHours ? 11 : 14, hasHours ? 8 : 5);
+    }
+
     onEntityViewClicked(): void {
         this.entityService.setActiveEntity(null);
         this.emitterService.setActiveEmitter(null);
@@ -110,7 +118,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.audioService.setDecibelRange(this.decibelRange[0], this.decibelRange[1]);
     }
 
-    toggleControlView(): void {
+    onSongSelected(source: Source): void {
+        this.audioService.setActiveSource(source)
+        setTimeout(() => this.audioService.play());
+    }
+
+    onToggleControlView(): void {
         this.isControlViewOpen = !this.isControlViewOpen;
 
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;

@@ -1,4 +1,7 @@
-<audio #audio [src]="audioService.activeSource.src" (ended)="this.audioService.playNextSong()"></audio>
+<audio #audio
+       [src]="audioService.activeSource.src"
+       (ended)="audioService.playNextSong()"
+       (timeupdate)="currentAudioTime = audio.currentTime"></audio>
 <div [style]="{ display: 'none' }">
     <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
 </div>
@@ -7,7 +10,7 @@
      (mousedown)="onEntityViewClicked()">
     <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8 }"
             nz-button nzType="primary" title="Toggle"
-            (click)="toggleControlView()">
+            (click)="onToggleControlView()">
         <i nz-icon [ngStyle]="{ transform: isControlViewOpen ? 'rotate(0deg)' : 'rotate(-180deg)' }" [nzType]="'right'"></i>
     </button>
     <div #entityView class="entity-view">
@@ -33,16 +36,24 @@
 <div class="control-view" [ngStyle]="{ 'width.px': controlViewWidth }">
     <div class="control-view-content" [ngStyle]="{ 'min-width.px': controlViewContentWidth }">
         <div class="card">
-            <div class="media-controls">
-                <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="audioService.playPreviousSong()">
-                    <i nz-icon nzType="step-backward"></i>
-                </button>
-                <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="isPlaying ? audioService.pause() : audioService.play()">
-                    <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
-                </button>
-                <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="audioService.playNextSong()">
-                    <i nz-icon nzType="step-forward"></i>
-                </button>
+            <div class="media">
+                <div class="media-buttons">
+                    <button class="secondary-media-btn" nz-button nzShape="circle" title="Next" (click)="audioService.playPreviousSong()">
+                        <i nz-icon nzType="step-backward"></i>
+                    </button>
+                    <button class="primary-media-btn" nz-button nzType="primary" [title]="isPlaying ? 'Pause' : 'Play'" nzShape="circle" (click)="isPlaying ? audioService.pause() : audioService.play()">
+                        <i nz-icon [nzType]="isPlaying ? 'pause' : 'caret-right'"></i>
+                    </button>
+                    <button class="secondary-media-btn" nz-button nzShape="circle" title="Previous" (click)="audioService.playNextSong()">
+                        <i nz-icon nzType="step-forward"></i>
+                    </button>
+                </div>
+                <div class="media-song-name">{{audioService.activeSource.name}}</div>
+                <div class="media-slider-wrapper">
+                    <span class="slider-text">{{formatTime(currentAudioTime)}}</span>
+                    <nz-slider [ngModel]="currentAudioTime" [nzStep]="0.1" [nzMin]="0" [nzMax]="audio.duration" [nzTipFormatter]="formatTime" (ngModelChange)="audio.currentTime = $event"></nz-slider>
+                    <span class="slider-text">{{formatTime(audio.duration)}}</span>
+                </div>
             </div>
             <nz-collapse>
                 <nz-collapse-panel  class="control-group" nzHeader="Options">
@@ -80,7 +91,7 @@
                                            popoverTitle="Add Song"
                                            [activeSource]="audioService.activeSource"
                                            [sources]="audioService.sources"
-                                           (activeSourceChanged)="audioService.setActiveSource($event)"
+                                           (activeSourceChanged)="onSongSelected($event)"
                                            (addFile)="audioService.addFileSource($event.name, $event.file)">
                         </app-source-picker>
                     </app-control-line>

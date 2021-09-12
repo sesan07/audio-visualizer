@@ -54,7 +54,7 @@ nz-radio-group {
 }
 
 .control-content {
-    nz-slider, .name-edit-text {
+    .name-edit-text {
         flex-grow: 1;
     }
 
@@ -62,6 +62,10 @@ nz-radio-group {
         width: 2rem;
         text-align: center;
     }
+}
+
+nz-slider {
+    flex-grow: 1;
 }
 
 .entity-canvas {
