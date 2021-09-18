@@ -8,7 +8,7 @@
 
 <div class="entity-view-container"
      (mousedown)="onEntityViewClicked()">
-    <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8 }"
+    <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8, 'opacity': toggleButtonOpacity }"
             nz-button nzType="primary" title="Toggle"
             (click)="onToggleControlView()">
         <i nz-icon [ngStyle]="{ transform: isControlViewOpen ? 'rotate(0deg)' : 'rotate(-180deg)' }" [nzType]="'right'"></i>

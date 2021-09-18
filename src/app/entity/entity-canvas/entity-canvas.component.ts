@@ -204,14 +204,13 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         return targetEntity;
     }
 
-    private _canResize(entity: Entity, point: Point): boolean {
+    private _getResizeEdge(entity: Entity, point: Point): ResizeEdge {
         const rightEdgeLeft: number = entity.left + entity.width - this._resizeEdgeSize;
         const rightEdgeTop: number = entity.top;
         const isInTopRightX: boolean = point.x > rightEdgeLeft && point.x <= rightEdgeLeft + this._resizeEdgeSize;
         const isInTopRightY: boolean = point.y > rightEdgeTop && point.y <= rightEdgeTop + entity.height;
         if (isInTopRightX && isInTopRightY) {
-            this._currResizeEdge = ResizeEdge.RIGHT;
-            return true;
+            return ResizeEdge.RIGHT;
         }
 
         const bottomEdgeLeft: number = entity.left;
@@ -219,11 +218,8 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         const isInTopLeftX: boolean = point.x > bottomEdgeLeft && point.x <= bottomEdgeLeft + entity.width;
         const isInTopLeftY: boolean = point.y > bottomEdgeTop && point.y <= bottomEdgeTop + this._resizeEdgeSize;
         if (isInTopLeftX && isInTopLeftY) {
-            this._currResizeEdge = ResizeEdge.BOTTOM;
-            return true;
+            return ResizeEdge.BOTTOM;
         }
-
-        return false;
     }
 
     private _canMove(entity: Entity, point: Point): boolean {
@@ -236,31 +232,25 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     private _dragActiveEntity(point: Point): void {
         this._activeEntity.left += point.x - this._prevPoint.x;
         this._activeEntity.top += point.y - this._prevPoint.y;
-
-        this._prevPoint = point;
     }
 
     private _resizeActiveEntity(point: Point): void {
-        if (point.x < this._activeEntity.left || point.y < this._activeEntity.top) {
-            return;
-        }
-
         switch (this._currResizeEdge) {
             case ResizeEdge.BOTTOM:
                 // Scale based on height
                 const deltaY: number = point.y - this._prevPoint.y;
-                this._activeEntity.scale = ((this._activeEntity.height + deltaY) * this._activeEntity.scale) / this._activeEntity.height
+                const finalDeltaY: number = Math.max(this._activeEntity.height + deltaY, this._resizeEdgeSize)
+                this._activeEntity.scale = ((finalDeltaY) * this._activeEntity.scale) / this._activeEntity.height
                 this._entityService.setEntityDimensions(this._activeEntity);
                 break;
             case ResizeEdge.RIGHT:
                 // Scale based on width
                 const deltaX: number = point.x - this._prevPoint.x;
-                this._activeEntity.scale = ((this._activeEntity.width + deltaX) * this._activeEntity.scale) / this._activeEntity.width
+                const finalDeltaX: number = Math.max(this._activeEntity.width + deltaX, this._resizeEdgeSize)
+                this._activeEntity.scale = ((finalDeltaX) * this._activeEntity.scale) / this._activeEntity.width
                 this._entityService.setEntityDimensions(this._activeEntity);
                 break;
         }
-
-        this._prevPoint = point;
     }
 
     private _onViewMouseDown(event: MouseEvent): void {
@@ -307,7 +297,9 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _onInteractionStart(point: Point): void {
-        if (this._canResize(this._activeEntity, point)) {
+        const resizeEdge: ResizeEdge = this._getResizeEdge(this._activeEntity, point)
+        if (resizeEdge) {
+            this._currResizeEdge = resizeEdge
             this._isResizing = true;
         } else {
             this._isDragging = true;
@@ -322,6 +314,8 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (this._isDragging) {
             this._dragActiveEntity(point);
         }
+
+        this._prevPoint = point;
     }
 
     private _onInteractionEnd(): void {
@@ -339,7 +333,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             const entity: Entity = this.entities[i];
 
             if (!isEntityFound) {
-                const showResize: boolean = entity.showResizeCursor = this._canResize(entity, point) || this._isResizing;
+                const showResize: boolean = entity.showResizeCursor = !!this._getResizeEdge(entity, point) || this._isResizing;
                 const showMove: boolean = entity.showMoveCursor = this._canMove(entity, point);
                 isEntityFound = showResize || showMove;
             } else {

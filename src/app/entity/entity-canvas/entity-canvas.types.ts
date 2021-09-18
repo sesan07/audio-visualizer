@@ -1,6 +1,6 @@
 export enum ResizeEdge {
-    BOTTOM,
-    RIGHT,
+    BOTTOM = 'Bottom',
+    RIGHT = 'Right',
 }
 
 export interface Point {

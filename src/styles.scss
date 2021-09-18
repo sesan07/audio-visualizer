@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+html, body {
+    overscroll-behavior: none; // remove swiping
+}
+
 .card {
     display: flex;
     flex-direction: column;

@@ -24,6 +24,8 @@ import { BarcleContentService } from './entity-content/barcle/barcle.content.ser
 import { CircleContentService } from './entity-content/circle/circle.content.service';
 import { ImageContentService } from './entity-content/image/image.content.service';
 import { Source } from './shared/source-services/base.source.service.types';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -55,6 +57,9 @@ export class AppComponent implements OnInit, AfterViewInit {
             : showMoveCursor
                 ? 'move'
                 : 'auto';
+
+        this.toggleButtonOpacity = 1;
+        this._mouseMove$.next();
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);
@@ -74,6 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     ];
     decibelRange: [ number, number ] = [ -80, -20 ];
 
+    toggleButtonOpacity: number = 1;
     isControlViewOpen: boolean = true;
     controlViewWidth: number;
     controlViewContentWidth: number;
@@ -82,6 +88,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     savePresetPopOverVisible: boolean;
 
     private readonly _controlViewWidth: number = 500;
+    private _mouseMove$: Subject<void> = new Subject();
 
     get isPlaying(): boolean {
         return this.audioElement ? !this.audioElement.nativeElement.paused : false;
@@ -107,6 +114,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this.controlViewContentWidth = this._controlViewWidth;
+
+        this._mouseMove$.pipe(debounceTime(1500)).subscribe(() => this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0)
     }
 
     ngAfterViewInit(): void {
