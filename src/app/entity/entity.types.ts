@@ -38,4 +38,6 @@ export interface Entity<T extends EntityContent = EntityContent> {
     entityContent: T;
     presetX?: number;
     presetY?: number;
+    showResizeCursor?: boolean;
+    showMoveCursor?: boolean;
 }

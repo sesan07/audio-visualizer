@@ -17,14 +17,6 @@
   width: 100%;
 }
 
-.emitter {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-}
-
 .entity-view {
   position: relative;
   left: 0;
@@ -38,7 +30,7 @@
 .control-view {
   position: fixed;
   right: 0;
-  z-index: 3;
+  z-index: 2;
   height: 100%;
   background-color: #1F1F1F;
   transition: width .5s;
@@ -55,7 +47,7 @@
 
 .control-view-toggle {
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   height: 80px;
   width: 80px;
   right: 0;
@@ -66,11 +58,6 @@
     font-size: 35px;
     transition: .5s;
   }
-}
-
-.entity-emitter {
-  z-index: 1;
-  transition: transform 0.1s;
 }
 
 .media-buttons {
@@ -117,4 +104,8 @@ nz-radio-group.control-content {
     flex-grow: 1;
     text-align: center;
   }
+}
+
+.hidden-images {
+  display: none;
 }

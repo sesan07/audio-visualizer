@@ -2,7 +2,7 @@
        [src]="audioService.activeSource.src"
        (ended)="audioService.playNextSong()"
        (timeupdate)="currentAudioTime = audio.currentTime"></audio>
-<div [style]="{ display: 'none' }">
+<div class="hidden-images">
     <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
 </div>
 
@@ -24,11 +24,10 @@
                      [emitter]="config"
                      [viewScale]="entityViewScale">
         </app-emitter>
-        <app-entity-canvas class="entity-canvas"
-                           [allowInteraction]="true"
+        <app-entity-canvas [allowInteraction]="true"
                            [entities]="entityService.controllableEntities"
-                           [viewScale]="entityViewScale"
-                           (entitySelected)="entityService.setActiveEntity($event)">
+                           [viewElement]="entityView"
+                           [viewScale]="entityViewScale">
         </app-entity-canvas>
     </div>
 </div>
@@ -129,7 +128,7 @@
 
         <app-controller-wrapper type="entity"
                                 [configs]="entityService.controllableEntities.slice().reverse()"
-                                [activeConfig]="entityService.activeEntity"
+                                [activeConfig]="entityService.activeEntity$ | async"
                                 [addOptions]="addEntityOptions"
                                 (configSelect)="entityService.setActiveEntity($event)"
                                 (add)="entityService.addEntity($event)"
@@ -140,7 +139,7 @@
 
         <app-controller-wrapper type="emitter"
                                 [configs]="emitterService.emitters.slice().reverse()"
-                                [activeConfig]="emitterService.activeEmitter"
+                                [activeConfig]="emitterService.activeEmitter$ | async"
                                 [addOptions]="addEmitterOptions"
                                 (configSelect)="emitterService.setActiveEmitter($event)"
                                 (add)="emitterService.addEmitter($event)"

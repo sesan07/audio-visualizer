@@ -16,7 +16,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
     constructor(protected _canvasContext: CanvasRenderingContext2D, protected _oomph: Oomph) {
     }
 
-    public animate(entity: Entity<T>): void {
+    animate(entity: Entity<T>): void {
         this._animateEntity(entity);
         this._animateContent(entity);
         this._updateOpacity(entity);
@@ -31,20 +31,20 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
 
     protected abstract _animateContent(entity: Entity<T>): void;
 
-    private _animateEntity(entity: Entity<T>): void {
+    private _animateEntity(entity: Entity): void {
         this._move(entity);
         this._setEntityProperties(entity);
         this._rotate(entity);
     }
 
-    private _drawSelectionBorder(entity: Entity<T>): void {
+    private _drawSelectionBorder(entity: Entity): void {
         this._canvasContext.globalAlpha = 1;
         this._canvasContext.shadowBlur = 0;
         this._canvasContext.strokeStyle = 'yellow';
         this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
     }
 
-    private _move(entity: Entity<T>): void {
+    private _move(entity: Entity): void {
         if (entity.animateMovement) {
             const movementAngleRadians = getRadians(entity.movementAngle);
             entity.left = entity.left + entity.movementSpeed * Math.cos(movementAngleRadians);
@@ -52,7 +52,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
         }
     }
 
-    private _rotate(entity: Entity<T>): void {
+    private _rotate(entity: Entity): void {
         if (entity.animateRotation && entity.rotationDirection === 'Right') {
             entity.rotation = (entity.rotation + entity.rotationSpeed) % 360;
         } else if (entity.animateRotation && entity.rotationDirection === 'Left') {
@@ -64,7 +64,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
         this._canvasContext.translate(-this._centerX, -this._centerY);
     }
 
-    private _setEntityProperties(entity: Entity<T>): void {
+    private _setEntityProperties(entity: Entity): void {
         const oomphScale: number = 1 + (this._oomph.value * entity.oomphAmount);
         this._scale = entity.scale * oomphScale;
         this._scaledWidth = entity.width * oomphScale;

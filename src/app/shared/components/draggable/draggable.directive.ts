@@ -29,18 +29,29 @@ export class DraggableDirective implements AfterViewInit {
         this._dragOffsetLeft = this._left - event.clientX / this.viewScale;
         this._dragOffsetTop = this._top - event.clientY / this.viewScale;
 
-        this._stopMouseMoveListener = this._renderer.listen('window', 'mousemove', event => this._drag(event));
-        this._stopMouseUpListener = this._renderer.listen('window', 'mouseup', () => this._stopMouseListeners());
+        this._stopMouseMoveListener = this._renderer.listen('window', 'mousemove', event =>
+            this._drag(event)
+        );
+        this._stopMouseUpListener = this._renderer.listen('window', 'mouseup', () => {
+            this._stopMouseMoveListener();
+            this._stopMouseUpListener();
+        });
     }
 
     @HostListener('touchstart', [ '$event' ])
     onTouchStart(event: TouchEvent): void {
+        event.stopPropagation();
         const firstTouch: Touch = event.touches.item(0);
         this._dragOffsetLeft = this._left - firstTouch.clientX / this.viewScale;
         this._dragOffsetTop = this._top - firstTouch.clientY / this.viewScale;
 
-        this._stopTouchMoveListener = this._renderer.listen('window', 'touchmove', event => this._drag(event.touches.item(0)));
-        this._stopTouchEndListener = this._renderer.listen('window', 'touchend', () => this._stopTouchListeners());
+        this._stopTouchMoveListener = this._renderer.listen('window', 'touchmove', event =>
+            this._drag(event.touches.item(0))
+        );
+        this._stopTouchEndListener = this._renderer.listen('window', 'touchend', () => {
+            this._stopTouchMoveListener();
+            this._stopTouchEndListener();
+        });
     }
 
     constructor(private _renderer: Renderer2,
@@ -63,16 +74,6 @@ export class DraggableDirective implements AfterViewInit {
         const left = source.clientX / this.viewScale + this._dragOffsetLeft;
         const top = source.clientY / this.viewScale + this._dragOffsetTop;
         this._setPosition(left, top);
-    }
-
-    private _stopMouseListeners(): void {
-        this._stopMouseMoveListener();
-        this._stopMouseUpListener();
-    }
-
-    private _stopTouchListeners(): void {
-        this._stopTouchMoveListener();
-        this._stopTouchEndListener();
     }
 
 }

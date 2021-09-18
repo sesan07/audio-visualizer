@@ -9,6 +9,7 @@ import { ImageContentService } from '../entity-content/image/image.content.servi
 import { CircleContent } from '../entity-content/circle/circle.content.types';
 import { BarContent } from '../entity-content/bar/bar.content.types';
 import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +17,9 @@ import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
 export class EntityService {
     controllableEntities: Entity[] = [];
 
-    get activeEntity(): Entity {
-        return this._activeEntity;
-    }
+    private _activeEntity$: BehaviorSubject<Entity> = new BehaviorSubject(null);
+    activeEntity$: Observable<Entity> = this._activeEntity$.asObservable();
 
-    private _activeEntity: Entity;
     private _currNameIndex: number = 0;
 
     constructor(private _audioService: AudioSourceService,
@@ -123,7 +122,7 @@ export class EntityService {
         const index = this.controllableEntities.indexOf(entity);
         this.controllableEntities.splice(index, 1);
 
-        if (entity === this._activeEntity) {
+        if (entity === this._activeEntity$.value) {
             this.setActiveEntity(null);
         }
     }
@@ -132,7 +131,7 @@ export class EntityService {
         if (entity) {
             entity.isSelected = true;
         }
-        this._activeEntity = entity;
+        this._activeEntity$.next(entity)
 
         this.controllableEntities.forEach(e => {
             if (e !== entity) {
@@ -150,6 +149,7 @@ export class EntityService {
 
     getAddPreset(entity: Entity): Entity {
         const entityClone: Entity = Object.assign({}, entity);
+        delete entityClone.showResizeCursor;
 
         switch (entityClone.type) {
             case EntityType.BAR:
@@ -195,7 +195,7 @@ export class EntityService {
     }
 
     duplicateActive(): void {
-        const entityClone: Entity = Object.assign({}, this._activeEntity);
+        const entityClone: Entity = Object.assign({}, this._activeEntity$.value);
         entityClone.name = this._getNextName(entityClone.type);
         entityClone.entityContent = Object.assign({}, entityClone.entityContent);
         this.setEntityPosition(entityClone);

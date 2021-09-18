@@ -21,7 +21,7 @@ export class ImageContentService extends BaseContentService<ImageContent> {
     }
 
     setEntityDimensions(entity: Entity<ImageContent>): void {
-        entity.height = 250;
+        entity.height = 500 * entity.scale;
 
         const content: ImageContent = entity.entityContent;
         const heightRatio: number = entity.height / content.element.height;

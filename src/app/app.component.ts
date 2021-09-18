@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostBinding,
+    HostListener,
+    OnInit,
+    QueryList,
+    Renderer2,
+    ViewChild,
+    ViewChildren
+} from '@angular/core';
 import { EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
 import { AudioSourceService } from './shared/source-services/audio.source.service';
@@ -28,9 +39,22 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
+    @HostBinding('style.cursor') cursor: string = 'auto';
+
     @HostListener('window:resize')
     onWindowResize(): void {
         this._updateEntityViewScale();
+    }
+
+    @HostListener('mousemove')
+    onMouseMove(): void {
+        const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor)
+        const showMoveCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showMoveCursor)
+        this.cursor = showResizeCursor
+            ? 'nwse-resize'
+            : showMoveCursor
+                ? 'move'
+                : 'auto';
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);

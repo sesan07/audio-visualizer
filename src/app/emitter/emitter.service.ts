@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { EmitterType, Emitter } from './emitter.types';
 import { EntityType, Entity, EntityContent } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -9,11 +10,9 @@ import { EntityService } from '../entity/entity.service';
 export class EmitterService {
     emitters: Emitter[] = [];
 
-    get activeEmitter(): Emitter {
-        return this._activeEmitter;
-    }
+    private _activeEmitter$: BehaviorSubject<Emitter> = new BehaviorSubject(null);
+    activeEmitter$: Observable<Emitter> = this._activeEmitter$.asObservable();
 
-    private _activeEmitter: Emitter;
     private _currNameIndex: number = 0;
 
     constructor(private _entityService: EntityService) {
@@ -42,7 +41,7 @@ export class EmitterService {
     removeEmitter(emitter: Emitter): void {
         const index: number = this.emitters.indexOf(emitter);
         this.emitters.splice(index, 1);
-        if (emitter === this._activeEmitter) {
+        if (emitter === this._activeEmitter$.value) {
             this.setActiveEmitter(null);
         }
     }
@@ -51,7 +50,7 @@ export class EmitterService {
         if (emitter) {
             emitter.isSelected = true;
         }
-        this._activeEmitter = emitter;
+        this._activeEmitter$.next(emitter)
 
         this.emitters.forEach(e => {
             if (e !== emitter) {
@@ -80,7 +79,7 @@ export class EmitterService {
     }
 
     duplicateActive(): void {
-        const emitterClone: Emitter = Object.assign({}, this._activeEmitter);
+        const emitterClone: Emitter = Object.assign({}, this._activeEmitter$.value);
         emitterClone.name = `Emitter ${this._currNameIndex++}`;
         emitterClone.entity = Object.assign({}, emitterClone.entity);
         emitterClone.entity.entityContent = Object.assign({}, emitterClone.entity.entityContent);
