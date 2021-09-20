@@ -45,7 +45,7 @@ export class EmitterComponent implements AfterViewInit, OnDestroy {
     }
 
     private _emitEntities(): void {
-        for (let i = 0; i < this.emitter.amount; i++) {
+        for (let i: number = 0; i < this.emitter.amount; i++) {
             this._emitEntity();
         }
         this._timeoutRef = setTimeout(() => this._emitEntities(), this.emitter.interval * 1000);
@@ -57,8 +57,8 @@ export class EmitterComponent implements AfterViewInit, OnDestroy {
 
         // Set position
         if (this.emitter.type === EmitterType.POINT) {
-            const centerX = this.handleDirective.left + this.handleElement.nativeElement.clientWidth / 2;
-            const centerY = this.handleDirective.top + this.handleElement.nativeElement.clientHeight / 2;
+            const centerX: number = this.handleDirective.left + this.handleElement.nativeElement.clientWidth / 2;
+            const centerY: number = this.handleDirective.top + this.handleElement.nativeElement.clientHeight / 2;
             this._entityService.setEntityPosition(entity, centerX, centerY);
         } else {
             this._entityService.setEntityPosition(entity);

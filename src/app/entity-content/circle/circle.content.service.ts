@@ -47,13 +47,13 @@ export class CircleContentService extends BaseContentService<CircleContent> {
     }
 
     protected _getAddPreset(content: CircleContent): CircleContent {
-        const contentClone = Object.assign({}, content);
+        const contentClone: CircleContent = Object.assign({}, content);
         delete contentClone.amplitudes;
         return contentClone;
     }
 
     protected _getLoadPreset(content: CircleContent): CircleContent {
-        const contentClone = Object.assign({}, content);
+        const contentClone: CircleContent = Object.assign({}, content);
         contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
         return contentClone;
     }

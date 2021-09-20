@@ -2,9 +2,6 @@
        [src]="audioService.activeSource.src"
        (ended)="audioService.playNextSong()"
        (timeupdate)="currentAudioTime = audio.currentTime"></audio>
-<div class="hidden-images">
-    <img #hiddenImage *ngFor="let image of imageService.sources" [id]="image.id" [src]="image.src" [alt]="image.name">
-</div>
 
 <div class="entity-view-container"
      (mousedown)="onEntityViewClicked()">
@@ -103,7 +100,7 @@
                                            [sources]="backgroundImageService.sources"
                                            (activeSourceChanged)="backgroundImageService.setActiveSource($event)"
                                            (addFile)="backgroundImageService.addFileSource($event.name, $event.file)"
-                                           (addUrl)="backgroundImageService.addUrlSource($event.name,$event.url)">
+                                           (addUrl)="backgroundImageService.addUrlSource($event.name, $event.url)">
                         </app-source-picker>
                     </app-control-line>
                     <app-control-line name="Background Opacity">

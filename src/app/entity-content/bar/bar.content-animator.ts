@@ -15,7 +15,7 @@ export class BarContentAnimator extends BaseContentAnimator<BarContent> {
         this._canvasContext.shadowColor = strokeColor;
         this._canvasContext.strokeStyle = strokeColor;
 
-        let currPos = this._scaledLeft;
+        let currPos: number = this._scaledLeft;
         content.amplitudes.forEach(amplitude => {
             const gradientColor: RGB = getGradientColor(content.startColor, content.endColor, (amplitude / 255));
             amplitude *= content.multiplier * this._scale;

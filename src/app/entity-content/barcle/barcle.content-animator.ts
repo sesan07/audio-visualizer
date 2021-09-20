@@ -18,13 +18,13 @@ export class BarcleContentAnimator extends BaseContentAnimator<BarcleContent> {
         const sampleAngle: number = (getRadians(360) / content.sampleCount) / 2;
         let currAngle: number = getRadians(90) + sampleAngle / 2;
         // Reverse to turn visualization upside down
-        for (let i = 0; i < content.amplitudes.length; i++) {
+        for (let i: number = 0; i < content.amplitudes.length; i++) {
             const amplitude: number = content.amplitudes[i];
             const radius: number = (content.baseRadius + content.ringSize + amplitude * content.multiplier) * this._scale;
-            const startAngle = currAngle - sampleAngle / 2;
-            const endAngle = currAngle + sampleAngle / 2;
-            const startAngle2 = Math.PI - currAngle - sampleAngle / 2;
-            const endAngle2 = Math.PI - currAngle + sampleAngle / 2;
+            const startAngle: number = currAngle - sampleAngle / 2;
+            const endAngle: number = currAngle + sampleAngle / 2;
+            const startAngle2: number = Math.PI - currAngle - sampleAngle / 2;
+            const endAngle2: number = Math.PI - currAngle + sampleAngle / 2;
 
             const gradientColor: RGB = getGradientColor(content.startColor, content.endColor, (amplitude / 255));
             this._drawBar(startAngle, endAngle, radius, content.baseRadius * this._scale, gradientColor);

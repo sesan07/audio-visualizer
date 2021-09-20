@@ -71,8 +71,8 @@ export class DraggableDirective implements AfterViewInit {
     }
 
     private _drag(source: MouseEvent | Touch): void {
-        const left = source.clientX / this.viewScale + this._dragOffsetLeft;
-        const top = source.clientY / this.viewScale + this._dragOffsetTop;
+        const left: number = source.clientX / this.viewScale + this._dragOffsetLeft;
+        const top: number = source.clientY / this.viewScale + this._dragOffsetTop;
         this._setPosition(left, top);
     }
 

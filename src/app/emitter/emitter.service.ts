@@ -50,7 +50,7 @@ export class EmitterService {
         if (emitter) {
             emitter.isSelected = true;
         }
-        this._activeEmitter$.next(emitter)
+        this._activeEmitter$.next(emitter);
 
         this.emitters.forEach(e => {
             if (e !== emitter) {

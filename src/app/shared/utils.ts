@@ -9,10 +9,10 @@ export function getRadians(degrees: number): number {
     return Math.PI / 180 * degrees;
 }
 
-export function getGradientColor(startColor: RGBA, endColor: RGBA, fadePercent): RGBA {
-    let diffRed = endColor.r - startColor.r;
-    let diffGreen = endColor.g - startColor.g;
-    let diffBlue = endColor.b - startColor.b;
+export function getGradientColor(startColor: RGBA, endColor: RGBA, fadePercent: number): RGBA {
+    let diffRed: number = endColor.r - startColor.r;
+    let diffGreen: number = endColor.g - startColor.g;
+    let diffBlue: number = endColor.b - startColor.b;
 
     diffRed = (diffRed * fadePercent) + startColor.r;
     diffGreen = (diffGreen * fadePercent) + startColor.g;

@@ -52,13 +52,13 @@ export class BarContentService extends BaseContentService<BarContent> {
     }
 
     protected _getAddPreset(config: BarContent): BarContent {
-        const configClone = Object.assign({}, config);
+        const configClone: BarContent = Object.assign({}, config);
         delete configClone.amplitudes;
         return configClone;
     }
 
     protected _getLoadPreset(config: BarContent): BarContent {
-        const configClone = Object.assign({}, config);
+        const configClone: BarContent = Object.assign({}, config);
         configClone.amplitudes = this._audioService.getAmplitudes(configClone.sampleCount);
         return configClone;
     }

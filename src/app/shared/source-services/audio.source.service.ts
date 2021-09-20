@@ -32,8 +32,6 @@ export class AudioSourceService extends BaseSourceService {
     mode: AnalyserMode = 'frequency';
     oomph: Oomph;
 
-    protected _idPrefix = 'audio';
-
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
@@ -47,7 +45,6 @@ export class AudioSourceService extends BaseSourceService {
 
     constructor(private _ngZone: NgZone, sanitizer: DomSanitizer, messageService: NzMessageService) {
         super(sanitizer, messageService);
-        this.sources.forEach(source => source.id = `${this._idPrefix}-${this._currIdIndex++}`);
         this.setUpAmplitudes();
     }
 
@@ -134,6 +131,19 @@ export class AudioSourceService extends BaseSourceService {
 
         this._updateAmplitudes();
     }
+
+    setActiveSource(source: Source): void {
+        if (this.activeSource?.objectUrl) {
+            this._unloadFileSource(this.activeSource);
+        }
+
+        this.activeSource = source;
+        if (this.activeSource.file) {
+            this._loadFileSource(this.activeSource);
+        }
+    }
+
+    protected _onSourceAdded(source: Source): void {}
 
     private _updateAmplitudes(): void {
         this._ngZone.runOutsideAngular(() => {

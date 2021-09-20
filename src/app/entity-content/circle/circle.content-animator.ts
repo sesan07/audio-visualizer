@@ -18,7 +18,7 @@ export class CircleContentAnimator extends BaseContentAnimator<CircleContent> {
         const sampleAngle: number = (getRadians(360) / content.sampleCount) / 2;
         let currAngle: number = getRadians(90) + sampleAngle / 2;
         // Reverse to turn visualization upside down
-        for (let i = 0; i < content.amplitudes.length; i++) {
+        for (let i: number = 0; i < content.amplitudes.length; i++) {
             const amplitude: number = content.amplitudes[i];
             const radius: number = (content.baseRadius + amplitude * content.multiplier) * this._scale;
             const xLeft: number = this._centerX + radius * Math.cos(currAngle);

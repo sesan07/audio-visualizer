@@ -10,14 +10,11 @@ export abstract class BaseSourceService {
     sources: Source[] = [];
     activeSource: Source;
 
-    protected abstract _idPrefix: string;
-    protected _currIdIndex: number = 0;
-
     protected constructor(private _sanitizer: DomSanitizer,
                           private _messageService: NzMessageService) {
     }
 
-    addFileSource(name: string, file: File, loadFile?: boolean): void {
+    addFileSource(name: string, file: File): void {
         if (!file) {
             this._showNotification(false);
             return;
@@ -29,15 +26,11 @@ export abstract class BaseSourceService {
         if (isNewFile) {
             const newSource: Source = {
                 name,
-                file,
-                id: `${this._idPrefix}-${this._currIdIndex++}`,
+                file
             };
 
-            if (loadFile) {
-                this.loadFileSource(newSource);
-            }
-
             this.sources.push(newSource);
+            this._onSourceAdded(newSource);
         }
 
         this._showNotification(isNewFile);
@@ -53,38 +46,30 @@ export abstract class BaseSourceService {
         if (existingSource) {
             existingSource.name = name || url.split('/').pop();
         } else {
-            this.sources.push({
-                url,
-                id: `${this._idPrefix}-${this._currIdIndex++}`,
-                src: url,
-                name: name || url.split('/').pop()
-            });
+            const newSource: Source = {
+                name,
+                url
+            };
+
+            this.sources.push(newSource);
+            this._onSourceAdded(newSource);
         }
         this._showNotification(true);
     }
 
-    loadFileSource(source: Source): void {
+    protected abstract _onSourceAdded(source: Source): void;
+
+    protected _loadFileSource(source: Source): void {
         source.objectUrl = URL.createObjectURL(source.file);
         source.src = this._sanitizer.bypassSecurityTrustUrl(source.objectUrl);
     }
 
-    unloadFileSource(source: Source): void {
+    protected _unloadFileSource(source: Source): void {
         URL.revokeObjectURL(source.objectUrl);
         source.objectUrl = null;
     }
 
-    setActiveSource(source: Source): void {
-        if (this.activeSource?.objectUrl) {
-            this.unloadFileSource(this.activeSource);
-        }
-
-        this.activeSource = source;
-        if (this.activeSource.file) {
-            this.loadFileSource(this.activeSource);
-        }
-    }
-
-    private _showNotification(isSuccessful): void {
+    private _showNotification(isSuccessful: boolean): void {
         isSuccessful ? this._messageService.success('Source added') : this._messageService.info('No source added');
     }
 }

@@ -18,7 +18,6 @@ import { EmitterType } from './emitter/emitter.types';
 import { EmitterService } from './emitter/emitter.service';
 import { BackgroundImageSourceService } from './shared/source-services/background-image.source.service';
 import { PresetService } from './shared/preset-service/preset.service';
-import { ImageSourceService } from './shared/source-services/image.source.service';
 import { BarContentService } from './entity-content/bar/bar.content.service';
 import { BarcleContentService } from './entity-content/barcle/barcle.content.service';
 import { CircleContentService } from './entity-content/circle/circle.content.service';
@@ -50,8 +49,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @HostListener('mousemove')
     onMouseMove(): void {
-        const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor)
-        const showMoveCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showMoveCursor)
+        const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor);
+        const showMoveCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showMoveCursor);
         this.cursor = showResizeCursor
             ? 'nwse-resize'
             : showMoveCursor
@@ -99,7 +98,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 public entityService: EntityService,
                 public emitterService: EmitterService,
                 public presetService: PresetService,
-                public imageService: ImageSourceService,
                 private _barContentService: BarContentService,
                 private _barcleContentService: BarcleContentService,
                 private _circleContentService: CircleContentService,
@@ -115,7 +113,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this.controlViewContentWidth = this._controlViewWidth;
 
-        this._mouseMove$.pipe(debounceTime(1500)).subscribe(() => this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0)
+        this._mouseMove$.pipe(debounceTime(1500))
+            .subscribe(() => this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0);
     }
 
     ngAfterViewInit(): void {
@@ -126,11 +125,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this._barcleContentService.setEntityView(this.entityViewElement.nativeElement);
         this._circleContentService.setEntityView(this.entityViewElement.nativeElement);
         this._imageContentService.setEntityView(this.entityViewElement.nativeElement);
-
-        this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
-        this.hiddenImages.changes.subscribe(() => {
-            this.imageService.setImageElements(this.hiddenImages.map(ref => ref.nativeElement));
-        });
 
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
         setTimeout(() => this._updateEntityViewScale(), 500);
@@ -152,7 +146,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     onSongSelected(source: Source): void {
-        this.audioService.setActiveSource(source)
+        this.audioService.setActiveSource(source);
         setTimeout(() => this.audioService.play());
     }
 

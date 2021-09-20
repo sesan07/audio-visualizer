@@ -10,7 +10,7 @@ import { EntityService } from '../entity.service';
 export class EntityControllerComponent {
     @Input() entity: Entity;
 
-    EntityType = EntityType;
+    EntityType: typeof EntityType = EntityType;
     entityTypeOptions: EntityType[] = Object.values(EntityType);
     nameEditPopOverVisible: boolean;
 

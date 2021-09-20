@@ -11,7 +11,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
     protected _centerX: number;
     protected _centerY: number;
 
-    private readonly _opacityChangeSpeed = 0.03;
+    private readonly _opacityChangeSpeed: number = 0.03;
 
     constructor(protected _canvasContext: CanvasRenderingContext2D, protected _oomph: Oomph) {
     }
@@ -46,7 +46,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
 
     private _move(entity: Entity): void {
         if (entity.animateMovement) {
-            const movementAngleRadians = getRadians(entity.movementAngle);
+            const movementAngleRadians: number = getRadians(entity.movementAngle);
             entity.left = entity.left + entity.movementSpeed * Math.cos(movementAngleRadians);
             entity.top = entity.top + entity.movementSpeed * Math.sin(movementAngleRadians);
         }

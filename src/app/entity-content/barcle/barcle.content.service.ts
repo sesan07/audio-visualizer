@@ -48,13 +48,13 @@ export class BarcleContentService extends BaseContentService<BarcleContent> {
     }
 
     protected _getAddPreset(content: BarcleContent): BarcleContent {
-        const contentClone = Object.assign({}, content);
+        const contentClone: BarcleContent = Object.assign({}, content);
         delete contentClone.amplitudes;
         return contentClone;
     }
 
     protected _getLoadPreset(content: BarcleContent): BarcleContent {
-        const contentClone = Object.assign({}, content);
+        const contentClone: BarcleContent = Object.assign({}, content);
         contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
         return contentClone;
     }

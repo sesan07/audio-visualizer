@@ -5,12 +5,16 @@
                                allowUrlAdd="true"
                                fileAcceptTypes="image/*"
                                popoverTitle="Add Image"
-                               [activeSource]="entity.entityContent.source"
+                               [activeSource]="content.source"
                                [sources]="imageSourceService.sources"
                                (activeSourceChanged)="onSourceChange($event)"
-                               (addFile)="imageSourceService.addFileSource($event.name, $event.file, true)"
+                               (addFile)="imageSourceService.addFileSource($event.name,$event.file)"
                                (addUrl)="imageSourceService.addUrlSource($event.name,$event.url)">
             </app-source-picker>
+        </app-control-line>
+        <app-control-line *ngIf="content.source.frames.length > 1" name="Speed">
+            <nz-input-number [(ngModel)]="content.speed" [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-input-number>
+            <nz-slider [(ngModel)]="content.speed" [nzStep]="0.01" [nzMin]="0" [nzMax]="1"></nz-slider>
         </app-control-line>
     </nz-collapse-panel>
 </nz-collapse>

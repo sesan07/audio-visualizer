@@ -16,7 +16,8 @@ export class ImageContentService extends BaseContentService<ImageContent> {
     getDefaultContent(isEmitted: boolean): ImageContent {
         return {
             source: this._imageService.sources[0],
-            element: this._imageService.getSourceElement(this._imageService.sources[0])
+            currGifIndex: 0,
+            speed: 1
         };
     }
 
@@ -24,12 +25,13 @@ export class ImageContentService extends BaseContentService<ImageContent> {
         entity.height = 500 * entity.scale;
 
         const content: ImageContent = entity.entityContent;
-        const heightRatio: number = entity.height / content.element.height;
-        entity.width = content.element.width * heightRatio;
+        const firstFrame: HTMLCanvasElement = content.source.frames[0];
+        const heightRatio: number = entity.height / firstFrame.height;
+        entity.width = firstFrame.width * heightRatio;
     }
 
     protected _getAddPreset(content: ImageContent): ImageContent {
-        return { source: undefined, element: undefined };
+        return {source: undefined, currGifIndex: undefined, speed: undefined};
     }
 
     protected _getLoadPreset(content: ImageContent): ImageContent {

@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BaseSourceService } from './base.source.service';
 import { Source } from './base.source.service.types';
-import { DomSanitizer } from '@angular/platform-browser';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BackgroundImageSourceService extends BaseSourceService {
-    protected _idPrefix: string = 'bg';
 
     sources: Source[] = [
         { name: 'Ryuko and Satsuki', src: 'assets/background-image/1.png' },
     ];
 
-    constructor(sanitizer: DomSanitizer, messageService: NzMessageService) {
-        super(sanitizer, messageService);
-        this.sources.forEach(source => source.id = `${this._idPrefix}-${this._currIdIndex++}`);
+    setActiveSource(source: Source): void {
+        if (this.activeSource?.objectUrl) {
+            this._unloadFileSource(this.activeSource);
+        }
+
+        this.activeSource = source;
+        if (this.activeSource.file) {
+            this._loadFileSource(this.activeSource);
+        }
     }
+
+    protected _onSourceAdded(source: Source): void {}
 }

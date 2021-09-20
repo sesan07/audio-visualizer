@@ -119,7 +119,7 @@ export class EntityService {
     }
 
     removeEntity(entity: Entity): void {
-        const index = this.controllableEntities.indexOf(entity);
+        const index: number = this.controllableEntities.indexOf(entity);
         this.controllableEntities.splice(index, 1);
 
         if (entity === this._activeEntity$.value) {
@@ -131,7 +131,7 @@ export class EntityService {
         if (entity) {
             entity.isSelected = true;
         }
-        this._activeEntity$.next(entity)
+        this._activeEntity$.next(entity);
 
         this.controllableEntities.forEach(e => {
             if (e !== entity) {
@@ -144,7 +144,7 @@ export class EntityService {
         this.controllableEntities.length = 0; // Empty the array
         this.controllableEntities.push(...entities);
         this._currNameIndex = entities.length;
-        this.setActiveEntity(null)
+        this.setActiveEntity(null);
     }
 
     getAddPreset(entity: Entity): Entity {

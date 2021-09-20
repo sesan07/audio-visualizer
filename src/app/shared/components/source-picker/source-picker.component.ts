@@ -25,14 +25,14 @@ export class SourcePickerComponent implements OnInit {
     sourceType: SourceType = this.addFile ? 'File' : 'Url';
     isPopoverVisible: boolean;
 
-    private _fileValidator = (control: FormControl): { [s: string]: boolean } => {
+    private _fileValidator: Function = (control: FormControl): { [s: string]: boolean } => {
         if (this.sourceType === 'File' && !control.value) {
             return { required: true };
         }
         return {};
     };
 
-    private _urlValidator = (control: FormControl): { [s: string]: boolean } => {
+    private _urlValidator: Function = (control: FormControl): { [s: string]: boolean } => {
         if (this.sourceType === 'Url' && !control.value) {
             return { required: true };
         }

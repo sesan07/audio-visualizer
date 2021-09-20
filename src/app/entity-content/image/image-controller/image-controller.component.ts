@@ -12,6 +12,10 @@ import { ImageContentService } from '../image.content.service';
 export class ImageControllerComponent {
     @Input() entity: Entity<ImageContent>;
 
+    get content(): ImageContent {
+        return this.entity.entityContent;
+    }
+
     @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
     constructor(public imageSourceService: ImageSourceService, private _imageContentService: ImageContentService) {
@@ -19,7 +23,8 @@ export class ImageControllerComponent {
 
     onSourceChange(source: Source): void {
         this.entity.entityContent.source = source;
-        this.entity.entityContent.element = this.imageSourceService.getSourceElement(source);
+        this.entity.entityContent.currGifIndex = 0;
+        this.entity.entityContent.speed = 1;
         this._imageContentService.setEntityDimensions(this.entity);
     }
 }

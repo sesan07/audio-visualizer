@@ -108,7 +108,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this._entityService.activeEntity$
             .pipe(takeUntil(this._destroy))
-            .subscribe((activeEntity) => this._activeEntity = activeEntity)
+            .subscribe(activeEntity => this._activeEntity = activeEntity);
     }
 
     ngAfterViewInit(): void {
@@ -193,7 +193,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     private _getTargetEntity(point: Point): Entity {
         let targetEntity: Entity;
         // Reverse search array, bottom elements are drawn over others
-        for (let i = this.entities.length - 1; i >= 0; i--) {
+        for (let i: number = this.entities.length - 1; i >= 0; i--) {
             const entity: Entity = this.entities[i];
             if (this._canMove(entity, point)) {
                 targetEntity = entity;
@@ -226,7 +226,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         const isInBoundsX: boolean = point.x > entity.left && point.x <= entity.left + entity.width;
         const isInBoundsY: boolean = point.y > entity.top && point.y <= entity.top + entity.height;
 
-        return isInBoundsX && isInBoundsY
+        return isInBoundsX && isInBoundsY;
     }
 
     private _dragActiveEntity(point: Point): void {
@@ -239,15 +239,15 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             case ResizeEdge.BOTTOM:
                 // Scale based on height
                 const deltaY: number = point.y - this._prevPoint.y;
-                const finalDeltaY: number = Math.max(this._activeEntity.height + deltaY, this._resizeEdgeSize)
-                this._activeEntity.scale = ((finalDeltaY) * this._activeEntity.scale) / this._activeEntity.height
+                const finalDeltaY: number = Math.max(this._activeEntity.height + deltaY, this._resizeEdgeSize);
+                this._activeEntity.scale = (finalDeltaY * this._activeEntity.scale) / this._activeEntity.height;
                 this._entityService.setEntityDimensions(this._activeEntity);
                 break;
             case ResizeEdge.RIGHT:
                 // Scale based on width
                 const deltaX: number = point.x - this._prevPoint.x;
-                const finalDeltaX: number = Math.max(this._activeEntity.width + deltaX, this._resizeEdgeSize)
-                this._activeEntity.scale = ((finalDeltaX) * this._activeEntity.scale) / this._activeEntity.width
+                const finalDeltaX: number = Math.max(this._activeEntity.width + deltaX, this._resizeEdgeSize);
+                this._activeEntity.scale = (finalDeltaX * this._activeEntity.scale) / this._activeEntity.width;
                 this._entityService.setEntityDimensions(this._activeEntity);
                 break;
         }
@@ -297,9 +297,9 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _onInteractionStart(point: Point): void {
-        const resizeEdge: ResizeEdge = this._getResizeEdge(this._activeEntity, point)
+        const resizeEdge: ResizeEdge = this._getResizeEdge(this._activeEntity, point);
         if (resizeEdge) {
-            this._currResizeEdge = resizeEdge
+            this._currResizeEdge = resizeEdge;
             this._isResizing = true;
         } else {
             this._isDragging = true;
@@ -329,7 +329,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let isEntityFound: boolean;
         // Reverse search array, bottom elements are drawn over others
-        for (let i = this.entities.length - 1; i >= 0; i--) {
+        for (let i: number = this.entities.length - 1; i >= 0; i--) {
             const entity: Entity = this.entities[i];
 
             if (!isEntityFound) {
@@ -337,8 +337,8 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                 const showMove: boolean = entity.showMoveCursor = this._canMove(entity, point);
                 isEntityFound = showResize || showMove;
             } else {
-                entity.showMoveCursor = false
-                entity.showResizeCursor = false
+                entity.showMoveCursor = false;
+                entity.showResizeCursor = false;
             }
         }
     }
@@ -352,7 +352,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private _removeDeadEntities(): void {
         this._deadEntities.forEach(entity => {
-            const index = this.entities.indexOf(entity);
+            const index: number = this.entities.indexOf(entity);
             this.entities.splice(index, 1);
         });
         this._deadEntities.length = 0;
