@@ -12,4 +12,5 @@ export interface BarContent {
     barCapSize: number;
     barSize: number;
     barSpacing: number;
+    isReversed: boolean;
 }

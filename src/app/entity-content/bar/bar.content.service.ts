@@ -35,6 +35,7 @@ export class BarContentService extends BaseContentService<BarContent> {
             barCapSize: 10,
             barSize: 60,
             barSpacing: 20,
+            isReversed: false
         };
     }
 
