@@ -35,8 +35,8 @@
         </app-control-line>
 
         <app-control-line name="Scale">
-            <nz-input-number [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-input-number>
-            <nz-slider [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="2" (ngModelChange)="onDimensionsChange()"></nz-slider>
+            <nz-input-number [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-input-number>
+            <nz-slider [(ngModel)]="entity.scale" [nzStep]="0.05" [nzMin]="0" [nzMax]="5" (ngModelChange)="onDimensionsChange()"></nz-slider>
         </app-control-line>
 
         <app-control-line name="Oomph" description="Adds an extra scaling effect based on audio activity">

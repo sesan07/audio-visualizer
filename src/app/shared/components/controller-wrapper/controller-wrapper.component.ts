@@ -23,7 +23,7 @@ export class ControllerWrapperComponent implements OnInit {
     selectedAddOption: EntityType | EmitterType;
 
     get name(): string {
-        return this.type === 'entity' ? 'Entity' : 'Entity Emitter';
+        return this.type === 'entity' ? 'Entity' : 'Emitter';
     }
 
     ngOnInit(): void {

@@ -1,5 +1,5 @@
 <nz-collapse>
-    <nz-collapse-panel nzHeader="Entity Emitter Options">
+    <nz-collapse-panel nzHeader="Emitter Options">
         <app-control-line name="Emitter Type">
             <nz-radio-group [(ngModel)]="emitter.type">
                 <label *ngFor="let option of emitterTypeOptions" nz-radio-button [nzValue]="option">{{option}}</label>
