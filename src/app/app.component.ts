@@ -126,7 +126,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         this._imageContentService.setEntityView(this.entityViewElement.nativeElement);
 
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
-        setTimeout(() => this._updateEntityViewScale(), 500);
+        setTimeout(() => {
+            this._updateEntityViewScale();
+
+            if (this.presetService.presets.length > 0) {
+                this.presetService.setActivePreset(this.presetService.presets[0]);
+            }
+        }, 1000);
     }
 
     formatTime(seconds: number): string {

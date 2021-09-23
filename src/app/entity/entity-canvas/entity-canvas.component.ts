@@ -125,7 +125,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.updateViewDimensions();
             this._animate();
-        }, 500);
+        }, 1000);
     }
 
     ngOnDestroy(): void {

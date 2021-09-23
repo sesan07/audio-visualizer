@@ -60,8 +60,5 @@ export class PresetService {
 
     private _loadPresets(): void {
         this._presets = JSON.parse(localStorage.getItem(this._PRESETS_KEY)) ?? [];
-        if (this._presets.length > 0) {
-            setTimeout(() => this.setActivePreset(this._presets[0]));
-        }
     }
 }
