@@ -12,6 +12,7 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
     protected _centerY: number;
 
     private readonly _opacityChangeSpeed: number = 0.03;
+    private readonly _resizeEdgeSize: number = 40;
 
     constructor(protected _canvasContext: CanvasRenderingContext2D, protected _oomph: Oomph) {
     }
@@ -23,6 +24,9 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
 
         if (entity.isSelected) {
             this._drawSelectionBorder(entity);
+            // if (entity.rotation === 0) {
+            //     this._drawResizeBorders(entity);
+            // }
         }
 
         // Reset transformation matrix to the identity matrix
@@ -42,6 +46,17 @@ export abstract class BaseContentAnimator<T extends EntityContent> {
         this._canvasContext.shadowBlur = 0;
         this._canvasContext.strokeStyle = 'yellow';
         this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
+    }
+
+    private _drawResizeBorders(entity: Entity): void {
+        const rightEdgeLeft: number = entity.left + entity.width - this._resizeEdgeSize;
+        const rightEdgeTop: number = entity.top;
+
+        const bottomEdgeLeft: number = entity.left;
+        const bottomEdgeTop: number = entity.top + entity.height - this._resizeEdgeSize;
+
+        this._canvasContext.strokeRect(rightEdgeLeft,rightEdgeTop, this._resizeEdgeSize, entity.height);
+        this._canvasContext.strokeRect(bottomEdgeLeft, bottomEdgeTop, entity.width, this._resizeEdgeSize);
     }
 
     private _move(entity: Entity): void {
