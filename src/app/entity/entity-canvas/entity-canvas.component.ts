@@ -24,7 +24,8 @@ import { ImageContent } from '../../entity-content/image/image.content.types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EntityService } from '../entity.service';
-import { Point, ResizeEdge } from './entity-canvas.types';
+import { Point } from './entity-canvas.types';
+import { getRadians } from '../../shared/utils';
 
 @Component({
     selector: 'app-entity-canvas',
@@ -75,7 +76,7 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     private _stopWindowTouchEndListener: () => void;
 
     private readonly _resizeEdgeSize: number = 40;
-    private _currResizeEdge: ResizeEdge;
+    // private _currResizeEdge: ResizeEdge;
     private _prevPoint: { x: number, y: number}
 
     private _destroy: Subject<void> = new Subject();
@@ -204,29 +205,85 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         return targetEntity;
     }
 
-    private _getResizeEdge(entity: Entity, point: Point): ResizeEdge {
-        const rightEdgeLeft: number = entity.left + entity.width - this._resizeEdgeSize;
-        const rightEdgeTop: number = entity.top;
-        const isInTopRightX: boolean = point.x > rightEdgeLeft && point.x <= rightEdgeLeft + this._resizeEdgeSize;
-        const isInTopRightY: boolean = point.y > rightEdgeTop && point.y <= rightEdgeTop + entity.height;
-        if (isInTopRightX && isInTopRightY) {
-            return ResizeEdge.RIGHT;
-        }
-
-        const bottomEdgeLeft: number = entity.left;
-        const bottomEdgeTop: number = entity.top + entity.height - this._resizeEdgeSize;
-        const isInTopLeftX: boolean = point.x > bottomEdgeLeft && point.x <= bottomEdgeLeft + entity.width;
-        const isInTopLeftY: boolean = point.y > bottomEdgeTop && point.y <= bottomEdgeTop + this._resizeEdgeSize;
-        if (isInTopLeftX && isInTopLeftY) {
-            return ResizeEdge.BOTTOM;
-        }
-    }
+    // private _getResizeEdge(entity: Entity, point: Point): ResizeEdge {
+    //     const rightEdgeLeft: number = entity.left + entity.width - this._resizeEdgeSize;
+    //     const rightEdgeTop: number = entity.top;
+    //     const isInTopRightX: boolean = point.x > rightEdgeLeft && point.x <= rightEdgeLeft + this._resizeEdgeSize;
+    //     const isInTopRightY: boolean = point.y > rightEdgeTop && point.y <= rightEdgeTop + entity.height;
+    //     if (isInTopRightX && isInTopRightY) {
+    //         return ResizeEdge.RIGHT;
+    //     }
+    //
+    //     const bottomEdgeLeft: number = entity.left;
+    //     const bottomEdgeTop: number = entity.top + entity.height - this._resizeEdgeSize;
+    //     const isInTopLeftX: boolean = point.x > bottomEdgeLeft && point.x <= bottomEdgeLeft + entity.width;
+    //     const isInTopLeftY: boolean = point.y > bottomEdgeTop && point.y <= bottomEdgeTop + this._resizeEdgeSize;
+    //     if (isInTopLeftX && isInTopLeftY) {
+    //         return ResizeEdge.BOTTOM;
+    //     }
+    // }
 
     private _canMove(entity: Entity, point: Point): boolean {
-        const isInBoundsX: boolean = point.x > entity.left && point.x <= entity.left + entity.width;
-        const isInBoundsY: boolean = point.y > entity.top && point.y <= entity.top + entity.height;
+        const topLeft: Point = {
+            x: entity.left,
+            y: entity.top
+        };
+        const topRight: Point = {
+            x: entity.left + entity.width,
+            y: entity.top
+        };
+        const bottomLeft: Point = {
+            x: entity.left,
+            y: entity.top + entity.height
+        };
+        const bottomRight: Point = {
+            x: entity.left + entity.width,
+            y: entity.top + entity.height
+        };
 
-        return isInBoundsX && isInBoundsY;
+        const origin: Point = {
+            x: entity.left + entity.width / 2,
+            y: entity.top + entity.height / 2
+        };
+
+        this._rotatePoint(topLeft, origin, entity.rotation);
+        this._rotatePoint(topRight, origin, entity.rotation);
+        this._rotatePoint(bottomLeft, origin, entity.rotation);
+        this._rotatePoint(bottomRight, origin, entity.rotation);
+
+        const triangleAreaSum: number =
+            this._getTriangleArea(topLeft, bottomRight, point)
+            + this._getTriangleArea(topRight, topLeft, point)
+            + this._getTriangleArea(bottomLeft, topRight, point)
+            + this._getTriangleArea(bottomRight, bottomLeft, point);
+
+        const rectangleArea: number = entity.height * entity.width;
+        return rectangleArea > triangleAreaSum;
+    }
+
+    // Based on https://stackoverflow.com/a/2259502/12437640
+    private _rotatePoint(point: Point, origin: Point, angle: number): void {
+        const angleRadians: number = getRadians(angle);
+        // Translate point
+        point.x -= origin.x;
+        point.y -= origin.y;
+
+        // Rotate point
+        const newX: number = point.x * Math.cos(angleRadians) - point.y * Math.sin(angleRadians);
+        const newY: number = point.x * Math.sin(angleRadians) + point.y * Math.cos(angleRadians);
+
+        // Translate point back
+        point.x = newX + origin.x;
+        point.y = newY + origin.y;
+    }
+
+    // Based on https://stackoverflow.com/a/17146376/12437640
+    private _getTriangleArea(p1: Point, p2: Point, p3: Point): number {
+        return Math.abs(
+            (p1.x * p3.y - p3.x * p1.y)
+            + (p2.x * p1.y - p1.x * p2.y)
+            + (p3.x * p2.y - p2.x * p3.y)
+        ) / 2;
     }
 
     private _dragActiveEntity(point: Point): void {
@@ -234,24 +291,24 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         this._activeEntity.top += point.y - this._prevPoint.y;
     }
 
-    private _resizeActiveEntity(point: Point): void {
-        switch (this._currResizeEdge) {
-            case ResizeEdge.BOTTOM:
-                // Scale based on height
-                const deltaY: number = point.y - this._prevPoint.y;
-                const finalDeltaY: number = Math.max(this._activeEntity.height + deltaY, this._resizeEdgeSize);
-                this._activeEntity.scale = (finalDeltaY * this._activeEntity.scale) / this._activeEntity.height;
-                this._entityService.setEntityDimensions(this._activeEntity);
-                break;
-            case ResizeEdge.RIGHT:
-                // Scale based on width
-                const deltaX: number = point.x - this._prevPoint.x;
-                const finalDeltaX: number = Math.max(this._activeEntity.width + deltaX, this._resizeEdgeSize);
-                this._activeEntity.scale = (finalDeltaX * this._activeEntity.scale) / this._activeEntity.width;
-                this._entityService.setEntityDimensions(this._activeEntity);
-                break;
-        }
-    }
+    // private _resizeActiveEntity(point: Point): void {
+    //     switch (this._currResizeEdge) {
+    //         case ResizeEdge.BOTTOM:
+    //             // Scale based on height
+    //             const deltaY: number = point.y - this._prevPoint.y;
+    //             const finalDeltaY: number = Math.max(this._activeEntity.height + deltaY, this._resizeEdgeSize);
+    //             this._activeEntity.scale = (finalDeltaY * this._activeEntity.scale) / this._activeEntity.height;
+    //             this._entityService.setEntityDimensions(this._activeEntity);
+    //             break;
+    //         case ResizeEdge.RIGHT:
+    //             // Scale based on width
+    //             const deltaX: number = point.x - this._prevPoint.x;
+    //             const finalDeltaX: number = Math.max(this._activeEntity.width + deltaX, this._resizeEdgeSize);
+    //             this._activeEntity.scale = (finalDeltaX * this._activeEntity.scale) / this._activeEntity.width;
+    //             this._entityService.setEntityDimensions(this._activeEntity);
+    //             break;
+    //     }
+    // }
 
     private _onViewMouseDown(event: MouseEvent): void {
         const point: Point = this._getScaledPoint(event);
@@ -297,31 +354,31 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _onInteractionStart(point: Point): void {
-        const resizeEdge: ResizeEdge = this._getResizeEdge(this._activeEntity, point);
-        if (resizeEdge) {
-            this._currResizeEdge = resizeEdge;
-            this._isResizing = true;
-        } else {
+        // const resizeEdge: ResizeEdge = this._getResizeEdge(this._activeEntity, point);
+        // if (resizeEdge) {
+        //     this._currResizeEdge = resizeEdge;
+        //     this._isResizing = true;
+        // } else {
             this._isDragging = true;
-        }
+        // }
 
         this._prevPoint = point;
     }
 
     private _onInteractionMove(point: Point): void {
-        if (this._isResizing) {
-            this._resizeActiveEntity(point);
-        } else if (this._isDragging) {
+        // if (this._isResizing) {
+        //     this._resizeActiveEntity(point);
+        // } else if (this._isDragging) {
             this._dragActiveEntity(point);
-        }
+        // }
 
         this._prevPoint = point;
     }
 
     private _onInteractionEnd(): void {
-        this._isResizing = false;
+        // this._isResizing = false;
         this._isDragging = false;
-        this._currResizeEdge = null;
+        // this._currResizeEdge = null;
     }
 
     private _updateCursor(source: MouseEvent | Touch): void {
@@ -333,9 +390,9 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             const entity: Entity = this.entities[i];
 
             if (!isEntityFound) {
-                const showResize: boolean = entity.showResizeCursor = !!this._getResizeEdge(entity, point) || this._isResizing;
+                // const showResize: boolean = entity.showResizeCursor = !!this._getResizeEdge(entity, point) || this._isResizing;
                 const showMove: boolean = entity.showMoveCursor = this._canMove(entity, point);
-                isEntityFound = showResize || showMove;
+                isEntityFound = /*showResize ||*/ showMove;
             } else {
                 entity.showMoveCursor = false;
                 entity.showResizeCursor = false;

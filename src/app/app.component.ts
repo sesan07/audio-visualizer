@@ -40,8 +40,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
-    @HostBinding('style.cursor') cursor: string = 'auto';
-
     @HostListener('window:resize')
     onWindowResize(): void {
         this._updateEntityViewScale();
@@ -51,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     onMouseMove(): void {
         const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor);
         const showMoveCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showMoveCursor);
-        this.cursor = showResizeCursor
+        this.entityViewCursor = showResizeCursor
             ? 'nwse-resize'
             : showMoveCursor
                 ? 'move'
@@ -83,6 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     controlViewWidth: number;
     controlViewContentWidth: number;
     entityViewScale: number;
+    entityViewCursor: string = 'auto';
 
     savePresetPopOverVisible: boolean;
 

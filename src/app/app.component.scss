@@ -54,9 +54,12 @@
   margin-top: 8px;
   transition: margin-right .5s, opacity 1s;
 
-  .anticon {
+  .icon {
     font-size: 35px;
     transition: .5s;
+    &.closed {
+      transform: rotate(-180deg)
+    }
   }
 }
 
