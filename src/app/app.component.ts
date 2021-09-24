@@ -64,6 +64,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     currentAudioTime: number = 0;
     backgroundOpacity: number = 0.5;
+    backgroundOomph: number = 0.2;
+    backgroundScale: number = 1;
     modeOptions: any[] = [
         {
             name: 'Frequency',
@@ -128,6 +130,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
         setTimeout(() => {
             this._updateEntityViewScale();
+            this._updateBackgroundScale();
 
             if (this.presetService.presets.length > 0) {
                 this.presetService.setActivePreset(this.presetService.presets[0]);
@@ -166,5 +169,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         const entityViewWidth: number = this.entityViewElement.nativeElement.clientWidth;
         this.entityViewScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
         this._renderer.setStyle(this.entityViewElement.nativeElement, 'transform', `scale(${this.entityViewScale})`);
+    }
+
+    private _updateBackgroundScale(): void {
+        this.backgroundScale = 1 + this.backgroundOomph * this.audioService.oomph.value;
+        requestAnimationFrame(() => this._updateBackgroundScale());
     }
 }

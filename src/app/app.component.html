@@ -14,7 +14,7 @@
     </button>
     <div #entityView class="entity-view" [ngStyle]="{ 'cursor': entityViewCursor }">
         <img class="background-image"
-             [ngStyle]="{ opacity: backgroundOpacity }"
+             [ngStyle]="{ opacity: backgroundOpacity, transform: 'scale(' + backgroundScale + ')' }"
              [src]="backgroundImageService.activeSource.src"
              alt="Background Image"
              draggable="false">
@@ -108,6 +108,10 @@
                     <app-control-line name="Background Opacity">
                         <nz-input-number [(ngModel)]="backgroundOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-input-number>
                         <nz-slider [(ngModel)]="backgroundOpacity" [nzStep]="0.1" [nzMin]="0" [nzMax]="1"></nz-slider>
+                    </app-control-line>
+                    <app-control-line name="Background Oomph">
+                        <nz-input-number [(ngModel)]="backgroundOomph" [nzStep]="0.1" [nzMin]="0" [nzMax]="2"></nz-input-number>
+                        <nz-slider [(ngModel)]="backgroundOomph" [nzStep]="0.1" [nzMin]="0" [nzMax]="2"></nz-slider>
                     </app-control-line>
                     <app-control-line name="Mode" description="Set the audio analysis mode">
                         <nz-radio-group [(ngModel)]="audioService.mode">
