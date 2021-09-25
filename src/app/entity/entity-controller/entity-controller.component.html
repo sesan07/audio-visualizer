@@ -78,7 +78,7 @@
             </app-control-line>
         </ng-container>
         <app-control-line *ngIf="!entity.animateRotation" name="Rotation">
-            <nz-input-number [ngModel]="entity.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
+            <nz-input-number [(ngModel)]="entity.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-input-number>
             <nz-slider [(ngModel)]="entity.rotation" [nzStep]="5" [nzMin]="0" [nzMax]="360"></nz-slider>
         </app-control-line>
     </nz-collapse-panel>

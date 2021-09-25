@@ -11,14 +11,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ImageSourceService extends BaseSourceService {
 
-    defaultSource: Source = { name: 'Mako', url: 'assets/image/mako.png' };
     sources: Source[] = [
-        this.defaultSource,
-        { name: 'Rain Drop', url: 'assets/image/rain-drop.png' },
-        { name: 'GGG', url: 'assets/gif/ggg.gif' },
-        { name: '1', url: 'assets/gif/1.gif' },
-        { name: '2', url: 'assets/gif/2.gif' },
-        { name: '3', url: 'assets/gif/3.gif' }
+        { name: 'Mako', url: 'assets/image/mako.png' },
+        { name: 'Pizza Rat', url: 'assets/image/pizza-rat.gif' }
     ];
 
     constructor(sanitizer: DomSanitizer, messageService: NzMessageService, private _httpClient: HttpClient) {

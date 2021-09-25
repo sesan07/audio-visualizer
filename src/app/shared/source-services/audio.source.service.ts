@@ -11,22 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class AudioSourceService extends BaseSourceService {
 
     sources: Source[] = [
-        { name: 'Star Eater', src: 'assets/audio/star_eater.mp3' },
-        { name: 'Don\'t Stop Me Now', src: 'assets/audio/dont_stop_me_now.mp3' },
-        { name: 'Dance Till Dead', src: 'assets/audio/dance_till_dead.mp3' },
-        { name: 'Takin\' It Back', src: 'assets/audio/takin_it_back.mp3' },
-        { name: 'Happy Troll', src: 'assets/audio/happy_troll.mp3' },
-        { name: 'Epic Sax Guy', src: 'assets/audio/epic_sax_guy.mp3' },
-        { name: 'Shooting Stars', src: 'assets/audio/shooting_stars.mp3' },
-        { name: 'What Is Love', src: 'assets/audio/what_is_love.mp3' },
-        { name: 'Bohemian Rhapsody', src: 'assets/audio/bohemian_rhapsody.mp3' },
-        { name: 'Fireflies', src: 'assets/audio/fireflies.mp3' },
-        { name: 'Never Gonna', src: 'assets/audio/never_gonna.mp3' },
-        { name: 'Astronomia', src: 'assets/audio/astronomia.mp3' },
-        { name: 'Seventh Element', src: 'assets/audio/seventh_element.mp3' },
-        { name: 'Eye Of The Tiger', src: 'assets/audio/eye_of_the_tiger.mp3' },
-        { name: 'Mas Queso', src: 'assets/audio/mas_queso.mp3' },
-        { name: 'Darude Sandstorm', src: 'assets/audio/darude_sandstorm.mp3' }
+        { name: 'Default', src: 'assets/audio/default.mp3' },
     ];
 
     mode: AnalyserMode = 'frequency';

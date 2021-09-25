@@ -4,6 +4,7 @@ import { Entity } from '../../entity/entity.types';
 import { EntityService } from '../../entity/entity.service';
 import { EmitterService } from '../../emitter/emitter.service';
 import { Emitter } from '../../emitter/emitter.types';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -20,13 +21,14 @@ export class PresetService {
     private _presets: Preset[] = [];
 
     constructor(private _entityService: EntityService,
-                private _emitterService: EmitterService) {
-        // TODO add default presets
-        // const isFirstLaunch = localStorage.getItem(this._FIRST_LAUNCH_KEY);
-        // if (isFirstLaunch === null) {
-        //     this.populateStartingPresets();
-        //     // localStorage.setItem(this._FIRST_LAUNCH_KEY, 'false');
-        // }
+                private _emitterService: EmitterService,
+                private _httpClient: HttpClient) {
+
+        const isFirstLaunch: string = localStorage.getItem(this._FIRST_LAUNCH_KEY);
+        if (isFirstLaunch !== 'false') {
+            this._populateDefaultPresets();
+            localStorage.setItem(this._FIRST_LAUNCH_KEY, 'false');
+        }
 
         this._loadPresets();
     }
@@ -60,5 +62,12 @@ export class PresetService {
 
     private _loadPresets(): void {
         this._presets = JSON.parse(localStorage.getItem(this._PRESETS_KEY)) ?? [];
+    }
+
+    private _populateDefaultPresets(): void {
+        this._httpClient.get<Preset[]>('assets/presets.json').subscribe(presets => {
+            this._presets = presets;
+            localStorage.setItem(this._PRESETS_KEY, JSON.stringify(this._presets));
+        });
     }
 }

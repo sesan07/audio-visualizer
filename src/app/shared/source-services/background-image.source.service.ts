@@ -8,7 +8,7 @@ import { Source } from './base.source.service.types';
 export class BackgroundImageSourceService extends BaseSourceService {
 
     sources: Source[] = [
-        { name: 'Ryuko and Satsuki', src: 'assets/background-image/1.png' },
+        { name: 'Default', src: 'assets/background-image/default.jpg' },
     ];
 
     setActiveSource(source: Source): void {
