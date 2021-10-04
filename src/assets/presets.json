@@ -55,7 +55,7 @@
       {
         "type": "Circle",
         "isEmitted": false,
-        "name": "Entity 2 (Barcle)",
+        "name": "Entity 1 (Circle)",
         "isSelected": false,
         "animateMovement": false,
         "randomizeMovement": false,
@@ -102,7 +102,7 @@
       {
         "type": "Circle",
         "isEmitted": false,
-        "name": "Entity 3 (Barcle)",
+        "name": "Entity 2 (Circle)",
         "isSelected": false,
         "animateMovement": false,
         "randomizeMovement": false,

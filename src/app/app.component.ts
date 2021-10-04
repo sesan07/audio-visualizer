@@ -40,11 +40,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
-    @HostListener('window:resize')
-    onWindowResize(): void {
-        this._updateEntityViewScale();
-    }
-
     @HostListener('mousemove')
     onMouseMove(): void {
         const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor);
@@ -57,6 +52,22 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.toggleButtonOpacity = 1;
         this._mouseMove$.next();
+    }
+
+    @HostListener('window:keydown.space', ['$event'])
+    onSpaceKeyDown(event: KeyboardEvent): void {
+        if (this.isPlaying) {
+            this.audioService.pause();
+        } else  {
+            this.audioService.play();
+        }
+
+        event.preventDefault();
+    }
+
+    @HostListener('window:resize')
+    onWindowResize(): void {
+        this._updateEntityViewScale();
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);
