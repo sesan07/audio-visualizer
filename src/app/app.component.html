@@ -5,7 +5,7 @@
 
 <div class="entity-view-container"
      (mousedown)="onEntityViewClicked()">
-    <button class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8, 'opacity': toggleButtonOpacity }"
+    <button #toggleButton class="control-view-toggle" [ngStyle]="{ 'margin-right.px': controlViewWidth + 8, 'opacity': toggleButtonOpacity }"
             nz-button nzType="primary" title="Toggle"
             (click)="onToggleControlView()">
         <i class="icon" [class.closed]="!isControlViewOpen"

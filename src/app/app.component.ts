@@ -34,11 +34,9 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
-    @ViewChild('audioFileInput') audioFileInputElement: ElementRef<HTMLInputElement>;
-    @ViewChild('backgroundFileInput') backgroundFileInputElement: ElementRef<HTMLInputElement>;
     @ViewChild('entityView') entityViewElement: ElementRef<HTMLElement>;
+    @ViewChild('toggleButton', { read: ElementRef }) toggleButton: ElementRef<HTMLButtonElement>;
 
-    @ViewChildren('hiddenImage') hiddenImages: QueryList<ElementRef<HTMLImageElement>>;
 
     @HostListener('mousemove')
     onMouseMove(): void {
@@ -56,6 +54,10 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @HostListener('window:keydown.space', ['$event'])
     onSpaceKeyDown(event: KeyboardEvent): void {
+        if (this.isControlViewOpen) {
+            return;
+        }
+
         if (this.isPlaying) {
             this.audioService.pause();
         } else  {
@@ -174,6 +176,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this._updateEntityViewScale();
+        this.toggleButton.nativeElement.blur();
     }
 
     private _updateEntityViewScale(): void {
