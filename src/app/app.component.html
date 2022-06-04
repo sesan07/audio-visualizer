@@ -1,7 +1,8 @@
 <audio #audio
        [src]="audioService.activeSource.src"
        (ended)="audioService.playNextSong()"
-       (timeupdate)="currentAudioTime = audio.currentTime"></audio>
+       (timeupdate)="currentAudioTime = audio.currentTime">
+</audio>
 
 <div class="entity-view-container"
      (mousedown)="onEntityViewClicked()">
@@ -84,7 +85,7 @@
                         </ng-template>
                     </app-control-line>
                     <app-control-line name="Song">
-                        <app-source-picker allowFileAdd="true"
+                        <app-source-picker [allowFileAdd]=true
                                            fileAcceptTypes="audio/*"
                                            popoverTitle="Add Song"
                                            [activeSource]="audioService.activeSource"
@@ -94,8 +95,8 @@
                         </app-source-picker>
                     </app-control-line>
                     <app-control-line name="Background Image">
-                        <app-source-picker allowFileAdd="true"
-                                           allowUrlAdd="true"
+                        <app-source-picker [allowFileAdd]=true
+                                           [allowUrlAdd]=true
                                            fileAcceptTypes="image/*"
                                            popoverTitle="Add Background Image"
                                            [activeSource]="backgroundImageService.activeSource"
@@ -133,9 +134,9 @@
                                 [configs]="entityService.controllableEntities.slice().reverse()"
                                 [activeConfig]="entityService.activeEntity$ | async"
                                 [addOptions]="addEntityOptions"
-                                (configSelect)="entityService.setActiveEntity($event)"
-                                (add)="entityService.addEntity($event)"
-                                (remove)="entityService.removeEntity($event)"
+                                (configSelect)="onControllerConfigSelected($event, 'entity')"
+                                (add)="onControllerAdd($event, 'entity')"
+                                (remove)="onControllerRemove($event, 'entity')"
                                 (closeActive)="entityService.setActiveEntity(null)"
                                 (duplicateActive)="entityService.duplicateActive()">
         </app-controller-wrapper>
@@ -144,9 +145,9 @@
                                 [configs]="emitterService.emitters.slice().reverse()"
                                 [activeConfig]="emitterService.activeEmitter$ | async"
                                 [addOptions]="addEmitterOptions"
-                                (configSelect)="emitterService.setActiveEmitter($event)"
-                                (add)="emitterService.addEmitter($event)"
-                                (remove)="emitterService.removeEmitter($event)"
+                                (configSelect)="onControllerConfigSelected($event, 'emitter')"
+                                (add)="onControllerAdd($event, 'emitter')"
+                                (remove)="onControllerRemove($event, 'emitter')"
                                 (closeActive)="emitterService.setActiveEmitter(null)"
                                 (duplicateActive)="emitterService.duplicateActive()">
         </app-controller-wrapper>

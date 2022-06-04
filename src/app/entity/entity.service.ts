@@ -22,8 +22,7 @@ export class EntityService {
 
     private _currNameIndex: number = 0;
 
-    constructor(private _audioService: AudioSourceService,
-                private _barContentService: BarContentService,
+    constructor(private _barContentService: BarContentService,
                 private _barcleContentService: BarcleContentService,
                 private _circleContentService: CircleContentService,
                 private _imageContentService: ImageContentService) {
@@ -127,7 +126,7 @@ export class EntityService {
         }
     }
 
-    setActiveEntity(entity: Entity | null): void {
+    setActiveEntity(entity?: Entity): void {
         if (entity) {
             entity.isSelected = true;
         }

@@ -3,6 +3,7 @@ import { Entity, EntityType } from '../../../entity/entity.types';
 import { EmitterType, Emitter } from '../../../emitter/emitter.types';
 import { animations } from '../../animations';
 
+type TestType = Entity | Emitter;
 @Component({
     selector: 'app-controller-wrapper',
     templateUrl: './controller-wrapper.component.html',
@@ -11,9 +12,9 @@ import { animations } from '../../animations';
 })
 export class ControllerWrapperComponent implements OnInit {
     @Input() type: 'entity' | 'emitter';
-    @Input() addOptions: EntityType[] | EmitterType[];
+    @Input() addOptions: (EntityType | EmitterType)[];
     @Input() activeConfig: Entity | Emitter;
-    @Input() configs: Entity[] | Emitter[];
+    @Input() configs: (Entity | Emitter)[];
     @Output() add: EventEmitter<EntityType | EmitterType> = new EventEmitter();
     @Output() remove: EventEmitter<Entity | Emitter> = new EventEmitter();
     @Output() configSelect: EventEmitter<Entity | Emitter> = new EventEmitter();
@@ -24,6 +25,14 @@ export class ControllerWrapperComponent implements OnInit {
 
     get name(): string {
         return this.type === 'entity' ? 'Entity' : 'Emitter';
+    }
+
+    get activeConfigAsEntity(): Entity {
+        return this.activeConfig as Entity;
+    }
+
+    get activeConfigAsEmitter(): Emitter {
+        return this.activeConfig as Emitter;
     }
 
     ngOnInit(): void {

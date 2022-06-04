@@ -40,11 +40,11 @@
     <ng-container *ngIf="activeConfig">
         <app-entity-controller class="control-group" *ngIf="type === 'entity'"
                                @controllerEnterLeaveTrigger
-                               [entity]="activeConfig">
+                               [entity]="activeConfigAsEntity">
         </app-entity-controller>
         <app-entity-emitter-controller class="control-group" *ngIf="type === 'emitter'"
                                        @controllerEnterLeaveTrigger
-                                       [emitter]="activeConfig">
+                                       [emitter]="activeConfigAsEmitter">
         </app-entity-emitter-controller>
 
         <span class="action-buttons">

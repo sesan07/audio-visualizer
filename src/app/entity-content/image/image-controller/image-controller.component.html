@@ -1,8 +1,8 @@
 <nz-collapse>
     <nz-collapse-panel nzHeader="Image Options">
         <app-control-line name="Image">
-            <app-source-picker allowFileAdd="true"
-                               allowUrlAdd="true"
+            <app-source-picker [allowFileAdd]="true"
+                               [allowUrlAdd]="true"
                                fileAcceptTypes="image/*"
                                popoverTitle="Add Image"
                                [activeSource]="content.source"

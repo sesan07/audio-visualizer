@@ -10,11 +10,11 @@ import {
     ViewChild,
     ViewChildren
 } from '@angular/core';
-import { EntityType } from './entity/entity.types';
+import { Entity, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
 import { AudioSourceService } from './shared/source-services/audio.source.service';
 import { EntityService } from './entity/entity.service';
-import { EmitterType } from './emitter/emitter.types';
+import { Emitter, EmitterType } from './emitter/emitter.types';
 import { EmitterService } from './emitter/emitter.service';
 import { BackgroundImageSourceService } from './shared/source-services/background-image.source.service';
 import { PresetService } from './shared/preset-service/preset.service';
@@ -177,6 +177,39 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this._updateEntityViewScale();
         this.toggleButton.nativeElement.blur();
+    }
+
+    onControllerConfigSelected(config: Entity | Emitter, controllerType: 'entity' | 'emitter'): void {
+        switch (controllerType) {
+            case 'entity':
+                this.entityService.setActiveEntity(config as Entity);
+                break;
+            case 'emitter': 
+                this.emitterService.setActiveEmitter(config as Emitter);
+                break;
+        }
+    }
+
+    onControllerAdd(type: EntityType | EmitterType, controllerType: 'entity' | 'emitter'): void {
+        switch (controllerType) {
+            case 'entity':
+                this.entityService.addEntity(type as EntityType);
+                break;
+            case 'emitter': 
+                this.emitterService.addEmitter(type as EmitterType);
+                break;
+        }
+    }
+
+    onControllerRemove(config: Entity | Emitter, controllerType: 'entity' | 'emitter'): void {
+        switch (controllerType) {
+            case 'entity':
+                this.entityService.removeEntity(config as Entity);
+                break;
+            case 'emitter': 
+                this.emitterService.removeEmitter(config as Emitter);
+                break;
+        }
     }
 
     private _updateEntityViewScale(): void {

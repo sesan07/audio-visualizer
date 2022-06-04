@@ -46,7 +46,7 @@ export class EmitterService {
         }
     }
 
-    setActiveEmitter(emitter: Emitter | null): void {
+    setActiveEmitter(emitter?: Emitter): void {
         if (emitter) {
             emitter.isSelected = true;
         }

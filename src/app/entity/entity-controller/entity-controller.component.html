@@ -85,8 +85,8 @@
 </nz-collapse>
 
 <ng-container [ngSwitch]="entity.type">
-    <app-bar-controller *ngSwitchCase="EntityType.BAR" [entity]="entity"></app-bar-controller>
-    <app-barcle-controller *ngSwitchCase="EntityType.BARCLE" [entity]="entity"></app-barcle-controller>
-    <app-circle-controller *ngSwitchCase="EntityType.CIRCLE" [entity]="entity"></app-circle-controller>
-    <app-image-controller *ngSwitchCase="EntityType.IMAGE" [entity]="entity"></app-image-controller>
+    <app-bar-controller *ngSwitchCase="EntityType.BAR" [entity]="entityAsBar"></app-bar-controller>
+    <app-barcle-controller *ngSwitchCase="EntityType.BARCLE" [entity]="entityAsBarcle"></app-barcle-controller>
+    <app-circle-controller *ngSwitchCase="EntityType.CIRCLE" [entity]="entityAsCircle"></app-circle-controller>
+    <app-image-controller *ngSwitchCase="EntityType.IMAGE" [entity]="entityAsImage"></app-image-controller>
 </ng-container>
