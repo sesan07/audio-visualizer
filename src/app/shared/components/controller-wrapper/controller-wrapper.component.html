@@ -18,23 +18,38 @@
     </span>
 
     <ng-container *ngIf="configs.length > 0">
-        <div class="list">
-                <span class="list-item"
-                      @controllerEnterLeaveTrigger
-                      *ngFor="let config of configs; let i = index">
-                    <button class="primary-btn" nz-button nzGhost
-                            [nzType]="activeConfig === config ? 'primary' : 'default'"
-                            (click)="onConfigSelected($event, config)">
-                        {{config.name}}
-                    </button>
-                    <button nz-button
-                            nzDanger
-                            (click)="remove.emit(config)">
-                        <i nz-icon nzType="delete"></i>
-                        Remove
-                    </button>
-                </span>
-        </div>
+        <ul class="list">
+            <li class="list-item"
+                    @controllerEnterLeaveTrigger
+                    *ngFor="let config of configs; let i = index">
+                <button class="primary-btn" nz-button
+                        [nzType]="activeConfig === config ? 'primary' : 'default'"
+                        (click)="onConfigSelected($event, config)">
+                    {{config.name}}
+                </button>
+                <button nz-button
+                        title="Move Up"
+                        (click)="moveUp.emit(i)">
+                    <i nz-icon nzType="up"></i>
+                </button>
+                <button nz-button
+                        title="Move Down"
+                        (click)="moveDown.emit(i)">
+                    <i nz-icon nzType="down"></i>
+                </button>
+                <button nz-button
+                        title="Duplicate"
+                        (click)="duplicate.emit(i)">
+                    <i nz-icon nzType="copy"></i>
+                </button>
+                <button nz-button
+                        nzDanger
+                        title="Remove"
+                        (click)="remove.emit(config)">
+                    <i nz-icon nzType="delete"></i>
+                </button>
+            </li>
+        </ul>
     </ng-container>
 
     <ng-container *ngIf="activeConfig">
@@ -46,16 +61,5 @@
                                        @controllerEnterLeaveTrigger
                                        [emitter]="activeConfigAsEmitter">
         </app-entity-emitter-controller>
-
-        <span class="action-buttons">
-            <button nz-button (click)="duplicateActive.emit()">
-                <i nz-icon nzType="copy"></i>
-                Duplicate
-            </button>
-            <button nz-button nzDanger (click)="closeActive.emit()">
-                <i nz-icon nzType="close"></i>
-                Close
-            </button>
-        </span>
     </ng-container>
 </div>

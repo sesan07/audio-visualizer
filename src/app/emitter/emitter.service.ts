@@ -3,6 +3,7 @@ import { EmitterType, Emitter } from './emitter.types';
 import { EntityType, Entity, EntityContent } from '../entity/entity.types';
 import { EntityService } from '../entity/entity.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { moveItemInArray } from '../shared/utils';
 
 @Injectable({
     providedIn: 'root'
@@ -78,12 +79,16 @@ export class EmitterService {
         return emitterClone;
     }
 
-    duplicateActive(): void {
-        const emitterClone: Emitter = Object.assign({}, this._activeEmitter$.value);
+    duplicateEmitter(index: number): void {
+        const emitterClone: Emitter = Object.assign({}, this.emitters[index]);
         emitterClone.name = `Emitter ${this._currNameIndex++}`;
         emitterClone.entity = Object.assign({}, emitterClone.entity);
         emitterClone.entity.entityContent = Object.assign({}, emitterClone.entity.entityContent);
         this.emitters.push(emitterClone);
         this.setActiveEmitter(emitterClone);
+    }
+
+    moveEmitter(fromIndex: number, toIndex: number): void {
+        moveItemInArray(this.emitters, fromIndex, toIndex);
     }
 }

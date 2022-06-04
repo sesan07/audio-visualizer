@@ -18,8 +18,10 @@ export class ControllerWrapperComponent implements OnInit {
     @Output() add: EventEmitter<EntityType | EmitterType> = new EventEmitter();
     @Output() remove: EventEmitter<Entity | Emitter> = new EventEmitter();
     @Output() configSelect: EventEmitter<Entity | Emitter> = new EventEmitter();
+    @Output() moveUp: EventEmitter<number> = new EventEmitter();
+    @Output() moveDown: EventEmitter<number> = new EventEmitter();
+    @Output() duplicate: EventEmitter<number> = new EventEmitter();
     @Output() closeActive: EventEmitter<void> = new EventEmitter();
-    @Output() duplicateActive: EventEmitter<void> = new EventEmitter();
 
     selectedAddOption: EntityType | EmitterType;
 
@@ -40,6 +42,7 @@ export class ControllerWrapperComponent implements OnInit {
     }
 
     onConfigSelected(event: MouseEvent, config: Entity | Emitter): void {
+        config = this.activeConfig === config ? null : config; // If clicking active config, unset it
         this.configSelect.emit(config);
         event.stopPropagation();
     }

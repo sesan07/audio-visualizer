@@ -134,6 +134,8 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             this._stopViewTouchStartListener();
         }
 
+        cancelAnimationFrame(this._animationFrameId);
+
         this._destroy.next();
         this._destroy.complete();
     }
@@ -161,6 +163,13 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
                 this._checkDeathStatus(entity);
             });
 
+            if (this._activeEntity) {
+                this._drawSelectionBorder(this._activeEntity);
+                if (this._activeEntity.rotation === 0) {
+                    this._drawResizeBorders(this._activeEntity);
+                }
+            }
+
             this._removeDeadEntities();
             this._animationFrameId = requestAnimationFrame(() => this._animate());
         });
@@ -173,20 +182,6 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
         const y: number = windowCenter - (centerOffset / this.viewScale);
 
         return { x, y };
-    }
-
-    private _getTargetEntity(point: Point): Entity {
-        let targetEntity: Entity;
-        // Reverse search array, bottom elements are drawn over others
-        for (let i: number = this.entities.length - 1; i >= 0; i--) {
-            const entity: Entity = this.entities[i];
-            if (this._canMove(entity, point)) {
-                targetEntity = entity;
-                break;
-            }
-        }
-
-        return targetEntity;
     }
 
     private _getResizeEdge(entity: Entity, point: Point): ResizeEdge {
@@ -299,7 +294,12 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private _onViewMouseDown(event: MouseEvent): void {
         const point: Point = this._getScaledPoint(event);
-        this._entityService.setActiveEntity(this._getTargetEntity(point));
+
+        // Clear the active entity if it isn't the mouse target
+        if (!!this._activeEntity && !this._canMove(this._activeEntity, point)) { 
+            this._entityService.setActiveEntity(null);
+        }
+        
         if (!this._activeEntity) {
             return;
         }
@@ -321,7 +321,12 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     private _onViewTouchStart(event: TouchEvent): void {
         const firstTouch: Touch = event.touches.item(0);
         const point: Point = this._getScaledPoint(firstTouch);
-        this._entityService.setActiveEntity(this._getTargetEntity(point));
+
+        // Clear the active entity if it isn't the touch target
+        if (!!this._activeEntity && !this._canMove(this._activeEntity, point)) { 
+            this._entityService.setActiveEntity(null);
+        }
+
         if (!this._activeEntity) {
             return;
         }
@@ -369,22 +374,23 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private _updateCursor(source: MouseEvent | Touch): void {
+        if (!this._activeEntity) {
+            return;
+        }
+
         const point: Point = this._getScaledPoint(source);
 
         let isEntityFound: boolean;
         // Reverse search array, bottom elements are drawn over others
-        for (let i: number = this.entities.length - 1; i >= 0; i--) {
-            const entity: Entity = this.entities[i];
-
-            if (!isEntityFound) {
-                const showResize: boolean = entity.showResizeCursor = !!this._getResizeEdge(entity, point) || this._isResizing;
-                const showMove: boolean = entity.showMoveCursor = this._canMove(entity, point);
-                isEntityFound = showResize || showMove;
+        this.entities.forEach(entity => {
+            if (entity === this._activeEntity) {
+                entity.showResizeCursor = !!this._getResizeEdge(entity, point) || this._isResizing;
+                entity.showMoveCursor = this._canMove(entity, point);
             } else {
                 entity.showMoveCursor = false;
                 entity.showResizeCursor = false;
             }
-        }
+        });
     }
 
     private _checkDeathStatus(entity: Entity): void {
@@ -400,5 +406,23 @@ export class EntityCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             this.entities.splice(index, 1);
         });
         this._deadEntities.length = 0;
+    }
+
+    private _drawSelectionBorder(entity: Entity): void {
+        this._canvasContext.globalAlpha = 1;
+        this._canvasContext.shadowBlur = 0;
+        this._canvasContext.strokeStyle = 'yellow';
+        this._canvasContext.strokeRect(entity.left, entity.top, entity.width, entity.height);
+    }
+
+    private _drawResizeBorders(entity: Entity): void {
+        const rightEdgeLeft: number = entity.left + entity.width - this._resizeEdgeSize;
+        const rightEdgeTop: number = entity.top;
+
+        const bottomEdgeLeft: number = entity.left;
+        const bottomEdgeTop: number = entity.top + entity.height - this._resizeEdgeSize;
+
+        this._canvasContext.strokeRect(rightEdgeLeft,rightEdgeTop, this._resizeEdgeSize, entity.height);
+        this._canvasContext.strokeRect(bottomEdgeLeft, bottomEdgeTop, entity.width, this._resizeEdgeSize);
     }
 }

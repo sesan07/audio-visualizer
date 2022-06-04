@@ -25,7 +25,7 @@
                      [viewScale]="entityViewScale">
         </app-emitter>
         <app-entity-canvas [allowInteraction]="true"
-                           [entities]="entityService.controllableEntities"
+                           [entities]="entityService.entities"
                            [viewElement]="entityView"
                            [viewScale]="entityViewScale">
         </app-entity-canvas>
@@ -131,14 +131,16 @@
         </div>
 
         <app-controller-wrapper type="entity"
-                                [configs]="entityService.controllableEntities.slice().reverse()"
+                                [configs]="entityService.entities.slice().reverse()"
                                 [activeConfig]="entityService.activeEntity$ | async"
                                 [addOptions]="addEntityOptions"
                                 (configSelect)="onControllerConfigSelected($event, 'entity')"
                                 (add)="onControllerAdd($event, 'entity')"
                                 (remove)="onControllerRemove($event, 'entity')"
-                                (closeActive)="entityService.setActiveEntity(null)"
-                                (duplicateActive)="entityService.duplicateActive()">
+                                (moveUp)="onControllerMoveUp($event, 'entity')"
+                                (moveDown)="onControllerMoveDown($event, 'entity')"
+                                (duplicate)="onControllerDuplicate($event, 'entity')"
+                                (closeActive)="entityService.setActiveEntity(null)">
         </app-controller-wrapper>
 
         <app-controller-wrapper type="emitter"
@@ -148,8 +150,10 @@
                                 (configSelect)="onControllerConfigSelected($event, 'emitter')"
                                 (add)="onControllerAdd($event, 'emitter')"
                                 (remove)="onControllerRemove($event, 'emitter')"
-                                (closeActive)="emitterService.setActiveEmitter(null)"
-                                (duplicateActive)="emitterService.duplicateActive()">
+                                (moveUp)="onControllerMoveUp($event, 'emitter')"
+                                (moveDown)="onControllerMoveDown($event, 'emitter')"
+                                (duplicate)="onControllerDuplicate($event, 'emitter')"
+                                (closeActive)="emitterService.setActiveEmitter(null)">
         </app-controller-wrapper>
     </div>
 </div>

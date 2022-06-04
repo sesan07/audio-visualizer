@@ -34,3 +34,25 @@ export function getRandomColor(): RGBA {
         a: 1
     };
 }
+
+export function moveItemInArray<T = any>(array: T[], fromIndex: number, toIndex: number): void {
+    const from: number = clamp(fromIndex, array.length - 1);
+    const to: number = clamp(toIndex, array.length - 1);
+  
+    if (from === to) {
+      return;
+    }
+  
+    const target: T = array[from];
+    const delta: number = to < from ? -1 : 1;
+  
+    for (let i: number = from; i !== to; i += delta) {
+      array[i] = array[i + delta];
+    }
+  
+    array[to] = target;
+  }
+
+function clamp(value: number, max: number): number {
+    return Math.max(0, Math.min(max, value));
+}

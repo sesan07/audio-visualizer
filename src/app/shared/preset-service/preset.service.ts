@@ -35,7 +35,7 @@ export class PresetService {
 
     saveCurrentAsPreset(name: string): void {
         const entities: Entity[] =
-            this._entityService.controllableEntities
+            this._entityService.entities
                 .map(entity => this._entityService.getAddPreset(entity));
         const emitters: Emitter[] =
             this._emitterService.emitters

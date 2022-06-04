@@ -10,12 +10,13 @@ import { CircleContent } from '../entity-content/circle/circle.content.types';
 import { BarContent } from '../entity-content/bar/bar.content.types';
 import { BarcleContent } from '../entity-content/barcle/barcle.content.types';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { moveItemInArray } from '../shared/utils';
 
 @Injectable({
     providedIn: 'root'
 })
 export class EntityService {
-    controllableEntities: Entity[] = [];
+    entities: Entity[] = [];
 
     private _activeEntity$: BehaviorSubject<Entity> = new BehaviorSubject(null);
     activeEntity$: Observable<Entity> = this._activeEntity$.asObservable();
@@ -34,7 +35,7 @@ export class EntityService {
         this.setEntityDimensions(entity);
         this.setEntityPosition(entity);
 
-        this.controllableEntities.push(entity);
+        this.entities.push(entity);
         this.setActiveEntity(entity);
     }
 
@@ -118,8 +119,8 @@ export class EntityService {
     }
 
     removeEntity(entity: Entity): void {
-        const index: number = this.controllableEntities.indexOf(entity);
-        this.controllableEntities.splice(index, 1);
+        const index: number = this.entities.indexOf(entity);
+        this.entities.splice(index, 1);
 
         if (entity === this._activeEntity$.value) {
             this.setActiveEntity(null);
@@ -132,7 +133,7 @@ export class EntityService {
         }
         this._activeEntity$.next(entity);
 
-        this.controllableEntities.forEach(e => {
+        this.entities.forEach(e => {
             if (e !== entity) {
                 e.isSelected = false;
             }
@@ -140,8 +141,8 @@ export class EntityService {
     }
 
     setEntities(entities: Entity[]): void {
-        this.controllableEntities.length = 0; // Empty the array
-        this.controllableEntities.push(...entities);
+        this.entities.length = 0; // Empty the array
+        this.entities.push(...entities);
         this._currNameIndex = entities.length;
         this.setActiveEntity(null);
     }
@@ -193,13 +194,17 @@ export class EntityService {
         return entityClone;
     }
 
-    duplicateActive(): void {
-        const entityClone: Entity = Object.assign({}, this._activeEntity$.value);
+    duplicateEntity(index: number): void {
+        const entityClone: Entity = Object.assign({}, this.entities[index]);
         entityClone.name = this._getNextName(entityClone.type);
         entityClone.entityContent = Object.assign({}, entityClone.entityContent);
         this.setEntityPosition(entityClone);
-        this.controllableEntities.push(entityClone);
+        this.entities.push(entityClone);
         this.setActiveEntity(entityClone);
+    }
+
+    moveEntity(fromIndex: number, toIndex: number): void {
+        moveItemInArray(this.entities, fromIndex, toIndex);
     }
 
     private _getNextName(type: EntityType): string {

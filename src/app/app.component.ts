@@ -40,8 +40,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @HostListener('mousemove')
     onMouseMove(): void {
-        const showResizeCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showResizeCursor);
-        const showMoveCursor: boolean = this.entityService.controllableEntities.some(entity => entity.showMoveCursor);
+        const showResizeCursor: boolean = this.entityService.entities.some(entity => entity.showResizeCursor);
+        const showMoveCursor: boolean = this.entityService.entities.some(entity => entity.showMoveCursor);
         this.entityViewCursor = showResizeCursor
             ? 'nwse-resize'
             : showMoveCursor
@@ -212,6 +212,45 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
     }
 
+    onControllerMoveUp(index: number, controllerType: 'entity' | 'emitter'): void {
+        let reversedIndex: number;
+        switch (controllerType) {
+            case 'entity':
+                reversedIndex = this._getReversedEntityIndex(index);
+                this.entityService.moveEntity(reversedIndex, reversedIndex + 1);
+                break;
+            case 'emitter': 
+                reversedIndex = this._getReversedEmitterIndex(index);
+                this.emitterService.moveEmitter(reversedIndex, reversedIndex + 1);
+                break;
+        }
+    }
+
+    onControllerMoveDown(index: number, controllerType: 'entity' | 'emitter'): void {
+        let reversedIndex: number;
+        switch (controllerType) {
+            case 'entity':
+                reversedIndex = this._getReversedEntityIndex(index);
+                this.entityService.moveEntity(reversedIndex, reversedIndex - 1);
+                break;
+            case 'emitter': 
+                reversedIndex = this._getReversedEmitterIndex(index);
+                this.emitterService.moveEmitter(reversedIndex, reversedIndex - 1);
+                break;
+        }
+    }
+
+    onControllerDuplicate(index: number, controllerType: 'entity' | 'emitter'): void {
+        switch (controllerType) {
+            case 'entity':
+                this.entityService.duplicateEntity(this._getReversedEntityIndex(index));
+                break;
+            case 'emitter': 
+                this.emitterService.duplicateEmitter(this._getReversedEmitterIndex(index));
+                break;
+        }
+    }
+
     private _updateEntityViewScale(): void {
         const entityViewWidth: number = this.entityViewElement.nativeElement.clientWidth;
         this.entityViewScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
@@ -221,5 +260,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _updateBackgroundScale(): void {
         this.backgroundScale = 1 + this.backgroundOomph * this.audioService.oomph.value;
         requestAnimationFrame(() => this._updateBackgroundScale());
+    }
+
+    private _getReversedEntityIndex(index: number): number {
+        return this.entityService.entities.length - 1 - index;
+    }
+
+    private _getReversedEmitterIndex(index: number): number {
+        return this.emitterService.emitters.length - 1 - index;
     }
 }
