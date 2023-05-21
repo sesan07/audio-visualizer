@@ -8,7 +8,7 @@ import {
     QueryList,
     Renderer2,
     ViewChild,
-    ViewChildren
+    ViewChildren,
 } from '@angular/core';
 import { Entity, EntityType } from './entity/entity.types';
 import { animations } from './shared/animations';
@@ -29,24 +29,19 @@ import { debounceTime } from 'rxjs/operators';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: [ './app.component.scss' ],
-    animations: animations
+    styleUrls: ['./app.component.scss'],
+    animations: animations,
 })
 export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
     @ViewChild('entityView') entityViewElement: ElementRef<HTMLElement>;
     @ViewChild('toggleButton', { read: ElementRef }) toggleButton: ElementRef<HTMLButtonElement>;
 
-
     @HostListener('mousemove')
     onMouseMove(): void {
         const showResizeCursor: boolean = this.entityService.entities.some(entity => entity.showResizeCursor);
         const showMoveCursor: boolean = this.entityService.entities.some(entity => entity.showMoveCursor);
-        this.entityViewCursor = showResizeCursor
-            ? 'nwse-resize'
-            : showMoveCursor
-                ? 'move'
-                : 'auto';
+        this.entityViewCursor = showResizeCursor ? 'nwse-resize' : showMoveCursor ? 'move' : 'auto';
 
         this.toggleButtonOpacity = 1;
         this._mouseMove$.next();
@@ -57,13 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (this.isControlViewOpen) {
             return;
         }
-
-        if (this.isPlaying) {
-            this.audioService.pause();
-        } else  {
-            this.audioService.play();
-        }
-
+        this.audioService.togglePlay();
         event.preventDefault();
     }
 
@@ -82,14 +71,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     modeOptions: any[] = [
         {
             name: 'Frequency',
-            value: 'frequency'
+            value: 'frequency',
         },
         {
             name: 'Time Domain',
-            value: 'timeDomain'
+            value: 'timeDomain',
         },
     ];
-    decibelRange: [ number, number ] = [ -80, -20 ];
+    decibelRange: [number, number] = [-80, -20];
 
     toggleButtonOpacity: number = 1;
     isControlViewOpen: boolean = true;
@@ -103,22 +92,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     private readonly _controlViewWidth: number = 500;
     private _mouseMove$: Subject<void> = new Subject();
 
-    get isPlaying(): boolean {
-        return this.audioElement ? !this.audioElement.nativeElement.paused : false;
-    }
-
-    constructor(public audioService: AudioSourceService,
-                public backgroundImageService: BackgroundImageSourceService,
-                public entityService: EntityService,
-                public emitterService: EmitterService,
-                public presetService: PresetService,
-                private _barContentService: BarContentService,
-                private _barcleContentService: BarcleContentService,
-                private _circleContentService: CircleContentService,
-                private _imageContentService: ImageContentService,
-                private _elementRef: ElementRef<HTMLElement>,
-                private _renderer: Renderer2) {
-    }
+    constructor(
+        public audioService: AudioSourceService,
+        public backgroundImageService: BackgroundImageSourceService,
+        public entityService: EntityService,
+        public emitterService: EmitterService,
+        public presetService: PresetService,
+        private _barContentService: BarContentService,
+        private _barcleContentService: BarcleContentService,
+        private _circleContentService: CircleContentService,
+        private _imageContentService: ImageContentService,
+        private _elementRef: ElementRef<HTMLElement>,
+        private _renderer: Renderer2
+    ) {}
 
     ngOnInit(): void {
         this.audioService.setActiveSource(this.audioService.sources[0]);
@@ -127,8 +113,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
         this.controlViewContentWidth = this._controlViewWidth;
 
-        this._mouseMove$.pipe(debounceTime(1500))
-            .subscribe(() => this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0);
+        this._mouseMove$
+            .pipe(debounceTime(1500))
+            .subscribe(() => (this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0));
     }
 
     ngAfterViewInit(): void {
@@ -184,7 +171,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             case 'entity':
                 this.entityService.setActiveEntity(config as Entity);
                 break;
-            case 'emitter': 
+            case 'emitter':
                 this.emitterService.setActiveEmitter(config as Emitter);
                 break;
         }
@@ -195,7 +182,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             case 'entity':
                 this.entityService.addEntity(type as EntityType);
                 break;
-            case 'emitter': 
+            case 'emitter':
                 this.emitterService.addEmitter(type as EmitterType);
                 break;
         }
@@ -206,7 +193,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             case 'entity':
                 this.entityService.removeEntity(config as Entity);
                 break;
-            case 'emitter': 
+            case 'emitter':
                 this.emitterService.removeEmitter(config as Emitter);
                 break;
         }
@@ -219,7 +206,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 reversedIndex = this._getReversedEntityIndex(index);
                 this.entityService.moveEntity(reversedIndex, reversedIndex + 1);
                 break;
-            case 'emitter': 
+            case 'emitter':
                 reversedIndex = this._getReversedEmitterIndex(index);
                 this.emitterService.moveEmitter(reversedIndex, reversedIndex + 1);
                 break;
@@ -233,7 +220,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 reversedIndex = this._getReversedEntityIndex(index);
                 this.entityService.moveEntity(reversedIndex, reversedIndex - 1);
                 break;
-            case 'emitter': 
+            case 'emitter':
                 reversedIndex = this._getReversedEmitterIndex(index);
                 this.emitterService.moveEmitter(reversedIndex, reversedIndex - 1);
                 break;
@@ -245,7 +232,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             case 'entity':
                 this.entityService.duplicateEntity(this._getReversedEntityIndex(index));
                 break;
-            case 'emitter': 
+            case 'emitter':
                 this.emitterService.duplicateEmitter(this._getReversedEmitterIndex(index));
                 break;
         }

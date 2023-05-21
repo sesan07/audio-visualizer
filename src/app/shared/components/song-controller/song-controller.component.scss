@@ -1,0 +1,40 @@
+:host {
+    display: block;
+}
+
+.media-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.primary-media-btn {
+    width: 80px;
+    height: 80px;
+
+    .anticon {
+        font-size: 40px;
+    }
+}
+
+.secondary-media-btn {
+    width: 60px;
+    height: 60px;
+
+    .anticon {
+        font-size: 25px;
+    }
+}
+
+.song-name {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

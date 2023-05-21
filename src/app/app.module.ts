@@ -22,6 +22,7 @@ import { ImageControllerComponent } from './entity-content/image/image-controlle
 import { EmitterComponent } from './emitter/emitter.component';
 import { DraggableDirective } from './shared/components/draggable/draggable.directive';
 import { SourcePickerComponent } from './shared/components/source-picker/source-picker.component';
+import { SongControllerComponent } from './shared/components/song-controller/song-controller.component';
 
 // NG-Zorro Base
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -48,7 +49,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-registerLocaleData(en);  // NG-Zorro
+registerLocaleData(en); // NG-Zorro
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ registerLocaleData(en);  // NG-Zorro
         FormsModule,
         HttpClientModule,
         ReactiveFormsModule,
+        SongControllerComponent,
         ColorSketchModule,
         NzButtonModule,
         NzDropDownModule,
@@ -90,8 +92,7 @@ registerLocaleData(en);  // NG-Zorro
         NzFormModule,
         NzToolTipModule,
     ],
-    providers: [ { provide: NZ_I18N, useValue: en_US }, NzMessageService ],
-    bootstrap: [ AppComponent ]
+    providers: [{ provide: NZ_I18N, useValue: en_US }, NzMessageService],
+    bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

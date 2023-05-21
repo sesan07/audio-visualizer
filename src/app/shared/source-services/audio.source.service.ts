@@ -4,25 +4,31 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BaseSourceService } from './base.source.service';
 import { Source } from './base.source.service.types';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AudioSourceService extends BaseSourceService {
-
-    sources: Source[] = [
-        { name: 'Default', src: 'assets/audio/default.mp3' },
-    ];
+    sources: Source[] = [{ name: 'Default', src: 'assets/audio/default.mp3' }];
 
     mode: AnalyserMode = 'frequency';
     oomph: Oomph;
+
+    isPlaying$: Observable<boolean>;
+    duration$: Observable<number>;
+    currentTime$: Observable<number>;
+
+    private _isPlaying$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private _duration$: BehaviorSubject<number> = new BehaviorSubject(0);
+    private _currentTime$: BehaviorSubject<number> = new BehaviorSubject(0);
 
     private _audioContext: AudioContext = new AudioContext();
     private _audioElement: HTMLAudioElement;
     private _sourceNode: MediaElementAudioSourceNode;
     private _analyserNodeMap: Map<number, AnalyserNode> = new Map();
     private _amplitudesMap: Map<number, Uint8Array> = new Map();
-    private _sampleCounts: number[] = [ 8, 16, 32, 64, 128, 256, 512 ];
+    private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
     private _oomphAmplitudes: Uint8Array;
     private _maxOomphAmplitudeTotal: number;
     private readonly _showLowerData: boolean = false;
@@ -30,11 +36,28 @@ export class AudioSourceService extends BaseSourceService {
 
     constructor(private _ngZone: NgZone, sanitizer: DomSanitizer, messageService: NzMessageService) {
         super(sanitizer, messageService);
+
+        this.isPlaying$ = this._isPlaying$.asObservable();
+        this.duration$ = this._duration$.asObservable();
+        this.currentTime$ = this._currentTime$.asObservable();
+
         this.setUpAmplitudes();
     }
 
     get sampleCounts(): number[] {
         return this._sampleCounts.slice();
+    }
+
+    togglePlay(): void {
+        if (this._isPlaying$.value) {
+            this.pause();
+        } else {
+            this.play();
+        }
+    }
+
+    setCurrentTime(val: number): void {
+        this._audioElement.currentTime = val;
     }
 
     getAmplitudes(sampleCount: number): Uint8Array {
@@ -43,20 +66,21 @@ export class AudioSourceService extends BaseSourceService {
 
     play(): void {
         if (this._audioContext.state !== 'running') {
-            this._audioContext.resume()
-                .then(() => {
-                    this._audioElement.play();
-                });
+            this._audioContext.resume().then(() => {
+                this._audioElement.play();
+            });
         } else {
             this._audioElement.play();
         }
+        this._isPlaying$.next(true);
     }
 
     pause(): void {
         this._audioElement.pause();
+        this._isPlaying$.next(false);
     }
 
-    playPreviousSong(): void {
+    previous(): void {
         const currIndex: number = this.sources.indexOf(this.activeSource);
         if (currIndex - 1 >= 0) {
             this.setActiveSource(this.sources[currIndex - 1]);
@@ -64,12 +88,18 @@ export class AudioSourceService extends BaseSourceService {
         }
     }
 
-    playNextSong(): void {
+    next(): void {
         const currIndex: number = this.sources.indexOf(this.activeSource);
         if (currIndex + 1 < this.sources.length) {
             this.setActiveSource(this.sources[currIndex + 1]);
             setTimeout(() => this.play());
         }
+    }
+
+    formatTime(seconds: number): string {
+        seconds = isNaN(seconds) ? 0 : seconds;
+        const hasHours: boolean = Math.floor(seconds / 3600) > 0;
+        return new Date(1000 * seconds).toISOString().substr(hasHours ? 11 : 14, hasHours ? 8 : 5);
     }
 
     setDecibelRange(min: number, max: number): void {
@@ -101,6 +131,13 @@ export class AudioSourceService extends BaseSourceService {
 
     setUp(audioElement: HTMLAudioElement): void {
         this._audioElement = audioElement;
+        this._audioElement.addEventListener('durationchange', duration =>
+            this._duration$.next(this._audioElement.duration)
+        );
+        this._audioElement.addEventListener('timeupdate', time =>
+            this._currentTime$.next(this._audioElement.currentTime)
+        );
+
         this._sourceNode = this._audioContext.createMediaElementSource(audioElement);
         this._sourceNode.connect(this._audioContext.destination);
 
