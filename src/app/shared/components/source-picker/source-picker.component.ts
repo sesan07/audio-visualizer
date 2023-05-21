@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SourcePickerFileData, SourcePickerUrlData } from './source-picker.component.types';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Source, SourceType } from '../../source-services/base.source.service.types';
 
 @Component({
@@ -21,25 +21,25 @@ export class SourcePickerComponent implements OnInit {
 
     @ViewChild('fileInput') fileInputElement: ElementRef<HTMLInputElement>;
 
-    form: FormGroup;
+    form: UntypedFormGroup;
     sourceType: SourceType = this.addFile ? 'File' : 'Url';
     isPopoverVisible: boolean;
 
-    private _fileValidator: Function = (control: FormControl): { [s: string]: boolean } => {
+    private _fileValidator: Function = (control: UntypedFormControl): { [s: string]: boolean } => {
         if (this.sourceType === 'File' && !control.value) {
             return { required: true };
         }
         return {};
     };
 
-    private _urlValidator: Function = (control: FormControl): { [s: string]: boolean } => {
+    private _urlValidator: Function = (control: UntypedFormControl): { [s: string]: boolean } => {
         if (this.sourceType === 'Url' && !control.value) {
             return { required: true };
         }
         return {};
     };
 
-    constructor(private _formBuilder: FormBuilder) {
+    constructor(private _formBuilder: UntypedFormBuilder) {
     }
 
     ngOnInit(): void {
