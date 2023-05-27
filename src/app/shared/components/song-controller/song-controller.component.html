@@ -37,9 +37,9 @@
         ></i>
     </button>
 </div>
-<div class="song-name">{{ audioService.activeSource.name }}</div>
+<div class="song-name">{{ audioService.activeSource?.name ?? '' }}</div>
 <div class="slider-wrapper">
-    <span class="slider-text">{{ audioService.formatTime(audioService.currentTime$ | async) }}</span>
+    <span class="slider-text">{{ audioService.formatTime((audioService.currentTime$ | async) ?? 0) }}</span>
     <nz-slider
         [ngModel]="audioService.currentTime$ | async"
         [nzStep]="0.1"
@@ -48,5 +48,5 @@
         [nzTipFormatter]="audioService.formatTime"
         (ngModelChange)="audioService.setCurrentTime($event)"
     ></nz-slider>
-    <span class="slider-text">{{ audioService.formatTime(audioService.duration$ | async) }}</span>
+    <span class="slider-text">{{ audioService.formatTime((audioService.duration$ | async) ?? 0) }}</span>
 </div>

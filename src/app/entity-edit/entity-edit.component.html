@@ -1,0 +1,37 @@
+<nz-card [nzTitle]="'Edit - ' + entity.name">
+    <nz-collapse nzAccordion>
+        <nz-collapse-panel
+            nzHeader="General"
+            nzActive
+        >
+            <app-entity-edit-general
+                [entity]="entity"
+                (dimensionsChanged)="onDimensionsChange()"
+            ></app-entity-edit-general>
+        </nz-collapse-panel>
+
+        <nz-collapse-panel [nzHeader]="entity.type">
+            <ng-container [ngSwitch]="entity.type">
+                <app-bar-controller
+                    *ngSwitchCase="EntityType.BAR"
+                    [entity]="entityAsBar"
+                    [isEmitter]="entity.isEmitter"
+                ></app-bar-controller>
+                <app-barcle-controller
+                    *ngSwitchCase="EntityType.BARCLE"
+                    [entity]="entityAsBarcle"
+                    [isEmitter]="entity.isEmitter"
+                ></app-barcle-controller>
+                <app-circle-controller
+                    *ngSwitchCase="EntityType.CIRCLE"
+                    [entity]="entityAsCircle"
+                    [isEmitter]="entity.isEmitter"
+                ></app-circle-controller>
+                <app-image-controller
+                    *ngSwitchCase="EntityType.IMAGE"
+                    [entity]="entityAsImage"
+                ></app-image-controller>
+            </ng-container>
+        </nz-collapse-panel>
+    </nz-collapse>
+</nz-card>

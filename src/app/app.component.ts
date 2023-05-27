@@ -1,21 +1,22 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     ElementRef,
     HostBinding,
     HostListener,
+    NgZone,
     OnInit,
     QueryList,
     Renderer2,
+    TrackByFunction,
     ViewChild,
     ViewChildren,
 } from '@angular/core';
-import { Entity, EntityType } from './entity/entity.types';
+import { Entity, EntityLayer, EntityType } from './app.types';
 import { animations } from './shared/animations';
 import { AudioSourceService } from './shared/source-services/audio.source.service';
-import { EntityService } from './entity/entity.service';
-import { Emitter, EmitterType } from './emitter/emitter.types';
-import { EmitterService } from './emitter/emitter.service';
+import { AppService } from './app.service';
 import { BackgroundImageSourceService } from './shared/source-services/background-image.source.service';
 import { PresetService } from './shared/preset-service/preset.service';
 import { BarContentService } from './entity-content/bar/bar.content.service';
@@ -25,22 +26,75 @@ import { ImageContentService } from './entity-content/image/image.content.servic
 import { Source } from './shared/source-services/base.source.service.types';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { trackByLayerId } from './shared/utils';
+import { EntityEditComponent } from './entity-edit/entity-edit.component';
+import { LayerListControllerComponent } from './layer-list-controller/layer-list-controller.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { SourcePickerComponent } from './shared/components/source-picker/source-picker.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { FormsModule } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { ControlLineComponent } from './shared/components/control-line/control-line.component';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { SongControllerComponent } from './shared/components/song-controller/song-controller.component';
+import { EntityCanvasComponent } from './entity-canvas/entity-canvas.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgStyle, NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { BackgroundCanvasComponent } from './background-canvas/background-canvas.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     animations: animations,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        AsyncPipe,
+        NgIf,
+        NgFor,
+        NgStyle,
+        FormsModule,
+        EntityCanvasComponent,
+        SongControllerComponent,
+        ControlLineComponent,
+        SourcePickerComponent,
+        LayerListControllerComponent,
+        EntityEditComponent,
+        BackgroundCanvasComponent,
+        NzButtonModule,
+        NzWaveModule,
+        NzIconModule,
+        NzCollapseModule,
+        NzSelectModule,
+        NzPopoverModule,
+        NzInputModule,
+        NzInputNumberModule,
+        NzSliderModule,
+        NzRadioModule,
+    ],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    @ViewChild('audio') audioElement: ElementRef<HTMLAudioElement>;
-    @ViewChild('entityView') entityViewElement: ElementRef<HTMLElement>;
-    @ViewChild('toggleButton', { read: ElementRef }) toggleButton: ElementRef<HTMLButtonElement>;
+    @ViewChild('audio') audioElement!: ElementRef<HTMLAudioElement>;
+    @ViewChild('entityView') entityViewElement!: ElementRef<HTMLElement>;
+    @ViewChild('toggleButton', { read: ElementRef }) toggleButton!: ElementRef<HTMLButtonElement>;
+
+    private _layers: EntityLayer[] = [];
 
     @HostListener('mousemove')
     onMouseMove(): void {
-        const showResizeCursor: boolean = this.entityService.entities.some(entity => entity.showResizeCursor);
-        const showMoveCursor: boolean = this.entityService.entities.some(entity => entity.showMoveCursor);
+        const showResizeCursor: boolean = this._layers.some(layer =>
+            layer.entities.some(entity => entity.showResizeCursor)
+        );
+        const showMoveCursor: boolean = this._layers.some(layer =>
+            layer.entities.some(entity => entity.showMoveCursor)
+        );
+
         this.entityViewCursor = showResizeCursor ? 'nwse-resize' : showMoveCursor ? 'move' : 'auto';
 
         this.toggleButtonOpacity = 1;
@@ -62,7 +116,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     addEntityOptions: EntityType[] = Object.values(EntityType);
-    addEmitterOptions: EmitterType[] = Object.values(EmitterType);
 
     currentAudioTime: number = 0;
     backgroundOpacity: number = 0.5;
@@ -84,38 +137,41 @@ export class AppComponent implements OnInit, AfterViewInit {
     isControlViewOpen: boolean = true;
     controlViewWidth: number;
     controlViewContentWidth: number;
-    entityViewScale: number;
+    entityViewScale: number = 1;
     entityViewCursor: string = 'auto';
 
-    savePresetPopOverVisible: boolean;
+    savePresetPopOverVisible: boolean = false;
 
-    private readonly _controlViewWidth: number = 500;
+    trackByLayerId: TrackByFunction<EntityLayer> = trackByLayerId;
+
+    private readonly _controlViewWidth: number = 600;
     private _mouseMove$: Subject<void> = new Subject();
 
     constructor(
         public audioService: AudioSourceService,
         public backgroundImageService: BackgroundImageSourceService,
-        public entityService: EntityService,
-        public emitterService: EmitterService,
+        public entityService: AppService,
         public presetService: PresetService,
         private _barContentService: BarContentService,
         private _barcleContentService: BarcleContentService,
         private _circleContentService: CircleContentService,
         private _imageContentService: ImageContentService,
-        private _elementRef: ElementRef<HTMLElement>,
-        private _renderer: Renderer2
-    ) {}
+        private _renderer: Renderer2,
+        private _ngZone: NgZone
+    ) {
+        this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
+        this.controlViewContentWidth = this._controlViewWidth;
+    }
 
     ngOnInit(): void {
         this.audioService.setActiveSource(this.audioService.sources[0]);
         this.backgroundImageService.setActiveSource(this.backgroundImageService.sources[0]);
 
-        this.controlViewWidth = this.isControlViewOpen ? this._controlViewWidth : 0;
-        this.controlViewContentWidth = this._controlViewWidth;
-
         this._mouseMove$
             .pipe(debounceTime(1500))
             .subscribe(() => (this.toggleButtonOpacity = this.isControlViewOpen ? 1 : 0));
+
+        this.entityService.layers$.subscribe(l => (this._layers = l));
     }
 
     ngAfterViewInit(): void {
@@ -127,15 +183,23 @@ export class AppComponent implements OnInit, AfterViewInit {
         this._circleContentService.setEntityView(this.entityViewElement.nativeElement);
         this._imageContentService.setEntityView(this.entityViewElement.nativeElement);
 
-        // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
         setTimeout(() => {
-            this._updateEntityViewScale();
-            this._updateBackgroundScale();
+            const layerId: string = this.entityService.addNewLayer();
+            this.entityService.addEntityType(EntityType.BAR, layerId);
+            // this.entityService.addEntityType(EntityType.BAR, layerId);
+            // this.entityService.addEntityType(EntityType.BAR, layerId);
+            // this.entityService.addEntityType(EntityType.BAR, layerId);
+        });
 
-            if (this.presetService.presets.length > 0) {
-                this.presetService.setActivePreset(this.presetService.presets[0]);
-            }
-        }, 1000);
+        // Microsoft Edge's dimensions at AfterViewInit aren't correct, so wait a bit
+        // setTimeout(() => {
+        this._updateEntityViewScale();
+        this._ngZone.runOutsideAngular(() => this._updateBackgroundScale());
+
+        if (this.presetService.presets.length > 0) {
+            this.presetService.setActivePreset(this.presetService.presets[0]);
+        }
+        // }, 1000);
     }
 
     formatTime(seconds: number): string {
@@ -146,7 +210,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     onEntityViewClicked(): void {
         this.entityService.setActiveEntity(null);
-        this.emitterService.setActiveEmitter(null);
+        // this.emitterService.setActiveEmitter(null);
     }
 
     onDecibelChanged(): void {
@@ -166,78 +230,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.toggleButton.nativeElement.blur();
     }
 
-    onControllerConfigSelected(config: Entity | Emitter, controllerType: 'entity' | 'emitter'): void {
-        switch (controllerType) {
-            case 'entity':
-                this.entityService.setActiveEntity(config as Entity);
-                break;
-            case 'emitter':
-                this.emitterService.setActiveEmitter(config as Emitter);
-                break;
-        }
-    }
-
-    onControllerAdd(type: EntityType | EmitterType, controllerType: 'entity' | 'emitter'): void {
-        switch (controllerType) {
-            case 'entity':
-                this.entityService.addEntity(type as EntityType);
-                break;
-            case 'emitter':
-                this.emitterService.addEmitter(type as EmitterType);
-                break;
-        }
-    }
-
-    onControllerRemove(config: Entity | Emitter, controllerType: 'entity' | 'emitter'): void {
-        switch (controllerType) {
-            case 'entity':
-                this.entityService.removeEntity(config as Entity);
-                break;
-            case 'emitter':
-                this.emitterService.removeEmitter(config as Emitter);
-                break;
-        }
-    }
-
-    onControllerMoveUp(index: number, controllerType: 'entity' | 'emitter'): void {
-        let reversedIndex: number;
-        switch (controllerType) {
-            case 'entity':
-                reversedIndex = this._getReversedEntityIndex(index);
-                this.entityService.moveEntity(reversedIndex, reversedIndex + 1);
-                break;
-            case 'emitter':
-                reversedIndex = this._getReversedEmitterIndex(index);
-                this.emitterService.moveEmitter(reversedIndex, reversedIndex + 1);
-                break;
-        }
-    }
-
-    onControllerMoveDown(index: number, controllerType: 'entity' | 'emitter'): void {
-        let reversedIndex: number;
-        switch (controllerType) {
-            case 'entity':
-                reversedIndex = this._getReversedEntityIndex(index);
-                this.entityService.moveEntity(reversedIndex, reversedIndex - 1);
-                break;
-            case 'emitter':
-                reversedIndex = this._getReversedEmitterIndex(index);
-                this.emitterService.moveEmitter(reversedIndex, reversedIndex - 1);
-                break;
-        }
-    }
-
-    onControllerDuplicate(index: number, controllerType: 'entity' | 'emitter'): void {
-        switch (controllerType) {
-            case 'entity':
-                this.entityService.duplicateEntity(this._getReversedEntityIndex(index));
-                break;
-            case 'emitter':
-                this.emitterService.duplicateEmitter(this._getReversedEmitterIndex(index));
-                break;
-        }
-    }
-
     private _updateEntityViewScale(): void {
         const entityViewWidth: number = this.entityViewElement.nativeElement.clientWidth;
         this.entityViewScale = (entityViewWidth - this.controlViewWidth) / entityViewWidth;
@@ -247,13 +239,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _updateBackgroundScale(): void {
         this.backgroundScale = 1 + this.backgroundOomph * this.audioService.oomph.value;
         requestAnimationFrame(() => this._updateBackgroundScale());
-    }
-
-    private _getReversedEntityIndex(index: number): number {
-        return this.entityService.entities.length - 1 - index;
-    }
-
-    private _getReversedEmitterIndex(index: number): number {
-        return this.emitterService.emitters.length - 1 - index;
     }
 }

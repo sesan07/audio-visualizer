@@ -1,0 +1,118 @@
+<nz-card
+    nzTitle="Layers"
+    [nzExtra]="cardOptions"
+>
+    <ng-template #cardOptions>
+        <button
+            class="add-btn"
+            nz-button
+            nzType="primary"
+            (click)="entityService.addNewLayer()"
+        >
+            <i
+                nz-icon
+                nzType="plus"
+            ></i>
+            Add Layer
+        </button>
+    </ng-template>
+    <ng-container *ngIf="entityService.layers$ | async as layers">
+        <nz-collapse
+            *ngIf="layers.length"
+            class="collapse"
+            nzAccordion
+        >
+            <nz-collapse-panel
+                *ngFor="let layer of layers; let i = index; let first = first; let last = last; trackBy: trackByLayerId"
+                #layerPanel
+                [nzActive]="first"
+                [nzHeader]="layer.name"
+                [nzExtra]="layerOptions"
+                cdkDropList
+                cdkDropListLockAxis="y"
+                [cdkDropListData]="layer"
+                (cdkDropListDropped)="onEntityDropped($event)"
+            >
+                <app-layer-entity
+                    *ngFor="let entity of layer.entities; trackBy: trackByEntityId"
+                    @controllerEnterLeaveTrigger
+                    cdkDrag
+                    [cdkDragData]="entity"
+                    [entity]="entity"
+                ></app-layer-entity>
+
+                <ng-template #layerOptions>
+                    <div class="layer-options">
+                        <button
+                            class="add-btn add-entity-btn"
+                            nz-button
+                            nz-dropdown
+                            nzType="primary"
+                            nzTrigger="click"
+                            [nzDropdownMenu]="menu"
+                            (click)="$event.stopPropagation()"
+                        >
+                            <span class="btn-label">
+                                <i
+                                    nz-icon
+                                    nzType="plus"
+                                ></i>
+                                Add Entity
+                            </span>
+                            <i
+                                nz-icon
+                                nzType="down"
+                            ></i>
+                        </button>
+                        <ng-container *ngIf="layers.length > 1">
+                            <button
+                                nz-button
+                                title="Move Up"
+                                [disabled]="first"
+                                (click)="entityService.moveLayer(i, i - 1); $event.stopPropagation()"
+                            >
+                                <i
+                                    nz-icon
+                                    nzType="up"
+                                ></i>
+                            </button>
+                            <button
+                                nz-button
+                                title="Move Down"
+                                [disabled]="last"
+                                (click)="entityService.moveLayer(i, i + 1); $event.stopPropagation()"
+                            >
+                                <i
+                                    nz-icon
+                                    nzType="down"
+                                ></i>
+                            </button>
+                        </ng-container>
+                        <button
+                            nz-button
+                            nzDanger
+                            title="Remove"
+                            (click)="entityService.removeLayer(layer)"
+                        >
+                            <i
+                                nz-icon
+                                nzType="delete"
+                            ></i>
+                        </button>
+                    </div>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu>
+                            <li
+                                *ngFor="let type of entityTypes"
+                                nz-menu-item
+                                (click)="entityService.addEntityType(type, layer.id); layerPanel.nzActive = true"
+                            >
+                                {{ type }}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </ng-template>
+            </nz-collapse-panel>
+        </nz-collapse>
+    </ng-container>
+</nz-card>

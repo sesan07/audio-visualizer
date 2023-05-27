@@ -4,16 +4,18 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BaseSourceService } from './base.source.service';
 import { Source } from './base.source.service.types';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AudioSourceService extends BaseSourceService {
-    sources: Source[] = [{ name: 'Default', src: 'assets/audio/default.mp3' }];
+    override sources: Source[] = [{ name: 'Default', src: 'assets/audio/default.mp3' }];
 
     mode: AnalyserMode = 'frequency';
-    oomph: Oomph;
+    oomph: Oomph = { value: 0 };
+    sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
+    amplitudesMap: Record<string, Uint8Array> = {};
 
     isPlaying$: Observable<boolean>;
     duration$: Observable<number>;
@@ -24,15 +26,20 @@ export class AudioSourceService extends BaseSourceService {
     private _currentTime$: BehaviorSubject<number> = new BehaviorSubject(0);
 
     private _audioContext: AudioContext = new AudioContext();
-    private _audioElement: HTMLAudioElement;
-    private _sourceNode: MediaElementAudioSourceNode;
-    private _analyserNodeMap: Map<number, AnalyserNode> = new Map();
-    private _amplitudesMap: Map<number, Uint8Array> = new Map();
-    private _sampleCounts: number[] = [8, 16, 32, 64, 128, 256, 512];
-    private _oomphAmplitudes: Uint8Array;
-    private _maxOomphAmplitudeTotal: number;
+    private _audioElement?: HTMLAudioElement;
+    private _sourceNode?: MediaElementAudioSourceNode;
+    private _analyserNodeMap: Map<string, AnalyserNode> = new Map();
+    private _oomphAmplitudes: Uint8Array = new Uint8Array();
+    private _maxOomphAmplitudeTotal: number = 1;
     private readonly _showLowerData: boolean = false;
-    private readonly _smoothingTimeConstant: number = 0.7;
+    private readonly _smoothingTimeConstant: number = 0.2;
+
+    public testing: Subject<void> = new Subject();
+
+    private _start?: number;
+    private _prev: number = Date.now();
+    private _max: number = 0;
+    private _min: number = Number.MAX_SAFE_INTEGER;
 
     constructor(private _ngZone: NgZone, sanitizer: DomSanitizer, messageService: NzMessageService) {
         super(sanitizer, messageService);
@@ -44,30 +51,34 @@ export class AudioSourceService extends BaseSourceService {
         this.setUpAmplitudes();
     }
 
-    get sampleCounts(): number[] {
-        return this._sampleCounts.slice();
-    }
-
     togglePlay(): void {
-        if (this._isPlaying$.value) {
-            this.pause();
-        } else {
+        if (this._audioElement?.paused) {
             this.play();
+        } else {
+            this.pause();
         }
     }
 
     setCurrentTime(val: number): void {
-        this._audioElement.currentTime = val;
+        if (this._audioElement) {
+            this._audioElement.currentTime = val;
+        }
     }
 
-    getAmplitudes(sampleCount: number): Uint8Array {
-        return this._amplitudesMap.get(sampleCount);
-    }
+    // getAmplitudes(sampleCount: number): Uint8Array {
+    //     return this.amplitudesMap[sampleCount] ?? new Uint8Array();
+    // }
 
     play(): void {
+        if (!this._audioElement) {
+            return;
+        }
+
         if (this._audioContext.state !== 'running') {
             this._audioContext.resume().then(() => {
-                this._audioElement.play();
+                if (this._audioElement) {
+                    this._audioElement.play();
+                }
             });
         } else {
             this._audioElement.play();
@@ -76,23 +87,38 @@ export class AudioSourceService extends BaseSourceService {
     }
 
     pause(): void {
-        this._audioElement.pause();
-        this._isPlaying$.next(false);
+        if (this._audioElement) {
+            this._audioElement.pause();
+            this._isPlaying$.next(false);
+        }
     }
 
     previous(): void {
+        if (!this.activeSource || !this._audioElement) {
+            return;
+        }
+
         const currIndex: number = this.sources.indexOf(this.activeSource);
         if (currIndex - 1 >= 0) {
             this.setActiveSource(this.sources[currIndex - 1]);
+            setTimeout(() => this.play());
+        } else {
+            this._audioElement.currentTime = 0;
             setTimeout(() => this.play());
         }
     }
 
     next(): void {
+        if (!this.activeSource) {
+            return;
+        }
+
         const currIndex: number = this.sources.indexOf(this.activeSource);
         if (currIndex + 1 < this.sources.length) {
             this.setActiveSource(this.sources[currIndex + 1]);
             setTimeout(() => this.play());
+        } else if (this._audioElement?.ended) {
+            this._isPlaying$.next(false);
         }
     }
 
@@ -120,38 +146,38 @@ export class AudioSourceService extends BaseSourceService {
     }
 
     setUpAmplitudes(): void {
-        this._sampleCounts.forEach(sampleCount => {
-            this._amplitudesMap.set(sampleCount, new Uint8Array(sampleCount));
+        this.sampleCounts.forEach(sampleCount => {
+            this.amplitudesMap[sampleCount] = new Uint8Array(sampleCount);
         });
 
-        this._oomphAmplitudes = this._amplitudesMap.get(this._sampleCounts[1]);
+        this._oomphAmplitudes = this.amplitudesMap[this.sampleCounts[1]] ?? new Uint8Array();
         this._maxOomphAmplitudeTotal = this._oomphAmplitudes.length * 255;
         this.oomph = { value: 0 };
     }
 
     setUp(audioElement: HTMLAudioElement): void {
+        // console.log((audioElement as HTMLMediaElement).controlsList);
         this._audioElement = audioElement;
         this._audioElement.addEventListener('durationchange', duration =>
-            this._duration$.next(this._audioElement.duration)
+            this._duration$.next(this._audioElement!.duration)
         );
         this._audioElement.addEventListener('timeupdate', time =>
-            this._currentTime$.next(this._audioElement.currentTime)
+            this._currentTime$.next(this._audioElement!.currentTime)
         );
 
         this._sourceNode = this._audioContext.createMediaElementSource(audioElement);
         this._sourceNode.connect(this._audioContext.destination);
 
-        this._sampleCounts.forEach(sampleCount => {
+        this.sampleCounts.forEach(sampleCount => {
             const node: AnalyserNode = this._audioContext.createAnalyser();
-            this._sourceNode.connect(node);
-
             node.fftSize = sampleCount * (this._showLowerData ? 2 : 4);
             node.smoothingTimeConstant = this._smoothingTimeConstant;
 
-            this._analyserNodeMap.set(sampleCount, node);
+            this._sourceNode!.connect(node);
+            this._analyserNodeMap.set(sampleCount + '', node);
         });
 
-        this._updateAmplitudes();
+        this._ngZone.runOutsideAngular(() => this._updateAmplitudes());
     }
 
     setActiveSource(source: Source): void {
@@ -168,20 +194,19 @@ export class AudioSourceService extends BaseSourceService {
     protected _onSourceAdded(source: Source): void {}
 
     private _updateAmplitudes(): void {
-        this._ngZone.runOutsideAngular(() => {
-            this._amplitudesMap.forEach((amplitudes, sampleCount) => {
-                const node: AnalyserNode = this._analyserNodeMap.get(sampleCount);
-                if (this.mode === 'frequency') {
-                    node.getByteFrequencyData(amplitudes);
-                } else {
-                    node.getByteTimeDomainData(amplitudes);
-                }
-            });
-
-            const total: number = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
-            this.oomph.value = total / this._maxOomphAmplitudeTotal;
-
-            requestAnimationFrame(() => this._updateAmplitudes());
+        // console.log('0', NgZone.isInAngularZone());
+        Object.entries(this.amplitudesMap).forEach(([sampleCount, amplitudes]) => {
+            const node: AnalyserNode = this._analyserNodeMap.get(sampleCount)!;
+            if (this.mode === 'frequency') {
+                node.getByteFrequencyData(amplitudes);
+            } else {
+                node.getByteTimeDomainData(amplitudes);
+            }
         });
+
+        const total: number = this._oomphAmplitudes.reduce((prev, curr) => prev + curr);
+        this.oomph.value = total / this._maxOomphAmplitudeTotal;
+
+        requestAnimationFrame(() => this._updateAmplitudes());
     }
 }

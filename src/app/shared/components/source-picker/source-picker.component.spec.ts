@@ -8,8 +8,8 @@ describe('SourcePickerComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ SourcePickerComponent ]
-        })
+    imports: [SourcePickerComponent]
+})
             .compileComponents();
     });
 

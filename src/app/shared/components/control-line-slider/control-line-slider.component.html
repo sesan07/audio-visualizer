@@ -1,0 +1,24 @@
+<app-control-line
+    [name]="name"
+    [description]="description"
+>
+    <nz-input-number
+        [ngModel]="value"
+        (ngModelChange)="value = $event; valueChange.emit(value)"
+        [nzStep]="step"
+        [nzMin]="min"
+        [nzMax]="max"
+    ></nz-input-number>
+    <nz-slider
+        [ngModel]="value"
+        (ngModelChange)="value = $event; valueChange.emit(value)"
+        [nzStep]="step"
+        [nzMin]="min"
+        [nzMax]="max"
+    ></nz-slider>
+    <app-random-switch
+        *ngIf="showRandomize"
+        [isRandom]="randomize"
+        (isRandomChange)="randomize = $event; randomizeChange.emit(randomize)"
+    />
+</app-control-line>

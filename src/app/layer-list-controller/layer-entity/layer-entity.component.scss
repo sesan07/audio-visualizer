@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+
+    // &:hover {
+    //     background-color: var(--nz-primary-color);
+    // }
+}
+
+.primary-btn {
+    flex-grow: 1;
+}

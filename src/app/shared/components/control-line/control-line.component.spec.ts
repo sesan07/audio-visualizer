@@ -8,8 +8,8 @@ describe('ControlComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ ControlLineComponent ]
-        })
+    imports: [ControlLineComponent]
+})
             .compileComponents();
     });
 

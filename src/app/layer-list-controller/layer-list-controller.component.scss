@@ -1,0 +1,23 @@
+// :host ::ng-deep .ant-collapse-content-box {
+//     display: flex;
+//     flex-direction: column;
+//     row-gap: 8px;
+// }
+
+.add-btn {
+    width: 150px;
+}
+
+.add-entity-btn {
+    display: inline-flex;
+    align-items: center;
+
+    .btn-label {
+        flex-grow: 1;
+    }
+}
+
+.layer-options {
+    display: flex;
+    column-gap: 8px;
+}

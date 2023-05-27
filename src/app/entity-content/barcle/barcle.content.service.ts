@@ -1,61 +1,60 @@
 import { Injectable } from '@angular/core';
 import { BaseContentService } from '../base/base.content.service';
-import { Entity } from '../../entity/entity.types';
+import { Entity } from '../../app.types';
 import { AudioSourceService } from '../../shared/source-services/audio.source.service';
 import { BarcleContent } from './barcle.content.types';
 import { getRandomColor } from '../../shared/utils';
+import { BarcleContentAnimator } from './barcle.content-animator';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class BarcleContentService extends BaseContentService<BarcleContent> {
+    protected _animator: BarcleContentAnimator;
 
     constructor(private _audioService: AudioSourceService) {
         super();
+        this._animator = new BarcleContentAnimator(_audioService.amplitudesMap, _audioService.oomph);
     }
 
-    beforeEmit(content: BarcleContent): void {
-        if (content.randomizeColors) {
+    override beforeEmit(content: BarcleContent): void {
+        super.beforeEmit(content);
+        if (content.randomStartColor) {
             content.startColor = getRandomColor();
+        }
+        if (content.randomEndColor) {
             content.endColor = getRandomColor();
         }
     }
 
     getDefaultContent(isEmitted: boolean): BarcleContent {
-        const sampleCount: number = this._audioService.sampleCounts[0];
         return {
             isEmitted: isEmitted,
-            randomizeColors: isEmitted,
-            amplitudes: this._audioService.getAmplitudes(sampleCount),
             startColor: getRandomColor(),
             endColor: getRandomColor(),
             multiplier: 1,
-            shadowBlur: isEmitted ? 0 : 5,
-            sampleCount: sampleCount,
+            shadowBlur: 0,
+            sampleCount: this._audioService.sampleCounts[0],
             baseRadius: 80,
             ringSize: 20,
             fillCenter: false,
         };
     }
 
-    setEntityDimensions(entity: Entity<BarcleContent>): void {
-        const content: BarcleContent = entity.entityContent;
-
+    setEntityDimensions({ content, transform }: Entity<BarcleContent>): void {
         const radius: number = content.multiplier * 255 + content.baseRadius + content.ringSize;
-        const diameter: number = radius * 2 * entity.scale;
-        entity.height = diameter;
-        entity.width = diameter;
+        const diameter: number = radius * 2 * transform.scale;
+        transform.height = diameter;
+        transform.width = diameter;
     }
 
     protected _getAddPreset(content: BarcleContent): BarcleContent {
-        const contentClone: BarcleContent = Object.assign({}, content);
-        delete contentClone.amplitudes;
+        const contentClone: BarcleContent = { ...content };
         return contentClone;
     }
 
     protected _getLoadPreset(content: BarcleContent): BarcleContent {
-        const contentClone: BarcleContent = Object.assign({}, content);
-        contentClone.amplitudes = this._audioService.getAmplitudes(contentClone.sampleCount);
+        const contentClone: BarcleContent = { ...content };
         return contentClone;
     }
 }

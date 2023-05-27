@@ -3,13 +3,10 @@ import { BaseSourceService } from './base.source.service';
 import { Source } from './base.source.service.types';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class BackgroundImageSourceService extends BaseSourceService {
-
-    sources: Source[] = [
-        { name: 'Default', src: 'assets/background-image/default.jpg' },
-    ];
+    override sources: Source[] = [{ name: 'Default', src: 'assets/background-image/default.jpg' }];
 
     setActiveSource(source: Source): void {
         if (this.activeSource?.objectUrl) {

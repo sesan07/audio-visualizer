@@ -7,13 +7,12 @@ import { GifReader } from 'omggif';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ImageSourceService extends BaseSourceService {
-
-    sources: Source[] = [
+    override sources: Source[] = [
         { name: 'Mako', url: 'assets/image/mako.png' },
-        { name: 'Pizza Rat', url: 'assets/image/pizza-rat.gif' }
+        { name: 'Pizza Rat', url: 'assets/image/pizza-rat.gif' },
     ];
 
     constructor(sanitizer: DomSanitizer, messageService: NzMessageService, private _httpClient: HttpClient) {
@@ -26,7 +25,7 @@ export class ImageSourceService extends BaseSourceService {
         if (source.file) {
             const reader: FileReader = new FileReader();
             reader.onload = (evt: ProgressEvent<FileReader>) => {
-                const intArray: Uint8Array = new Uint8Array(evt.target.result as ArrayBuffer);
+                const intArray: Uint8Array = new Uint8Array(evt.target!.result as ArrayBuffer);
                 if (this._isGif(intArray)) {
                     this._loadGif(source, intArray);
                 } else {
@@ -37,7 +36,7 @@ export class ImageSourceService extends BaseSourceService {
             reader.readAsArrayBuffer(source.file);
         } else if (source.url) {
             source.src = source.url;
-            this._httpClient.get(source.url, {responseType: 'arraybuffer'}).subscribe(arrayBuffer => {
+            this._httpClient.get(source.url, { responseType: 'arraybuffer' }).subscribe(arrayBuffer => {
                 const intArray: Uint8Array = new Uint8Array(arrayBuffer);
                 if (this._isGif(intArray)) {
                     this._loadGif(source, intArray);
@@ -50,7 +49,7 @@ export class ImageSourceService extends BaseSourceService {
 
     private _loadGif(source: Source, intArray: Uint8Array): void {
         const gifReader: GifReader = new GifReader(intArray);
-        const info: { width: number, height: number } = gifReader.frameInfo(0);
+        const info: { width: number; height: number } = gifReader.frameInfo(0);
         source.frames = new Array(gifReader.numFrames());
 
         let previousData: Uint8ClampedArray;
@@ -60,7 +59,7 @@ export class ImageSourceService extends BaseSourceService {
             const canvas: HTMLCanvasElement = document.createElement('canvas');
             canvas.width = info.width;
             canvas.height = info.height;
-            const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+            const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
 
             const imageData: ImageData = ctx.createImageData(info.width, info.width);
             if (index > 0 && frameInfo.disposal < 2) {
@@ -90,10 +89,10 @@ export class ImageSourceService extends BaseSourceService {
             const canvas: HTMLCanvasElement = document.createElement('canvas');
             canvas.width = image.width;
             canvas.height = image.height;
-            const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+            const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
 
             ctx.drawImage(image, 0, 0);
-            source.frames = [ canvas ];
+            source.frames = [canvas];
 
             if (source.file) {
                 this._unloadFileSource(source);
@@ -108,12 +107,12 @@ export class ImageSourceService extends BaseSourceService {
 
         // - Header (GIF87a or GIF89a).
         return !(
-            buf[p++] !== 0x47
-            || buf[p++] !== 0x49
-            || buf[p++] !== 0x46
-            || buf[p++] !== 0x38
-            || (buf[p++] + 1 & 0xfd) !== 0x38
-            || buf[p++] !== 0x61
+            buf[p++] !== 0x47 ||
+            buf[p++] !== 0x49 ||
+            buf[p++] !== 0x46 ||
+            buf[p++] !== 0x38 ||
+            ((buf[p++] + 1) & 0xfd) !== 0x38 ||
+            buf[p++] !== 0x61
         );
     }
 }
