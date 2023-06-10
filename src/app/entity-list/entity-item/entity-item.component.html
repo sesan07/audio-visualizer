@@ -1,0 +1,36 @@
+<!-- <div></div> -->
+<i
+    class="drag-handle"
+    nz-icon
+    nzType="holder"
+></i>
+<button
+    class="primary-btn"
+    nz-button
+    [nzType]="(entityService.activeEntity$ | async)?.id === entity.id ? 'primary' : 'default'"
+    (click)="entityService.setActiveEntity(entity)"
+>
+    {{ entity | entityName }}
+</button>
+
+<button
+    nz-button
+    title="Duplicate"
+    (click)="entityService.duplicateEntity(entity)"
+>
+    <i
+        nz-icon
+        nzType="copy"
+    ></i>
+</button>
+<button
+    nz-button
+    nzDanger
+    title="Remove"
+    (click)="entityService.removeEntity(entity)"
+>
+    <i
+        nz-icon
+        nzType="delete"
+    ></i>
+</button>

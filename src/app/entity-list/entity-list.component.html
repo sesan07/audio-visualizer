@@ -1,0 +1,56 @@
+<nz-card
+    nzTitle="Viz List"
+    [nzExtra]="cardOptions"
+>
+    <div
+        *ngIf="entityService.entities$ | async as entities"
+        class="entity-item-list"
+        cdkDropList
+        cdkDropListLockAxis="y"
+        (cdkDropListDropped)="onEntityDropped($event)"
+    >
+        <app-entity-item
+            *ngFor="let entity of entities; trackBy: trackByEntityId"
+            @controllerEnterLeaveTrigger
+            cdkDrag
+            [cdkDragData]="entity"
+            [entity]="entity"
+        />
+    </div>
+    <ng-template #cardOptions>
+        <div class="card-options">
+            <button
+                class="add-btn add-entity-btn"
+                nz-button
+                nz-dropdown
+                nzType="primary"
+                nzTrigger="click"
+                [nzDropdownMenu]="menu"
+                (click)="$event.stopPropagation()"
+            >
+                <span class="btn-label">
+                    <i
+                        nz-icon
+                        nzType="plus"
+                    ></i>
+                    Add Viz
+                </span>
+                <i
+                    nz-icon
+                    nzType="down"
+                ></i>
+            </button>
+        </div>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li
+                    *ngFor="let type of entityTypes"
+                    nz-menu-item
+                    (click)="entityService.addEntityType(type)"
+                >
+                    {{ type }}
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </ng-template>
+</nz-card>

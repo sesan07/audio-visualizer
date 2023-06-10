@@ -1,4 +1,4 @@
-import { Source } from '../../shared/source-services/base.source.service.types';
+import { Source } from 'src/app/source-services/base.source.service.types';
 
 export interface ImageContent {
     source: Source;

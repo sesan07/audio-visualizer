@@ -1,0 +1,145 @@
+<!-- <nz-card nzTitle="Options"> </nz-card> -->
+<nz-collapse nzAccordion>
+    <nz-collapse-panel
+        class="control-group"
+        nzHeader="Music"
+        nzActive
+    >
+        <app-control-line name="Song">
+            <app-source-picker
+                [allowFileAdd]="true"
+                fileAcceptTypes="audio/*"
+                popoverTitle="Add Song"
+                [activeSource]="audioService.activeSource"
+                [sources]="audioService.sources"
+                (activeSourceChanged)="onSongSelected($event)"
+                (addFile)="audioService.addFileSource($event.name, $event.file)"
+            />
+        </app-control-line>
+
+        <app-control-line
+            name="Mode"
+            description="Set the audio analysis mode"
+        >
+            <nz-radio-group [(ngModel)]="audioService.mode">
+                <label
+                    *ngFor="let option of modeOptions"
+                    nz-radio-button
+                    [nzValue]="option.value"
+                    >{{ option.name }}</label
+                >
+            </nz-radio-group>
+        </app-control-line>
+        <app-control-line
+            name="Decibel Range"
+            description="Set the decibel range to use for audio analysis"
+        >
+            <span class="slider-text">{{ decibelRange[0] }}</span>
+            <nz-slider
+                nzRange
+                [(ngModel)]="decibelRange"
+                [nzMin]="-100"
+                [nzMax]="0"
+                (ngModelChange)="onDecibelChanged()"
+            ></nz-slider>
+            <span class="slider-text">{{ decibelRange[1] }}</span>
+        </app-control-line>
+    </nz-collapse-panel>
+    <nz-collapse-panel
+        class="control-group"
+        nzHeader="Background"
+    >
+        <app-control-line name="Image">
+            <app-source-picker
+                [allowFileAdd]="true"
+                [allowUrlAdd]="true"
+                fileAcceptTypes="image/*"
+                popoverTitle="Add Background Image"
+                [activeSource]="bgImageService.activeSource"
+                [sources]="bgImageService.sources"
+                (activeSourceChanged)="bgImageService.setActiveSource($event)"
+                (addFile)="bgImageService.addFileSource($event.name, $event.file)"
+                (addUrl)="bgImageService.addUrlSource($event.name, $event.url)"
+            />
+        </app-control-line>
+
+        <app-control-line-slider
+            name="Opacity"
+            [(value)]="bgImageService.opacity"
+            [step]="0.1"
+            [min]="0.1"
+            [max]="1"
+        />
+
+        <app-control-line-slider
+            name="Bang"
+            [(value)]="bgImageService.oomph"
+            [step]="0.1"
+            [min]="0.1"
+            [max]="2"
+        />
+    </nz-collapse-panel>
+    <nz-collapse-panel
+        class="control-group"
+        nzHeader="Presets"
+    >
+        <app-control-line name="Preset">
+            <nz-select
+                [ngModel]="presetService.activePreset$ | async"
+                (ngModelChange)="presetService.setActivePreset($event)"
+            >
+                <nz-option
+                    *ngFor="let option of presetService.presets"
+                    [nzValue]="option"
+                    [nzLabel]="option.name"
+                >
+                </nz-option>
+            </nz-select>
+            <button
+                nz-button
+                nz-popover
+                nzPopoverTitle="Save Current As Preset"
+                nzPopoverTrigger="click"
+                [(nzPopoverVisible)]="savePresetPopOverVisible"
+                [nzPopoverContent]="savePresetTemplate"
+            >
+                <i
+                    nz-icon
+                    nzType="save"
+                ></i>
+            </button>
+            <ng-template #savePresetTemplate>
+                <input
+                    #savePresetNameInput
+                    nz-input
+                    placeholder="Preset Name"
+                />
+                <span class="popover-action-buttons">
+                    <button
+                        nz-button
+                        nzDanger
+                        (click)="savePresetPopOverVisible = false"
+                    >
+                        <i
+                            nz-icon
+                            nzType="close"
+                        ></i>
+                    </button>
+                    <button
+                        nz-button
+                        nzType="primary"
+                        (click)="
+                            entityService.saveCurrentAsPreset(savePresetNameInput.value);
+                            savePresetPopOverVisible = false
+                        "
+                    >
+                        <i
+                            nz-icon
+                            nzType="check"
+                        ></i>
+                    </button>
+                </span>
+            </ng-template>
+        </app-control-line>
+    </nz-collapse-panel>
+</nz-collapse>

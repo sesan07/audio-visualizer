@@ -1,0 +1,10 @@
+:host {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.primary-btn {
+    flex-grow: 1;
+}

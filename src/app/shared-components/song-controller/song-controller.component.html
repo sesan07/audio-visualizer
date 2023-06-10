@@ -1,0 +1,76 @@
+<div class="wrapper-1">
+    <div class="wrapper-2">
+        <div class="media-buttons">
+            <button
+                class="secondary-media-btn"
+                nz-button
+                nzShape="circle"
+                title="Next"
+                (click)="audioService.previous()"
+            >
+                <i
+                    nz-icon
+                    nzType="step-backward"
+                ></i>
+            </button>
+            <button
+                class="primary-media-btn"
+                nz-button
+                nzType="primary"
+                [title]="(audioService.isPlaying$ | async) ? 'Pause' : 'Play'"
+                nzShape="circle"
+                (click)="audioService.togglePlay()"
+            >
+                <i
+                    nz-icon
+                    [nzType]="(audioService.isPlaying$ | async) ? 'pause' : 'caret-right'"
+                ></i>
+            </button>
+            <button
+                class="secondary-media-btn"
+                nz-button
+                nzShape="circle"
+                title="Previous"
+                (click)="audioService.next()"
+            >
+                <i
+                    nz-icon
+                    nzType="step-forward"
+                ></i>
+            </button>
+        </div>
+        <div class="song-name">{{ audioService.activeSource?.name ?? '' }}</div>
+    </div>
+    <div class="slider-wrapper">
+        <span class="slider-text">{{ audioService.formatTime((audioService.currentTime$ | async) ?? 0) }}</span>
+        <nz-slider
+            [ngModel]="audioService.currentTime$ | async"
+            [nzStep]="0.1"
+            [nzMin]="0"
+            [nzMax]="audioService.duration$ | async"
+            [nzTipFormatter]="audioService.formatTime"
+            (ngModelChange)="audioService.setCurrentTime($event)"
+        ></nz-slider>
+        <span class="slider-text">{{ audioService.formatTime((audioService.duration$ | async) ?? 0) }}</span>
+    </div>
+</div>
+
+<div class="volume-wrapper">
+    <nz-slider
+        nzVertical
+        [ngModel]="audioService.volume$ | async"
+        [nzStep]="0.05"
+        [nzMin]="0"
+        [nzMax]="1"
+        (ngModelChange)="audioService.setVolume($event)"
+    ></nz-slider>
+    <button
+        class="volume-btn"
+        nz-button
+        nzShape="circle"
+        title="Volume"
+        (click)="audioService.toggleMuted()"
+    >
+        <span class="material-symbols-rounded">{{ (audioService.muted$ | async) ? 'volume_off' : 'volume_up' }} </span>
+    </button>
+</div>

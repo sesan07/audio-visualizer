@@ -1,0 +1,83 @@
+:host {
+    display: flex;
+    gap: 16px;
+    border-radius: 16px;
+
+    &.show-background {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.wrapper-1 {
+    flex-grow: 1;
+}
+
+.wrapper-2 {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.media-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.primary-media-btn {
+    width: 80px;
+    height: 80px;
+
+    .anticon {
+        font-size: 40px;
+    }
+}
+
+.secondary-media-btn {
+    width: 64px;
+    height: 64px;
+
+    .anticon {
+        font-size: 28px;
+    }
+}
+
+.song-name {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 20px;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.test {
+    height: 100%;
+    width: 20px;
+    flex-grow: 0;
+}
+
+.volume-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+nz-slider[nzVertical] {
+    flex-grow: 1;
+}
+
+.volume-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        font-size: 20px;
+    }
+}

@@ -1,29 +1,14 @@
 [
   {
-    "name": "Default",
+    "name": "Intro",
     "entities": [
       {
+        "id": "900e2205-0d37-4f64-8ba3-0b51a550c0e4",
         "type": "Bar",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 0 (Bar)",
-        "isSelected": true,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.5,
-        "oomphAmount": 0.3,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 267.5,
-        "width": 1585,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 1",
+        "content": {
           "startColor": {
             "r": 255,
             "g": 74,
@@ -42,38 +27,58 @@
           "barCapSize": 25,
           "barSize": 20,
           "barSpacing": 30,
-          "isReversed": false,
-          "baseRadius": 80,
-          "ringSize": 20,
-          "fillCenter": false
+          "isReversed": false
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 0.3,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 267.5,
+          "width": 1585,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
+        "isSelected": true,
         "presetX": 0.5012522310110604,
         "presetY": 0.7820465524968511
       },
       {
+        "id": "60883411-ee2d-4148-b7a9-06449ce0d485",
         "type": "Circle",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 1 (Circle)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.5,
-        "oomphAmount": 1.5,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 345,
-        "width": 345,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 2",
+        "content": {
           "startColor": {
             "r": 255,
             "g": 74,
@@ -94,33 +99,55 @@
           "fillCenter": false,
           "sampleRadius": 10
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 1.5,
+          "left": 0.5012522310110604,
+          "top": 0.6820465524968511,
+          "height": 345,
+          "width": 345,
+          "randomPosition": true,
+          "rotation": {
+            "value": 180,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
         "presetX": 0.5019551651131432,
-        "presetY": 0.35117678657134044
+        "presetY": 0.42117678657134044
       },
       {
+        "id": "bea7f7c7-77a6-4f35-be72-4bf8e0310697",
         "type": "Circle",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 2 (Circle)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.5,
-        "oomphAmount": 0,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 730,
-        "width": 730,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 3",
+        "content": {
           "startColor": {
             "r": 81,
             "g": 227,
@@ -141,39 +168,60 @@
           "fillCenter": false,
           "sampleRadius": 25
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 0,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 730,
+          "width": 730,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
         "presetX": 0.5025772241695621,
         "presetY": 0.3496916198371818
       }
-    ],
-    "emitters": []
+    ]
   },
   {
-    "name": "Default 2",
+    "name": "Hat",
     "entities": [
       {
+        "id": "2c6e6e2c-3282-47d2-8edd-4dc44bf13c89",
         "type": "Bar",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 0 (Bar)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.5,
-        "oomphAmount": 0.2,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 140,
-        "width": 1185,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 1",
+        "content": {
           "startColor": {
             "r": 255,
             "g": 74,
@@ -192,38 +240,58 @@
           "barCapSize": 25,
           "barSize": 120,
           "barSpacing": 30,
-          "isReversed": false,
-          "baseRadius": 80,
-          "ringSize": 20,
-          "fillCenter": false
+          "isReversed": false
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 0.2,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 140,
+          "width": 1185,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
+        "isSelected": true,
         "presetX": 0.5027193671612952,
         "presetY": 0.13020204894302032
       },
       {
+        "id": "2d2acee2-a004-469a-a9a3-da5bd859318f",
         "type": "Barcle",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 1 (Barcle)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.2,
-        "oomphAmount": 2.5,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 119,
-        "width": 119,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 2",
+        "content": {
           "startColor": {
             "r": 81,
             "g": 227,
@@ -243,33 +311,55 @@
           "ringSize": 20,
           "fillCenter": false
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 2.5,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 119,
+          "width": 119,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
         "presetX": 0.662757788339952,
         "presetY": 0.36003232298938903
       },
       {
+        "id": "1fbc90bc-b5c7-4982-9796-183c16998a1e",
         "type": "Barcle",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 2 (Barcle)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.2,
-        "oomphAmount": 2.5,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 119,
-        "width": 119,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 3",
+        "content": {
           "startColor": {
             "r": 81,
             "g": 227,
@@ -289,33 +379,55 @@
           "ringSize": 20,
           "fillCenter": false
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 2.5,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 119,
+          "width": 119,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
         "presetX": 0.34467069756134927,
         "presetY": 0.3626741686043717
       },
       {
+        "id": "3b45721f-4522-4c00-973a-091f5b4b3b47",
         "type": "Circle",
+        "isEmitter": false,
         "isEmitted": false,
-        "name": "Entity 3 (Circle)",
-        "isSelected": false,
-        "animateMovement": false,
-        "randomizeMovement": false,
-        "movementAngle": 0,
-        "movementSpeed": 0.5,
-        "animateRotation": false,
-        "rotation": 0,
-        "rotationDirection": "Right",
-        "rotationSpeed": 0.5,
-        "scale": 0.5,
-        "oomphAmount": 0.5,
-        "currentOpacity": 1,
-        "targetOpacity": 1,
-        "height": 436.5,
-        "width": 436.5,
-        "entityContent": {
-          "isEmitted": false,
-          "randomizeColors": false,
+        "name": "Viz 4",
+        "content": {
           "startColor": {
             "r": 255,
             "g": 74,
@@ -334,12 +446,48 @@
           "baseRadius": 80,
           "sampleRadius": 25
         },
-        "isDying": false,
-        "showMoveCursor": false,
+        "transform": {
+          "scale": 0.5,
+          "oomphAmount": 0.5,
+          "left": 0.5012522310110604,
+          "top": 0.7820465524968511,
+          "height": 436.5,
+          "width": 436.5,
+          "randomPosition": true,
+          "rotation": {
+            "value": 0,
+            "direction": "Right",
+            "randomDirection": true,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 2
+          },
+          "movement": {
+            "angle": 0,
+            "randomAngle": true,
+            "randomAngleMin": 0,
+            "randomAngleMax": 360,
+            "speed": 0.5,
+            "randomSpeed": true,
+            "randomSpeedMin": 0.1,
+            "randomSpeedMax": 5
+          }
+        },
+        "opacity": {
+          "current": 1,
+          "target": 1
+        },
+        "emitter": {
+          "interval": 2,
+          "amount": 1,
+          "lifespan": 5,
+          "randomLifespanMin": 0.1,
+          "randomLifespanMax": 5
+        },
         "presetX": 0.5022208246850403,
         "presetY": 0.7107851949796768
       }
-    ],
-    "emitters": []
+    ]
   }
 ]

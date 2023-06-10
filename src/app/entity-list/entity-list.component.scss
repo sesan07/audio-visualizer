@@ -1,0 +1,28 @@
+:host ::ng-deep .ant-card-body {
+    padding: 0;
+}
+
+.add-btn {
+    width: 150px;
+}
+
+.add-entity-btn {
+    display: inline-flex;
+    align-items: center;
+
+    .btn-label {
+        flex-grow: 1;
+    }
+}
+
+.card-options {
+    display: flex;
+    column-gap: 8px;
+}
+
+.entity-item-list {
+    padding: var(--nz-card-padding-base);
+    box-sizing: border-box;
+    max-height: 200px;
+    overflow: auto;
+}

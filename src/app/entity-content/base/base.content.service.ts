@@ -1,33 +1,54 @@
-import { Entity, EntityContent } from '../../entity/entity.types';
-import { getRandomNumber } from '../../shared/utils';
+import { Entity, EntityContent } from 'src/app/entity-service/entity.types';
+import { getRandomNumber } from 'src/app/utils';
+import { BaseContentAnimator } from './base.content.animator';
 
 export abstract class BaseContentService<T extends EntityContent> {
-    private _entityView: HTMLElement;
+    protected abstract _animator: BaseContentAnimator<T>;
 
-    beforeEmit(content: T): void {
+    private _entityView?: HTMLElement;
+
+    animate(entity: Entity<T>, canvasContext: CanvasRenderingContext2D): void {
+        this._animator.animate(entity, canvasContext);
     }
 
+    beforeEmit(content: T): void {}
+
     setAddPreset(entity: Entity<T>): void {
-        entity.presetX = (entity.left + (entity.width / 2)) / this._entityView.clientWidth;
-        entity.presetY = (entity.top + (entity.height / 2)) / this._entityView.clientHeight;
-        delete entity.left;
-        delete entity.top;
-        entity.entityContent = this._getAddPreset(entity.entityContent);
+        if (!this._entityView) {
+            console.warn('entityView is not ready');
+            return;
+        }
+
+        const { transform } = entity;
+        entity.presetX = (transform.left + transform.width / 2) / this._entityView.clientWidth;
+        entity.presetY = (transform.top + transform.height / 2) / this._entityView.clientHeight;
+        entity.content = this._getAddPreset(entity.content);
     }
 
     setLoadPreset(entity: Entity<T>): void {
-        entity.left = (entity.presetX * this._entityView.clientWidth) - entity.width / 2;
-        entity.top = (entity.presetY * this._entityView.clientHeight) - entity.height / 2;
-        entity.entityContent = this._getLoadPreset(entity.entityContent);
+        const { transform } = entity;
+        if (!this._entityView) {
+            console.warn('entityView is not ready');
+            return;
+        }
+
+        transform.left = (entity.presetX ?? 0) * this._entityView.clientWidth - transform.width / 2;
+        transform.top = (entity.presetY ?? 0) * this._entityView.clientHeight - transform.height / 2;
+        entity.content = this._getLoadPreset(entity.content);
     }
 
-    setEntityPosition(entity: Entity<T>, centerX?: number, centerY?: number): void {
+    setEntityPosition({ transform }: Entity<T>, centerX?: number, centerY?: number): void {
+        if (!this._entityView) {
+            console.warn('entityView is not ready');
+            return;
+        }
+
         if (centerX !== undefined && centerY !== undefined) {
-            entity.left = centerX - entity.width / 2;
-            entity.top = centerY - entity.height / 2;
+            transform.left = centerX - transform.width / 2;
+            transform.top = centerY - transform.height / 2;
         } else {
-            entity.left = getRandomNumber(0, this._entityView.clientWidth - entity.width);
-            entity.top = getRandomNumber(0, this._entityView.clientHeight - entity.height);
+            transform.left = getRandomNumber(0, this._entityView.clientWidth - transform.width);
+            transform.top = getRandomNumber(0, this._entityView.clientHeight - transform.height);
         }
     }
 

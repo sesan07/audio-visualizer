@@ -1,69 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+html,
+body {
     overscroll-behavior: none; // remove swiping
 }
 
-.card {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px;
-    background: #333333;
-    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-
-    .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .card-title {
-            font-weight: 500;
-            font-size: 1.125rem;
-        }
-
-        nz-button-group {
-            .add-btn {
-                width: 12rem;
-            }
-
-            .expand-btn {
-                width: 3rem
-            }
-        }
-    }
+.ant-collapse-header {
+    align-items: center !important;
 }
 
-.control-group nz-input-number {
-    width: 4rem !important;
+.cdk-drag-placeholder {
+    opacity: 0;
 }
 
-.control-group nz-switch button {
-    width: 4rem !important;
-}
-
-.control-group nz-select, app-color-picker {
-    flex-grow: 1;
-}
-
-nz-radio-group {
-    flex-grow: 1;
-    display: flex !important;
-
-    label {
+app-control-line {
+    .ant-select,
+    .ant-radio-group,
+    app-color-picker {
         flex-grow: 1;
-        text-align: center;
     }
-}
 
-.control-content {
     .name-edit-text {
         flex-grow: 1;
     }
 
     .slider-text {
         width: 2rem;
+        text-align: center;
+    }
+}
+
+nz-radio-group {
+    display: flex !important;
+
+    label {
+        flex-grow: 1;
         text-align: center;
     }
 }
@@ -91,12 +62,8 @@ nz-divider {
     font-size: 0.875rem !important;
 }
 
-.ant-collapse-header {
-    background-color: #333333;
-}
-
-.ant-collapse-content {
-    background-color: #1F1F1F !important;
+.drag-handle {
+    cursor: move;
 }
 
 .outline {
@@ -118,14 +85,13 @@ nz-divider {
     border: 1px solid #434343 !important;
     box-shadow: initial !important;
 
-
     // set zorro input properties
-    color: rgba(255,255,255,.85);
+    color: rgba(255, 255, 255, 0.85);
     position: relative;
     display: inline-block;
     background-color: transparent;
     border-radius: 2px;
-    transition: all .3s;
+    transition: all 0.3s;
     margin: 0;
     line-height: 1.5715;
     list-style: none;
@@ -145,13 +111,15 @@ nz-divider {
 
 .sketch-picker span {
     font-size: inherit !important;
-    color: rgba(255,255,255,.85) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .sketch-picker .sketch-swatches {
     border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-.sketch-picker .sketch-hue, .color-hue-pointer, .color-hue-slider {
+.sketch-picker .sketch-hue,
+.color-hue-pointer,
+.color-hue-slider {
     height: 100% !important;
 }

@@ -1,0 +1,207 @@
+<app-control-line name="Name">
+    <span class="name-edit-text">{{ entity.name }}</span>
+    <button
+        nz-button
+        nz-popover
+        nzPopoverTitle="Edit Name"
+        nzPopoverTrigger="click"
+        [(nzPopoverVisible)]="nameEditPopOverVisible"
+        [nzPopoverContent]="nameEditTemplate"
+    >
+        <i
+            nz-icon
+            nzType="edit"
+        ></i>
+    </button>
+    <ng-template #nameEditTemplate>
+        <input
+            #nameEditInput
+            nz-input
+            placeholder="Viz Name"
+            [ngModel]="entity.name"
+        />
+        <span class="popover-action-buttons">
+            <button
+                nz-button
+                nzDanger
+                (click)="nameEditPopOverVisible = false"
+            >
+                <i
+                    nz-icon
+                    nzType="close"
+                ></i>
+            </button>
+            <button
+                nz-button
+                nzType="primary"
+                (click)="entityService.setEntityName(entity, nameEditInput.value); nameEditPopOverVisible = false"
+            >
+                <i
+                    nz-icon
+                    nzType="check"
+                ></i>
+            </button>
+        </span>
+    </ng-template>
+</app-control-line>
+
+<app-control-line name="Type">
+    <nz-radio-group
+        [ngModel]="entity.type"
+        (ngModelChange)="entityService.setEntityType(entity, $event)"
+    >
+        <label
+            *ngFor="let option of entityTypes"
+            nz-radio-button
+            [nzValue]="option"
+        >
+            {{ option }}
+        </label>
+    </nz-radio-group>
+</app-control-line>
+
+<app-control-line name="Mode">
+    <nz-radio-group
+        [ngModel]="entity.isEmitter"
+        (ngModelChange)="entityService.toggleEmitter(entity)"
+    >
+        <label
+            nz-radio-button
+            [nzValue]="false"
+        >
+            Regular
+        </label>
+        <label
+            nz-radio-button
+            [nzValue]="true"
+        >
+            Spawner
+        </label>
+    </nz-radio-group>
+</app-control-line>
+
+<app-control-line
+    *ngIf="entity.isEmitter"
+    name="Randomize Position"
+>
+    <nz-switch [(ngModel)]="entity.transform.randomPosition"></nz-switch>
+</app-control-line>
+
+<app-control-line-slider
+    *ngIf="entity.isEmitter"
+    name="Interval"
+    description="Time between emissions (seconds)"
+    [(value)]="entity.emitter.interval"
+    [step]="0.1"
+    [min]="0.1"
+    [max]="5"
+/>
+<app-control-line-slider
+    *ngIf="entity.isEmitter"
+    name="Amount"
+    description="The number of entities emitted at a time"
+    [(value)]="entity.emitter.amount"
+    [step]="1"
+    [min]="1"
+    [max]="5"
+/>
+<app-control-line-slider
+    *ngIf="entity.isEmitter"
+    name="Lifespan"
+    description="How long emitted entities last"
+    [(value)]="entity.emitter.lifespan"
+    [step]="0.1"
+    [min]="0.1"
+    [max]="10"
+    [showRandomize]="true"
+    [(randomize)]="entity.emitter.randomLifespan"
+/>
+
+<app-control-line-slider
+    name="Opacity"
+    [(value)]="entity.opacity.target"
+    [step]="0.1"
+    [min]="0"
+    [max]="1"
+/>
+
+<app-control-line-slider
+    name="Scale"
+    [(value)]="entity.transform.scale"
+    [step]="0.1"
+    [min]="0.1"
+    [max]="2"
+    (valueChange)="dimensionsChanged.emit()"
+/>
+
+<app-control-line-slider
+    name="Bang"
+    description="Adds an extra scaling effect based on audio activity"
+    [(value)]="entity.transform.oomphAmount"
+    [step]="0.1"
+    [min]="0"
+    [max]="2"
+    (valueChange)="dimensionsChanged.emit()"
+/>
+
+<app-control-line name="Animate Rotation">
+    <nz-switch [(ngModel)]="entity.transform.rotation.animate"></nz-switch>
+</app-control-line>
+<ng-container *ngIf="entity.transform.rotation.animate">
+    <app-control-line name="Rotation Direction">
+        <nz-radio-group [(ngModel)]="entity.transform.rotation.direction">
+            <label
+                *ngFor="let option of ['Left', 'Right']"
+                nz-radio-button
+                [nzValue]="option"
+                >{{ option }}</label
+            >
+        </nz-radio-group>
+        <app-random-switch
+            *ngIf="entity.isEmitter"
+            [(isRandom)]="entity.transform.rotation.randomDirection"
+        />
+    </app-control-line>
+    <app-control-line-slider
+        name="Rotation Speed"
+        [(value)]="entity.transform.rotation.speed"
+        [step]="0.1"
+        [min]="0.1"
+        [max]="5"
+        [showRandomize]="entity.isEmitter"
+        [(randomize)]="entity.transform.rotation.randomSpeed"
+    />
+</ng-container>
+<app-control-line-slider
+    *ngIf="!entity.transform.rotation.animate"
+    name="Rotation"
+    [(value)]="entity.transform.rotation.value"
+    [step]="5"
+    [min]="0"
+    [max]="360"
+/>
+<ng-container *ngIf="entity.isEmitter">
+    <app-control-line name="Animate Movement">
+        <nz-switch [(ngModel)]="entity.transform.movement.animate"></nz-switch>
+    </app-control-line>
+    <ng-container *ngIf="entity.transform.movement.animate">
+        <app-control-line-slider
+            name="Movement Angle"
+            [(value)]="entity.transform.movement.angle"
+            [step]="5"
+            [min]="0"
+            [max]="360"
+            [showRandomize]="true"
+            [(randomize)]="entity.transform.movement.randomAngle"
+        />
+        <app-control-line-slider
+            name="Movement Speed"
+            [(value)]="entity.transform.movement.speed"
+            [step]="0.1"
+            [min]="0.1"
+            [max]="5"
+            [showRandomize]="true"
+            [(randomize)]="entity.transform.movement.randomSpeed"
+        />
+    </ng-container>
+</ng-container>

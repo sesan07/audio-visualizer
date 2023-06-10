@@ -1,0 +1,13 @@
+<div
+    class="control-view-content"
+    [style.min-width.px]="viewWidth"
+>
+    <app-song-controller />
+    <app-general-options />
+    <app-entity-list />
+    <app-entity-edit
+        *ngIf="entityService.activeEntity$ | async as activeEntity"
+        @controllerEnterLeaveTrigger
+        [entity]="activeEntity"
+    />
+</div>

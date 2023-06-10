@@ -1,66 +1,66 @@
 import { Injectable } from '@angular/core';
+
+import { Entity } from 'src/app/entity-service/entity.types';
+import { AudioSourceService } from 'src/app/source-services/audio.source.service';
+import { getRandomColor } from 'src/app/utils';
 import { BaseContentService } from '../base/base.content.service';
+import { BarContentAnimator } from './bar.content.animator';
 import { BarContent } from './bar.content.types';
-import { Entity } from '../../entity/entity.types';
-import { AudioSourceService } from '../../shared/source-services/audio.source.service';
-import { getRandomColor } from '../../shared/utils';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class BarContentService extends BaseContentService<BarContent> {
+    protected _animator: BarContentAnimator;
 
     constructor(private _audioService: AudioSourceService) {
         super();
+        this._animator = new BarContentAnimator(_audioService.amplitudesMap, _audioService.oomph);
     }
 
-    beforeEmit(config: BarContent): void {
-        if (config.randomizeColors) {
-            config.startColor = getRandomColor();
-            config.endColor = getRandomColor();
+    override beforeEmit(content: BarContent): void {
+        super.beforeEmit(content);
+        if (content.randomStartColor) {
+            content.startColor = getRandomColor();
+        }
+        if (content.randomEndColor) {
+            content.endColor = getRandomColor();
         }
     }
 
     getDefaultContent(isEmitted: boolean): BarContent {
-        const sampleCount: number = this._audioService.sampleCounts[0];
         return {
             isEmitted: isEmitted,
-            randomizeColors: isEmitted,
-            amplitudes: this._audioService.getAmplitudes(sampleCount),
             startColor: getRandomColor(),
             endColor: getRandomColor(),
             multiplier: 1,
-            shadowBlur: isEmitted ? 0 : 5,
-            sampleCount: sampleCount,
+            shadowBlur: 0,
+            sampleCount: this._audioService.sampleCounts[0],
             barCapSize: 10,
             barSize: 60,
             barSpacing: 20,
-            isReversed: false
+            isReversed: false,
         };
     }
 
-    setEntityDimensions(entity: Entity<BarContent>): void {
-        const config: BarContent = entity.entityContent;
+    setEntityDimensions({ content, transform }: Entity<BarContent>): void {
+        const barHeight: number = content.multiplier * 255;
+        const barCapHeight: number = content.barCapSize;
+        transform.height = (barHeight + barCapHeight) * transform.scale;
 
-        const barHeight: number = config.multiplier * 255;
-        const barCapHeight: number = config.barCapSize;
-        entity.height = (barHeight + barCapHeight) * entity.scale;
-
-        const barSpacing: number = config.barSpacing;
-        const barSize: number = config.barSize;
-        const totalBarSpacing: number = (config.sampleCount - 1) * barSpacing;
-        entity.width = (config.sampleCount * barSize + totalBarSpacing) * entity.scale;
+        const barSpacing: number = content.barSpacing;
+        const barSize: number = content.barSize;
+        const totalBarSpacing: number = (content.sampleCount - 1) * barSpacing;
+        transform.width = (content.sampleCount * barSize + totalBarSpacing) * transform.scale;
     }
 
     protected _getAddPreset(config: BarContent): BarContent {
-        const configClone: BarContent = Object.assign({}, config);
-        delete configClone.amplitudes;
+        const configClone: BarContent = { ...config };
         return configClone;
     }
 
     protected _getLoadPreset(config: BarContent): BarContent {
-        const configClone: BarContent = Object.assign({}, config);
-        configClone.amplitudes = this._audioService.getAmplitudes(configClone.sampleCount);
+        const configClone: BarContent = { ...config };
         return configClone;
     }
 }

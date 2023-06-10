@@ -7,11 +7,12 @@
     "build": "ng build --configuration production",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.2.9",
+    "@angular/cdk": "^15.2.9",
     "@angular/common": "^15.2.9",
     "@angular/compiler": "^15.2.9",
     "@angular/core": "^15.2.9",
@@ -24,6 +25,7 @@
     "omggif": "^1.0.10",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "uuid": "^9.0.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -37,6 +39,8 @@
     "@angular/compiler-cli": "^15.2.9",
     "@types/jasmine": "~4.3.1",
     "@types/node": "^16.11.7",
+    "@types/omggif": "^1.0.3",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "eslint": "^8.41.0",

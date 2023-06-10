@@ -4,9 +4,7 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [
-                AppComponent
-            ],
+            imports: [AppComponent],
         }).compileComponents();
     });
 
@@ -19,7 +17,7 @@ describe('AppComponent', () => {
     it(`should have as title 'audio-visualizer'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
-        expect(app.isPlaying).toEqual(false);
+        expect(app.isControlViewOpen).toEqual(true);
     });
 
     it('should render title', () => {

@@ -1,37 +1,41 @@
 import { Injectable } from '@angular/core';
+
+import { Entity } from 'src/app/entity-service/entity.types';
+import { AudioSourceService } from 'src/app/source-services/audio.source.service';
+import { ImageSourceService } from 'src/app/source-services/image.source.service';
 import { BaseContentService } from '../base/base.content.service';
-import { Entity } from '../../entity/entity.types';
+import { ImageContentAnimator } from './image.content.animator';
 import { ImageContent } from './image.content.types';
-import { ImageSourceService } from '../../shared/source-services/image.source.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class ImageContentService extends BaseContentService<ImageContent> {
+    protected _animator: ImageContentAnimator;
 
-    constructor(private _imageService: ImageSourceService) {
+    constructor(audioService: AudioSourceService, private _imageService: ImageSourceService) {
         super();
+        this._animator = new ImageContentAnimator(audioService.amplitudesMap, audioService.oomph);
     }
 
     getDefaultContent(isEmitted: boolean): ImageContent {
         return {
             source: this._imageService.sources[0],
             currGifIndex: 0,
-            speed: 1
+            speed: 1,
         };
     }
 
-    setEntityDimensions(entity: Entity<ImageContent>): void {
-        entity.height = 500 * entity.scale;
+    setEntityDimensions({ content, transform }: Entity<ImageContent>): void {
+        transform.height = 500 * transform.scale;
 
-        const content: ImageContent = entity.entityContent;
-        const firstFrame: HTMLCanvasElement = content.source.frames[0];
-        const heightRatio: number = entity.height / firstFrame.height;
-        entity.width = firstFrame.width * heightRatio;
+        const firstFrame: HTMLCanvasElement = content.source.frames![0];
+        const heightRatio: number = transform.height / firstFrame.height;
+        transform.width = firstFrame.width * heightRatio;
     }
 
     protected _getAddPreset(content: ImageContent): ImageContent {
-        return {source: undefined, currGifIndex: undefined, speed: undefined};
+        return { source: undefined!, currGifIndex: undefined!, speed: undefined! };
     }
 
     protected _getLoadPreset(content: ImageContent): ImageContent {

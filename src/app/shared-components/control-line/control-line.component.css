@@ -1,0 +1,21 @@
+:host {
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+}
+
+:host ::ng-deep :is(.ant-select .ant-radio-group) {
+    flex-grow: 1;
+}
+
+.control-name {
+    min-width: 9rem;
+    margin-right: 0.75rem;
+}
+
+.control-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
